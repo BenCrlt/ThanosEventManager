@@ -6,16 +6,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+public class MapView extends AppCompatActivity {
 
     private static final String TAG = "Thanos" ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_map_view);
     }
 
     @Override
@@ -48,11 +47,12 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
     }
 
-    public void onClickMap(View v){
-        Log.i(TAG, "on click Map");
+    public void onClickMainActivity(View v){
+        Log.i(TAG, "on click Main Activity");
 
-        //Launch the activity 2
-        Intent intent = new Intent(this, MapView.class);
+        //Launch the main activity
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
     }
 }
