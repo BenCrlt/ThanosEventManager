@@ -2,7 +2,17 @@ package com.example.thanoseventmanager.classes;
 
 public class Membre {
 
-    String numero;
+    String numero = new String();
+
+    public String getPseudo() {
+        return pseudo;
+    }
+
+    public void setPseudo(String pseudo) {
+        this.pseudo = pseudo;
+    }
+
+    String pseudo = new String();
 
     public String getNumero() {
         return numero;
