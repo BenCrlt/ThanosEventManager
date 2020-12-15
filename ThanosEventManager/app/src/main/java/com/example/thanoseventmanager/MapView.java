@@ -7,14 +7,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-public class MainActivity extends AppCompatActivity {
-
-    private static final String TAG = "Se connecter";
+public class MapView extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_map_view);
     }
 
     @Override
@@ -47,28 +45,10 @@ public class MainActivity extends AppCompatActivity {
         super.onRestart();
     }
 
-    public void onClickMap(View v){
-        //Launch the map view activity
-        Intent intent = new Intent(this, MapView.class);
+    public void onClickMainActivity(View v){
+        //Launch the main activity
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
     }
-
-    // Bouton Se connecter
-    public void onClick_Login(View v)
-    {
-        Log.i(TAG, "click on Se Connecter" + getLocalClassName()) ;
-
-        /* Gestion appui sur le bouton*/
-        Intent intent_Login = new Intent(this, Main_afterLogin.class) ;
-        startActivity(intent_Login) ;
-    }
-
-    // Phone Text
-
-
-
-
-    // Bouton Sign In
-
-
 }
