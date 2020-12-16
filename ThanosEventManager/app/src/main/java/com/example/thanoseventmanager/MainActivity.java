@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClickMap(View v){
         //Launch the map view activity
-        Intent intent = new Intent(this, MapView.class);
+        Intent intent = new Intent(this, MapViewActivity.class);
         startActivity(intent);
     }
 
@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         Log.i(TAG, "click on Se Connecter" + getLocalClassName()) ;
 
         /* Gestion appui sur le bouton*/
-        Intent intent_Login = new Intent(this, Main_afterLogin.class) ;
+        Intent intent_Login = new Intent(this, MainAfterLogin.class) ;
         startActivity(intent_Login) ;
     }
 
