@@ -10,6 +10,7 @@ import android.widget.ListView;
 
 import com.example.thanoseventmanager.modeles.Event;
 import com.example.thanoseventmanager.modeles.Groupe;
+import com.example.thanoseventmanager.modeles.Lieu;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,9 +27,9 @@ public class MainAfterLogin extends AppCompatActivity {
         ListView listEvents = (ListView)findViewById(R.id.listEvents);
 
         //Pour tester ListView : je créer quelques events
-        Event event1 = new Event("1","event1", new Date(), new Groupe());
-        Event event2 = new Event("2","event2", new Date(), new Groupe());
-        Event event3 = new Event("3","event3", new Date(), new Groupe());
+        Event event1 = new Event("1","event1", new Date(), new Groupe(), new Lieu());
+        Event event2 = new Event("2","event2", new Date(), new Groupe(), new Lieu());
+        Event event3 = new Event("3","event3", new Date(), new Groupe(), new Lieu());
 
         //On les ajoute à une liste d'évènements
         List<Event> events = new ArrayList<Event>();
