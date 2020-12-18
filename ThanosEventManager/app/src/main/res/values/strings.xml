@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">ThanosEventManager</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_fragment_map">Hello fragment map</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_fragment_map_view">Hello fragment map view</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_fragment_user_list">Hello fragment user list</string>
 </resources>
