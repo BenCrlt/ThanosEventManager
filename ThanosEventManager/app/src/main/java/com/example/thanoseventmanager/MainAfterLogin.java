@@ -2,9 +2,11 @@ package com.example.thanoseventmanager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -56,4 +58,9 @@ public class MainAfterLogin extends AppCompatActivity {
         return true;
     }
 
+    public void onClickMap(View v){
+        //Launch the map view activity
+        Intent intent = new Intent(this, MapViewActivity.class);
+        startActivity(intent);
+    }
 }

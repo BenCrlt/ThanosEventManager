@@ -53,12 +53,6 @@ public class MainActivity extends AppCompatActivity {
         Log.i(TAG, "on restart" + getLocalClassName()) ;
     }
 
-    public void onClickMap(View v){
-        //Launch the map view activity
-        Intent intent = new Intent(this, MapViewActivity.class);
-        startActivity(intent);
-    }
-
     // Bouton Se connecter
     public void onClick_Login(View v)
     {

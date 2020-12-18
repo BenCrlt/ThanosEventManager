@@ -34,11 +34,13 @@ public class FragmentMapView extends Fragment implements OnMapReadyCallback {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        Log.i(TAG, "on create view " + getClass().getSimpleName());
+
         View v = inflater.inflate(R.layout.fragment_map_view, container, false);
 
         mapView = (MapView) v.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
-        mapView.getMapAsync(this); //this is important
+        mapView.getMapAsync(this);
 
         return v;
     }
@@ -90,34 +92,11 @@ public class FragmentMapView extends Fragment implements OnMapReadyCallback {
         mapView.onLowMemory();
     }
 
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        Log.i(TAG, "on attach " + getClass().getSimpleName());
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        Log.i(TAG, "on activity created " + getClass().getSimpleName());
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        Log.i(TAG, "on destroy view " + getClass().getSimpleName());
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        Log.i(TAG, "on detach " + getClass().getSimpleName());
-    }
-
     public void onMapReady(GoogleMap googleMap) {
         gm = googleMap;
+        LatLng maison = new LatLng(49.418080, -1.627571);
         gm.getUiSettings().setZoomControlsEnabled(true);
-        gm.addMarker(new MarkerOptions().position(new LatLng(0,0)).title("Marker"));
-        gm.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(0,0), 10));
+        gm.addMarker(new MarkerOptions().position(maison).title("Maison"));
+        gm.moveCamera(CameraUpdateFactory.newLatLngZoom(maison, 10));
     }
 }
