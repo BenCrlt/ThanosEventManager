@@ -20,31 +20,37 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        Log.i(TAG, "on start" + getLocalClassName()) ;
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        Log.i(TAG, "on stop" + getLocalClassName()) ;
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Log.i(TAG, "on destroy" + getLocalClassName()) ;
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        Log.i(TAG, "on pause" + getLocalClassName()) ;
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        Log.i(TAG, "on resume" + getLocalClassName()) ;
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
+        Log.i(TAG, "on restart" + getLocalClassName()) ;
     }
 
     public void onClickMap(View v){
@@ -62,13 +68,4 @@ public class MainActivity extends AppCompatActivity {
         Intent intent_Login = new Intent(this, MainAfterLogin.class) ;
         startActivity(intent_Login) ;
     }
-
-    // Phone Text
-
-
-
-
-    // Bouton Sign In
-
-
 }
