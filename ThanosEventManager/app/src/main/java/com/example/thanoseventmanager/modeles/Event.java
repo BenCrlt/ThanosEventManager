@@ -48,6 +48,6 @@ public class Event implements Serializable {
         return groupe;
     }
 
-    //public void setGroupe(Groupe groupe) {this.groupe = groupe;}
+    public void setGroupe(Groupe groupe) {this.groupe = groupe;}
 
 }
