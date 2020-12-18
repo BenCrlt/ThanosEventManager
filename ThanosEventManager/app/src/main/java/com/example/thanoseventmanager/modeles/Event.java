@@ -10,18 +10,30 @@ public class Event implements Serializable {
     Date date;
     Groupe groupe;
 
+    public Lieu getLieu() {
+        return lieu;
+    }
+
+    public void setLieu(Lieu lieu) {
+        this.lieu = lieu;
+    }
+
+    Lieu lieu;
+
     public Event(){
         this.id = new String();
         this.nom = new String();
         this.date = new Date();
         this.groupe = new Groupe();
+        this.lieu = new Lieu();
     }
 
-    public Event(String id, String nom, Date date, Groupe grp){
+    public Event(String id, String nom, Date date, Groupe grp, Lieu lieu){
         this.id = id;
         this.nom = nom;
         this.date = date;
         this.groupe = grp;
+        this.lieu = lieu;
     }
 
     public void setId(String id){this.id = id;}
