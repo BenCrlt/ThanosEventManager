@@ -10,14 +10,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import com.google.android.gms.maps.MapView;
-
 public class MapViewActivity extends AppCompatActivity {
 
-    private static final String TAG = "Map Filter";
-    private MapView mapView;
-
-    private static final String MAP_VIEW_BUNDLE_KEY = "MapViewBundleKey";
+    private static final String TAG = "Hello";
 
     FragmentManager fm = getSupportFragmentManager();
     NavController navController;
