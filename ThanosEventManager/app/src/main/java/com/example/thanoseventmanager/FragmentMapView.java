@@ -1,8 +1,11 @@
 package com.example.thanoseventmanager;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,14 +14,13 @@ import androidx.core.app.ActivityCompat.OnRequestPermissionsResultCallback;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
+import com.example.thanoseventmanager.geolocalisation.MyLocationListener;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
@@ -33,11 +35,14 @@ public class FragmentMapView extends Fragment implements
         OnMyLocationClickListener,
         OnMapReadyCallback {
 
-    //Variable locales
-    private MapView mapView;
-    private GoogleMap gm;
+    //Initialisation variables locales
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
-    private FusedLocationProviderClient fusedLocationClient;
+    private MyLocationListener  myListener = new MyLocationListener();
+    private MapView             mapView;
+    private GoogleMap           gm;
+    private LocationManager     locationManager;
+    private Location            myCurrentLocation;
+    private String              provider;
 
     public FragmentMapView() {
         // Required empty public constructor
@@ -47,8 +52,16 @@ public class FragmentMapView extends Fragment implements
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //Création d'une API Google Play "Fused Location Provider Client" pour fournir les informations sur la localisation
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this.requireActivity());
+        //Création d'un service pour accéder à la géolocalisation
+        locationManager = (LocationManager)this.requireActivity().getSystemService(Context.LOCATION_SERVICE);
+
+        Criteria critere = new Criteria();
+        critere.setAccuracy(Criteria.ACCURACY_FINE);
+        critere.setBearingRequired(true);
+        critere.setCostAllowed(false);
+
+        provider = locationManager.getBestProvider(critere, false);
+        myCurrentLocation = null;
     }
 
     @Override
@@ -127,6 +140,12 @@ public class FragmentMapView extends Fragment implements
 
         //Activation de la localisation avec permission requise
         this.enableMyLocation();
+
+        try {
+            this.getMyLocation();
+        } catch (SecurityException e) {
+            Log.e("SecurityException", e.getMessage());
+        }
     }
 
     @Override
@@ -153,17 +172,17 @@ public class FragmentMapView extends Fragment implements
         //Check si la permission concerne la bonne requête
         if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
 
-            // Check si l'application a la permission ou non
-
-                //PERMISSION_GRANTED : Autorisation accordée
+            //PERMISSION_GRANTED : Autorisation accordée
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 //Active la localisation
                 this.enableMyLocation();
                 //Affiche un message de succès
                 Toast.makeText(this.requireActivity(), "Localisation Permission Granted", Toast.LENGTH_SHORT).show();
-
-                //PERMISSION_DENIED : Autorisation rejetée
-            } else {
+                //Cherche la localisation actuelle
+                //this.getMyLocation();
+            }
+            //PERMISSION_DENIED : Autorisation rejetée
+            else {
                 //Affiche un message d'échec
                 Toast.makeText(this.requireActivity(), "Localisation Permission Denied", Toast.LENGTH_SHORT).show();
             }
@@ -183,17 +202,16 @@ public class FragmentMapView extends Fragment implements
                 gm.setMyLocationEnabled(true);
                 gm.setOnMyLocationButtonClickListener(this);
                 gm.setOnMyLocationClickListener(this);
-                //Récupère la dernière localisation de l'utilisateur
-                this.getMyLocation();
             }
-            //PERMISSION_DENIED : Autorisation rejetée
-        } else {
+        }
+        //PERMISSION_DENIED : Autorisation rejetée
+        else {
             //Envoi d'une requête à l'utilisateur pour avoir la permission ou non d'accès à la localisation
             requestPermissions(new String[]{permission}, LOCATION_PERMISSION_REQUEST_CODE);
         }
     }
 
-    public void getMyLocation() {
+    public void getMyLocation(){
 
         //Check l'état de la permission d'accès à la localisation
         String permission = Manifest.permission.ACCESS_FINE_LOCATION;
@@ -201,19 +219,25 @@ public class FragmentMapView extends Fragment implements
 
         //PERMISSION_GRANTED : Autorisation accordée
         if (permissionState == PackageManager.PERMISSION_GRANTED) {
-            //Récupération de la dernière localisation de l'utilisateur
-            fusedLocationClient.getLastLocation().addOnSuccessListener(this.requireActivity(),
-                    location -> {
-                        // Got last known location. In some rare situations this can be null.
-                        if (location != null) {
-                            //Récupération des coordonnées de la localisation
-                            double myLat = location.getLatitude();
-                            double myLng = location.getLongitude();
-                            LatLng coords = new LatLng(myLat, myLng);
-                            //Zoom de la carte sur le point de localisation
-                            gm.moveCamera(CameraUpdateFactory.newLatLngZoom(coords, 15));
-                        }
-                    });
+
+            if (locationManager != null && provider != null) {
+
+                myCurrentLocation = locationManager.getLastKnownLocation(provider);
+
+                if (myCurrentLocation != null) {
+                    // add location to the location listener for location changes
+                    myListener.onLocationChanged(myCurrentLocation);
+                } else {
+                    Toast.makeText(this.requireActivity(), "Localisation Needed", Toast.LENGTH_SHORT).show();
+                    /*
+                    //Intention d'afficher les paramètres du télophone pour activer les données de localisation
+                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    startActivity(intent);
+                     */
+                }
+                // location updates: at least 1 meter and 500 milli seconds change
+                locationManager.requestLocationUpdates(provider, 500, 1, myListener);
+            }
         }
     }
 }
