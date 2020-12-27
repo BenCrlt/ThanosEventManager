@@ -2,12 +2,15 @@ package com.example.thanoseventmanager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.example.thanoseventmanager.listAdapter.EventListAdapter;
 import com.example.thanoseventmanager.modeles.Event;
 import com.example.thanoseventmanager.modeles.Groupe;
 import com.example.thanoseventmanager.modeles.Lieu;
@@ -24,27 +27,41 @@ public class MainAfterLogin extends AppCompatActivity {
         setContentView(R.layout.activity_main_after_login);
 
         //Création d'un objet ListView correspondant à "listEvents" du layout activity_main_after_login.xml
-        ListView listEvents = (ListView)findViewById(R.id.listEvents);
+        ListView listView = (ListView)findViewById(R.id.listEvents);
 
-        //Pour tester ListView : je créer quelques events
-        Event event1 = new Event("1","event1", new Date(), new Groupe(), new Lieu());
-        Event event2 = new Event("2","event2", new Date(), new Groupe(), new Lieu());
-        Event event3 = new Event("3","event3", new Date(), new Groupe(), new Lieu());
+        //Création liste d'évènements à partir de la méthode getListData
+        List<Event> listeEvent = getListData();
+        listView.setAdapter(new EventListAdapter(this,listeEvent));
 
-        //On les ajoute à une liste d'évènements
-        List<Event> events = new ArrayList<Event>();
+    }
 
-        events.add(event1);
-        events.add(event2);
-        events.add(event3);
+    private  List<Event> getListData() {
+        List<Event> list = new ArrayList<Event>();
 
-        // android.R.layout.simple_list_item_1 is a constant predefined layout of Android.
-        // used to create a ListView with simple ListItem (Only one TextView).
+        Groupe team_andor = new Groupe();
+        team_andor.setNom("Team Andor");
 
-        ArrayAdapter<Event> arrayAdapter
-                = new ArrayAdapter<Event>(this, android.R.layout.simple_list_item_1 , events);
+        Lieu chez_toinou = new Lieu();
+        chez_toinou.setNom("Chez toinou");
 
-        listEvents.setAdapter(arrayAdapter);
+        Event event1 = new Event("1","Pyjama Party", new Date(), team_andor, chez_toinou);
+        Event event2 = new Event("2","Andor", new Date(), team_andor, chez_toinou);
+        Event event3 = new Event("3","Super Smash Bros", new Date(), team_andor, chez_toinou);
+        Event event4 = new Event("4","Tonton Foch", new Date(), team_andor, chez_toinou);
+        Event event5 = new Event("5","Soirée chez Arnaud", new Date(), team_andor, chez_toinou);
+        Event event6 = new Event("6","Développement Android", new Date(), team_andor, chez_toinou);
+        Event event7 = new Event("7","Brainstorming intensif", new Date(), team_andor, chez_toinou);
+        Event event8 = new Event("8","Entraînement salto arrière en slip", new Date(), team_andor, chez_toinou);
+
+        list.add(event1);
+        list.add(event2);
+        list.add(event3);
+        list.add(event4);
+        list.add(event5);
+        list.add(event6);
+        list.add(event7);
+
+        return list;
     }
 
     @Override
@@ -56,4 +73,9 @@ public class MainAfterLogin extends AppCompatActivity {
         return true;
     }
 
+    public void onClickMap(View v){
+        //Launch the map view activity
+        Intent intent = new Intent(this, MapViewActivity.class);
+        startActivity(intent);
+    }
 }

@@ -38,10 +38,46 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
-    public void onClickMap(View v){
+    public void onClickMap(View v) {
         //Launch the map view activity
         Intent intent = new Intent(this, MapViewActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.i(TAG, "on start" + getLocalClassName()) ;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.i(TAG, "on stop" + getLocalClassName()) ;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.i(TAG, "on destroy" + getLocalClassName()) ;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.i(TAG, "on pause" + getLocalClassName()) ;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i(TAG, "on resume" + getLocalClassName()) ;
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.i(TAG, "on restart" + getLocalClassName()) ;
     }
 
     // Bouton Se connecter

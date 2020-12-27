@@ -10,14 +10,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import com.google.android.gms.maps.MapView;
-
 public class MapViewActivity extends AppCompatActivity {
 
-    private static final String TAG = "Map Filter";
-    private MapView mapView;
-
-    private static final String MAP_VIEW_BUNDLE_KEY = "MapViewBundleKey";
+    private static final String TAG = "Hello";
 
     FragmentManager fm = getSupportFragmentManager();
     NavController navController;
@@ -69,17 +64,16 @@ public class MapViewActivity extends AppCompatActivity {
 
     public void onClickMainActivity(View v){
         //Launch the main activity
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, MainAfterLogin.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
     }
 
-    public void onClickFragmentMapView(View v)
-    {
+    public void onClickFragmentMapView(View v) {
         navController.popBackStack(navController.getGraph().getStartDestination(), false);
     }
-    public void onClickFragmentUserList(View v)
-    {
+
+    public void onClickFragmentUserList(View v) {
         navController.popBackStack(navController.getGraph().getStartDestination(), false);
         navController.navigate(R.id.fragmentUserList);
     }
