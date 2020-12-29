@@ -7,17 +7,9 @@ public class Event implements Serializable {
 
     String id;
     String nom;
+    String image = "event";
     Date date;
     Groupe groupe;
-
-    public Lieu getLieu() {
-        return lieu;
-    }
-
-    public void setLieu(Lieu lieu) {
-        this.lieu = lieu;
-    }
-
     Lieu lieu;
 
     public Event(){
@@ -33,6 +25,22 @@ public class Event implements Serializable {
         this.nom = nom;
         this.date = date;
         this.groupe = grp;
+        this.lieu = lieu;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public Lieu getLieu() {
+        return lieu;
+    }
+
+    public void setLieu(Lieu lieu) {
         this.lieu = lieu;
     }
 

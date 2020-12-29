@@ -47,7 +47,9 @@ public class EventListAdapter extends BaseAdapter {
         if (convertView == null) {
             convertView = layoutInflater.inflate(R.layout.listeevent_event_layout, null);
             holder = new ViewHolder();
+            holder.imageEvent = (ImageView) convertView.findViewById(R.id.imageView);
             holder.nomEventView = (TextView) convertView.findViewById(R.id.textView_nom);
+            holder.dateEventView = (TextView)convertView.findViewById(R.id.textView_date);
             holder.nomGroupeView = (TextView) convertView.findViewById(R.id.textView_groupe);
             convertView.setTag(holder);
         } else {
@@ -55,14 +57,31 @@ public class EventListAdapter extends BaseAdapter {
         }
 
         Event event = this.listeEvent.get(position);
+
         holder.nomEventView.setText(event.getNom());
+        holder.dateEventView.setText(event.getDate().toString());
         holder.nomGroupeView.setText("Groupe: " + event.getGroupe().getNom());
+
+        //Pour l'image
+        int imageId = this.getMipmapResIdByName(event.getImage());
+
+        holder.imageEvent.setImageResource(imageId);
 
         return convertView;
     }
 
+    // Retrouver l'ID d'une image à l'aide du nom du fichie rimage dans /mipmap
+    public int getMipmapResIdByName(String resName)  {
+        String pkgName = context.getPackageName();
+        // Return 0 if not found.
+        int resID = context.getResources().getIdentifier(resName , "mipmap", pkgName);
+        return resID;
+    }
+
     static class ViewHolder{
+        ImageView imageEvent;
         TextView nomEventView;
+        TextView dateEventView;
         TextView nomGroupeView;
     }
 }
