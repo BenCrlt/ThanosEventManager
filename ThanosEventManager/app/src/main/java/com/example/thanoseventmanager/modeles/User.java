@@ -1,18 +1,18 @@
 package com.example.thanoseventmanager.modeles;
 
-public class Membre {
+public class User {
 
     String id;
     String numero;
     String pseudo;
     
-    public Membre(){
+    public User(){
         this.id = new String();
         this.numero = new String();
         this.pseudo = new String();
     }
     
-    public Membre(String id,String numero, String pseudo){
+    public User(String id, String numero, String pseudo){
         this.id = id;
         this.numero = numero;
         this.pseudo = pseudo;

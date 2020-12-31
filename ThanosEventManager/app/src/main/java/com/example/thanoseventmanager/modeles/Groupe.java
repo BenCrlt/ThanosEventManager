@@ -6,18 +6,18 @@ public class Groupe {
 
     String id;
     String nom;
-    ArrayList<Membre> listeMembres;
+    ArrayList<User> listeUsers;
 
     public Groupe(){
         this.id = new String();
         this.nom = new String();
-        this.listeMembres = new ArrayList<Membre>();
+        this.listeUsers = new ArrayList<User>();
     }
 
     public Groupe(String nom){
         this.nom = nom;
         this.id = new String();
-        this.listeMembres = new ArrayList<Membre>();
+        this.listeUsers = new ArrayList<User>();
     }
 
     public void setId(String id){this.id = id;}
@@ -32,11 +32,11 @@ public class Groupe {
         this.nom = nom;
     }
 
-    public ArrayList<Membre> getListeMembres() {
-        return listeMembres;
+    public ArrayList<User> getListeUsers() {
+        return listeUsers;
     }
 
-    public void setListeMembres(ArrayList<Membre> listeMembres) {
-        this.listeMembres = listeMembres;
+    public void setListeUsers(ArrayList<User> listeUsers) {
+        this.listeUsers = listeUsers;
     }
 }

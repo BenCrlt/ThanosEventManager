@@ -4,26 +4,25 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.net.wifi.hotspot2.pps.Credential;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
+import com.example.thanoseventmanager.api.MembreHelper;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.FirebaseTooManyRequestsException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-import com.google.firebase.auth.FirebaseAuthSettings;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
 
-import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
@@ -85,17 +84,17 @@ public class MainActivity extends AppCompatActivity {
     {
         Log.i(TAG, "click on Se Connecter" + getLocalClassName()) ;
 
-        /* Gestion appui sur le bouton*/
+        /* Gestion appui sur le bouton
         Intent intent_Login = new Intent(this, MainAfterLogin.class) ;
-        startActivity(intent_Login) ;
+        startActivity(intent_Login) ;*/
 
            // C'est pour l'authentification laisse ça en commentaire pour l'instant
-        //ManagePhoneAuthentification();
+        ManagePhoneAuthentification();
     }
 
     private void ManagePhoneAuthentification() {
+        mAuth = FirebaseAuth.getInstance();
         String phoneNumber = "+33778798735";
-        String smsCode = "123456";
         mAuth.setLanguageCode("fr");
         Log.d(TAG, "Manage Authentification");
 
@@ -130,6 +129,12 @@ public class MainActivity extends AppCompatActivity {
                                     // ...
                                 }
                             }
+
+                            @Override
+                            public void onCodeAutoRetrievalTimeOut(@NonNull String s) {
+                                Log.d(TAG, "On Code Timeout");
+                                super.onCodeAutoRetrievalTimeOut(s);
+                            }
                         })
                         .build();
         PhoneAuthProvider.verifyPhoneNumber(options);
@@ -143,6 +148,14 @@ public class MainActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             Log.d(TAG, "SignInWithCredentials : SUCCESS");
                             FirebaseUser user = task.getResult().getUser();
+
+                            Log.d(TAG, "ID User = " + user.getUid());
+                            MembreHelper.createUser(user.getUid(), user.getPhoneNumber(), "Benoit").addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.d(TAG, "Fail to add on database");
+                                }
+                            });
                         } else {
                             Log.w(TAG, "SignInWithCredentials : FAILURE");
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
@@ -154,10 +167,12 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
+
+
     public void OnClickValidCode(View v) {
         //GET EDIT TEXT
-        //String SMSCode = ((EditText)findViewById(R.id.editText_SMSCode)).getText().toString();
-        //PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationID, SMSCode);
-        //signInWithPhoneAuthCredential(credential);
+        String SMSCode = ((EditText)findViewById(R.id.editSMSCode)).getText().toString();
+        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationID, SMSCode);
+        signInWithPhoneAuthCredential(credential);
     }
 }
