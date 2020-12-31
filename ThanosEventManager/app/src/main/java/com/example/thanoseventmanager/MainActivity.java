@@ -84,12 +84,12 @@ public class MainActivity extends AppCompatActivity {
     {
         Log.i(TAG, "click on Se Connecter" + getLocalClassName()) ;
 
-        /* Gestion appui sur le bouton
+        /* Gestion appui sur le bouton*/
         Intent intent_Login = new Intent(this, MainAfterLogin.class) ;
-        startActivity(intent_Login) ;*/
+        startActivity(intent_Login);
 
            // C'est pour l'authentification laisse ça en commentaire pour l'instant
-        ManagePhoneAuthentification();
+        //ManagePhoneAuthentification();
     }
 
     private void ManagePhoneAuthentification() {
@@ -171,8 +171,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void OnClickValidCode(View v) {
         //GET EDIT TEXT
-        String SMSCode = ((EditText)findViewById(R.id.editSMSCode)).getText().toString();
+        /*String SMSCode = ((EditText)findViewById(R.id.editSMSCode)).getText().toString();
         PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationID, SMSCode);
         signInWithPhoneAuthCredential(credential);
+         */
     }
 }
