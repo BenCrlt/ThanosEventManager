@@ -9,7 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
-import com.example.thanoseventmanager.api.MembreHelper;
+import com.example.thanoseventmanager.api.UserHelper;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
                             FirebaseUser user = task.getResult().getUser();
 
                             Log.d(TAG, "ID User = " + user.getUid());
-                            MembreHelper.createUser(user.getUid(), user.getPhoneNumber(), "Benoit").addOnFailureListener(new OnFailureListener() {
+                            UserHelper.createUser(user.getUid(), user.getPhoneNumber(), "Benoit").addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
                                     Log.d(TAG, "Fail to add on database");

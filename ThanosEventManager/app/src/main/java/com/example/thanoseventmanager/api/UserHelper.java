@@ -8,7 +8,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class MembreHelper {
+public class UserHelper {
 
     private static final String TAG = "CONNECTION";
     private static final String COLLECTION_NAME = "users";
@@ -20,18 +20,18 @@ public class MembreHelper {
     public static Task<Void> createUser(String id, String numero, String pseudo) {
         User newUser = new User(id, numero, pseudo);
         Log.d(TAG, "Create Membre");
-        return MembreHelper.getMembersCollection().document(id).set(newUser);
+        return UserHelper.getMembersCollection().document(id).set(newUser);
     }
 
     public static Task<DocumentSnapshot> getMembreByID(String id) {
-        return MembreHelper.getMembersCollection().document(id).get();
+        return UserHelper.getMembersCollection().document(id).get();
     }
 
     public static Task<DocumentSnapshot> getMembreByPhone(String phone) {
-        return MembreHelper.getMembersCollection().document(phone).get();
+        return UserHelper.getMembersCollection().document(phone).get();
     }
 
     public static Task<Void> deleteMember(String id) {
-        return MembreHelper.getMembersCollection().document(id).delete();
+        return UserHelper.getMembersCollection().document(id).delete();
     }
 }
