@@ -1,14 +1,13 @@
 package com.example.thanoseventmanager;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.thanoseventmanager.listAdapter.EventListAdapter;
 import com.example.thanoseventmanager.modeles.Event;
@@ -53,6 +52,12 @@ public class MainAfterLogin extends AppCompatActivity {
         Event event7 = new Event("7","Brainstorming intensif", new Date(), team_andor, chez_toinou);
         Event event8 = new Event("8","Entraînement salto arrière en slip", new Date(), team_andor, chez_toinou);
 
+        event1.setImage("fireworks");
+        event3.setImage("gamepad");
+        event4.setImage("beer");
+        event5.setImage("fireworks");
+        event6.setImage("coding");
+
         list.add(event1);
         list.add(event2);
         list.add(event3);
@@ -60,6 +65,7 @@ public class MainAfterLogin extends AppCompatActivity {
         list.add(event5);
         list.add(event6);
         list.add(event7);
+        list.add(event8);
 
         return list;
     }
