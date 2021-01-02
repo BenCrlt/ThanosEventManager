@@ -1,6 +1,7 @@
 package com.example.thanoseventmanager;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -28,9 +29,12 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationClickListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class FragmentMapView extends Fragment implements
         OnRequestPermissionsResultCallback,
@@ -46,6 +50,12 @@ public class FragmentMapView extends Fragment implements
     private FusedLocationProviderClient fusedLocationClient;
     private LocationRequest locationRequest;
     private LocationCallback locationCallback;
+
+    //Récupération de l'utilisateur avec Firebase
+    @Nullable
+    private FirebaseUser getCurrentUser(){ return FirebaseAuth.getInstance().getCurrentUser(); }
+
+    private Boolean isCurrentUserLogged(){ return (this.getCurrentUser() != null); }
 
 
     public FragmentMapView() {
@@ -110,6 +120,26 @@ public class FragmentMapView extends Fragment implements
     public void onDestroy() {
         super.onDestroy();
         mapView.onDestroy();
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
     }
 
     @Override
@@ -249,7 +279,11 @@ public class FragmentMapView extends Fragment implements
 
     private void setMarkers() {
         //Ajoute les marqueurs sur la carte
-        gm.addMarker(new MarkerOptions().position(new LatLng(47.528868, -0.568809)).title("Cantenay"));
+        gm.addMarker(new MarkerOptions()
+                .position(new LatLng(47.528868, -0.568809))
+                .title("Cantenay")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+        );
         gm.addMarker(new MarkerOptions().position(new LatLng(47.483425, -0.570988)).title("Chez Toinou le rayon X"));
         gm.addMarker(new MarkerOptions().position(new LatLng(49.418080, -1.627571)).title("BestPlace"));
         gm.addMarker(new MarkerOptions().position(new LatLng(46.749495, -1.739786)).title("SchmoutLand"));
