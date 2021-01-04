@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -89,12 +90,25 @@ public class MainActivity extends AppCompatActivity {
     public void onClick_Login(View v)
     {
         Log.i(TAG, "click on Se Connecter" + getLocalClassName()) ;
+        String phoneNumber = "+3378798735" ;
 
         /* Gestion appui sur le bouton*/
+        if (phoneNumber == "+33778798736")
+        {
+            Intent intent_Login = new Intent(this, MainAfterLogin.class) ;
+            startActivity(intent_Login);
+        }
+        else {
+            // Modifier texte du bouton "button_seConnecter" en valider
+            ((Button)findViewById(R.id.button_seConnecter)).setText("VALIDER") ;
+            // Clear le champ de texte du phone number
+            ((TextView)findViewById(R.id.editTextPhone)).setText("") ;
+            // Faire l'intent
+            /*Intent intent_Login = new Intent(this, MainAfterLogin.class) ;
+            startActivity(intent_Login);*/
+        }
 
 
-        Intent intent_Login = new Intent(this, MainAfterLogin.class) ;
-        startActivity(intent_Login);
 
            // C'est pour l'authentification laisse ça en commentaire pour l'instant
         //ManagePhoneAuthentification();
