@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
     public void onClick_Login(View v)
     {
         Log.i(TAG, "click on Se Connecter" + getLocalClassName()) ;
-        String phoneNumber = "778798735" ;
+        String phoneNumber = "617205306" ;
 
         // Vérification phoneNumber
         if (phoneNumber.length() != 9)
@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
         }
         else {
             /* Gestion appui sur le bouton*/
-            if (phoneNumber == "778798735")
+            if (phoneNumber == "617205306")
             {
                 Intent intent_Login = new Intent(this, MapViewActivity.class) ;
                 startActivity(intent_Login);
@@ -115,7 +115,6 @@ public class MainActivity extends AppCompatActivity {
                 // Clear le champ de texte du phone number
                 ((TextView)findViewById(R.id.editTextPhone)).setText("") ;
                 ((TextView)findViewById(R.id.textView_33)).setText("") ;
-
                 // Faire l'intent
                 Intent intent_Login = new Intent(this, MapViewActivity.class) ;
                 startActivity(intent_Login);
