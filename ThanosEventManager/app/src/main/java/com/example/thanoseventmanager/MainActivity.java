@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
         String phoneNumber = "+3378798735" ;
 
         /* Gestion appui sur le bouton*/
-        if (phoneNumber == "+33778798736")
+        if (phoneNumber == "+33778798735")
         {
             Intent intent_Login = new Intent(this, MainAfterLogin.class) ;
             startActivity(intent_Login);
@@ -104,8 +104,8 @@ public class MainActivity extends AppCompatActivity {
             // Clear le champ de texte du phone number
             ((TextView)findViewById(R.id.editTextPhone)).setText("") ;
             // Faire l'intent
-            /*Intent intent_Login = new Intent(this, MainAfterLogin.class) ;
-            startActivity(intent_Login);*/
+            Intent intent_Login = new Intent(this, MainAfterLogin.class) ;
+            startActivity(intent_Login);
         }
 
 
