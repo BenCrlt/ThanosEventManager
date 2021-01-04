@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -39,5 +40,11 @@ public class GroupsActivity extends AppCompatActivity {
             return(true);
         }
         return(super.onOptionsItemSelected(item));
+    }
+
+    // Méthode pour le bouton "Nouveau Groupe"
+    public void onClick_new_grp(View v)
+    {
+        // TODO
     }
 }

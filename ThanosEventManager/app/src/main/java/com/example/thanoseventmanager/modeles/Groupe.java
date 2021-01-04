@@ -1,5 +1,7 @@
 package com.example.thanoseventmanager.modeles;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
 public class Groupe {
@@ -14,10 +16,11 @@ public class Groupe {
         this.listeUsers = new ArrayList<User>();
     }
 
-    public Groupe(String id, String nom){
+    public Groupe(String id, String nom, User userAdmin){
         this.id = id;
         this.nom = nom;
         this.listeUsers = new ArrayList<User>();
+        this.listeUsers.add(userAdmin);
     }
 
     public void setId(String id){this.id = id;}
@@ -41,4 +44,12 @@ public class Groupe {
     }
 
     public void addUser(User newUser) { this.listeUsers.add(newUser); };
+
+    public void removeUser(User userToDelete) {
+        for (int i = 0; i < this.listeUsers.size(); i++) {
+            if ((this.listeUsers.get(i)).getId().equalsIgnoreCase(userToDelete.getId())) {
+                this.listeUsers.remove(i);
+            }
+        }
+    };
 }
