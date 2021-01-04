@@ -20,6 +20,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.thanoseventmanager.modeles.Event;
+import com.example.thanoseventmanager.modeles.Groupe;
+import com.example.thanoseventmanager.modeles.Lieu;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -38,6 +41,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class FragmentMapView extends Fragment implements
@@ -167,6 +172,8 @@ public class FragmentMapView extends Fragment implements
 
         //Ajout de marqueurs sur la carte
         this.setMarkers();
+        this.setEventMarkers();
+
         //Activation de la localisation avec permission requise
         this.enableMyLocation();
     }
@@ -306,11 +313,35 @@ public class FragmentMapView extends Fragment implements
                 .title("Cantenay")
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
         );
-        gm.addMarker(new MarkerOptions().position(new LatLng(47.483425, -0.570988)).title("Chez Toinou le rayon X"));
         gm.addMarker(new MarkerOptions().position(new LatLng(49.418080, -1.627571)).title("BestPlace"));
         gm.addMarker(new MarkerOptions().position(new LatLng(46.749495, -1.739786)).title("SchmoutLand"));
         gm.addMarker(new MarkerOptions().position(new LatLng(47.085868, 2.395971)).title("Vilkipu"));
         gm.addMarker(new MarkerOptions().position(new LatLng(48.322190, 0.150082)).title("Troudfiak"));
+    }
+
+    private void setEventMarkers(){
+
+        //Récupération de la liste des events
+        List<Event> listeEvents = this.getListData();
+
+        //Boucle pour chaque event de la liste
+        for( Event event : listeEvents) {
+
+            //Adresse totale de l'event
+            String adresse = event.getLieu().getAdresse() + " , " + event.getLieu().getVille();
+
+            //Récupération des coordonnées de l'event
+            LatLng coordsEvent = this.getLocationFromAddress(adresse);
+
+            if (coordsEvent != null) {
+                //Ajout d'un marqueur
+                gm.addMarker(new MarkerOptions()
+                        .position(coordsEvent)
+                        .title(event.getNom())
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
+                );
+            }
+        }
     }
 
     public LocationRequest setLocationRequest() {
@@ -350,5 +381,55 @@ public class FragmentMapView extends Fragment implements
     private void stopLocationUpdates() {
         //Arrete les MAJ de la localisation
         fusedLocationClient.removeLocationUpdates(locationCallback);
+    }
+
+    private List<Event> getListData() {
+        List<Event> list = new ArrayList<>();
+
+        Groupe team_andor = new Groupe();
+        team_andor.setNom("Team Andor");
+
+        Lieu chez_toinou = new Lieu();
+        chez_toinou.setNom("Chez toinou");
+        chez_toinou.setAdresse("6 Rue des Gouronnières");
+        chez_toinou.setVille("Angers");
+        chez_toinou.setCp("49100");
+
+        Lieu chez_pierrot = new Lieu();
+        chez_pierrot.setNom("Chez pierrot");
+        chez_pierrot.setAdresse("Clos de l'Etriviere");
+        chez_pierrot.setVille("Cantenay-Epinard");
+
+        Lieu nulle_part = new Lieu();
+
+        Lieu tonton_foch = new Lieu();
+        tonton_foch.setAdresse("Tonton Foch");
+        tonton_foch.setVille("Angers");
+
+        Event event1 = new Event("1", "Pyjama Party", new Date(), team_andor, chez_toinou);
+        Event event2 = new Event("2", "Andor", new Date(), team_andor, nulle_part);
+        Event event3 = new Event("3", "Super Smash Bros", new Date(), team_andor, nulle_part);
+        Event event4 = new Event("4", "Tonton Foch", new Date(), team_andor, tonton_foch);
+        Event event5 = new Event("5", "Soirée chez Arnaud", new Date(), team_andor, nulle_part);
+        Event event6 = new Event("6", "Développement Android", new Date(), team_andor, nulle_part);
+        Event event7 = new Event("7", "Brainstorming intensif", new Date(), team_andor, chez_pierrot);
+        Event event8 = new Event("8", "Entraînement salto arrière en slip", new Date(), team_andor, nulle_part);
+
+        event1.setImage("fireworks");
+        event3.setImage("gamepad");
+        event4.setImage("beer");
+        event5.setImage("fireworks");
+        event6.setImage("coding");
+
+        list.add(event1);
+        list.add(event2);
+        list.add(event3);
+        list.add(event4);
+        list.add(event5);
+        list.add(event6);
+        list.add(event7);
+        list.add(event8);
+
+        return list;
     }
 }
