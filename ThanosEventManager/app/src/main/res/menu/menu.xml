@@ -9,4 +9,8 @@
         android:title="Item Plus"
         android:icon="@drawable/baseline_add_box_24"
         app:showAsAction="ifRoom" />
+    <item  android:id="@+id/itemGroup"
+        android:title="Item Group"
+        android:icon="@drawable/baseline_groups_24"
+        app:showAsAction="ifRoom" />
 </menu>
