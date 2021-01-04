@@ -15,4 +15,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <fragment
+        android:id="@+id/fragment_nav_host_GroupsActivity"
+        android:name="com.example.thanoseventmanager.FragmentGroupList"
+        android:layout_width="412dp"
+        android:layout_height="317dp"
+        tools:layout_editor_absoluteX="-1dp"
+        tools:layout_editor_absoluteY="416dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
