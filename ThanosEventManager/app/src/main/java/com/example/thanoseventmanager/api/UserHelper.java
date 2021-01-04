@@ -37,11 +37,11 @@ public class UserHelper {
 
     // --- UPDATE ---
 
-    public static Task<Void> updateLatitude(String id, double latitude) {
+    public static Task<Void> updateUserLat(String id, double latitude) {
         return UserHelper.getMembersCollection().document(id).update("latitude", latitude);
     }
 
-    public static Task<Void> updateLongitude(String id, double longitude) {
+    public static Task<Void> updateUserLng(String id, double longitude) {
         return UserHelper.getMembersCollection().document(id).update("longitude", longitude);
     }
 
