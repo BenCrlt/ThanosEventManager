@@ -3,6 +3,8 @@ package com.example.thanoseventmanager;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 
@@ -35,6 +37,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.List;
 
 public class FragmentMapView extends Fragment implements
         OnRequestPermissionsResultCallback,
@@ -207,7 +211,6 @@ public class FragmentMapView extends Fragment implements
     }
 
     public void enableMyLocation() {
-
         //Check l'état de la permission d'accès à la localisation
         String permission = Manifest.permission.ACCESS_FINE_LOCATION;
         int permissionState = ContextCompat.checkSelfPermission(this.requireActivity(), permission);
@@ -233,7 +236,6 @@ public class FragmentMapView extends Fragment implements
 
     //Donne la localisation de manière ponctuelle
     public void getMyLocation() {
-
         //Check l'état de la permission d'accès à la localisation
         String permission = Manifest.permission.ACCESS_FINE_LOCATION;
         int permissionState = ContextCompat.checkSelfPermission(this.requireActivity(), permission);
@@ -257,6 +259,30 @@ public class FragmentMapView extends Fragment implements
             getLocation.addOnFailureListener(this.requireActivity(),
                     error -> Toast.makeText(this.requireActivity(), "No Location Finded", Toast.LENGTH_SHORT).show());
         }
+    }
+
+    public LatLng getLocationFromAddress(String address) {
+
+        Geocoder coder = new Geocoder(this.requireActivity());
+        List<Address> results;
+        LatLng coords = null;
+
+        try {
+            results = coder.getFromLocationName(address, 5);
+            if (results == null) {
+                return null;
+            }
+            Address location = results.get(0);
+            location.getLatitude();
+            location.getLongitude();
+
+            coords = new LatLng(location.getLatitude(), location.getLongitude() );
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return coords;
     }
 
     public LatLng getMyCoords(Location location) {
