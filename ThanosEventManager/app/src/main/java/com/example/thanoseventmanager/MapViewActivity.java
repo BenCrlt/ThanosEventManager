@@ -1,14 +1,16 @@
 package com.example.thanoseventmanager;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.View;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 
 public class MapViewActivity extends AppCompatActivity {
 
@@ -25,6 +27,15 @@ public class MapViewActivity extends AppCompatActivity {
         Log.i(TAG, "on create " + getLocalClassName()) ;
 
         navController = Navigation.findNavController(this, R.id.fragment_nav_host);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        MenuInflater inflater = getMenuInflater();
+        //R.menu.menu est l'id de notre menu
+        inflater.inflate(R.menu.menu, menu);
+        return true;
     }
 
     @Override
@@ -76,5 +87,10 @@ public class MapViewActivity extends AppCompatActivity {
     public void onClickFragmentUserList(View v) {
         navController.popBackStack(navController.getGraph().getStartDestination(), false);
         navController.navigate(R.id.fragmentUserList);
+    }
+
+    public void onClickFragmentEventList(View v) {
+        navController.popBackStack(navController.getGraph().getStartDestination(), false);
+        navController.navigate(R.id.fragmentEventList);
     }
 }

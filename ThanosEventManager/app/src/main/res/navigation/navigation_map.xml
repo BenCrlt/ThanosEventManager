@@ -15,4 +15,8 @@
         android:name="com.example.thanoseventmanager.FragmentUserList"
         android:label="fragment_user_list"
         tools:layout="@layout/fragment_user_list" />
+    <fragment
+        android:id="@+id/fragmentEventList"
+        android:name="com.example.thanoseventmanager.FragmentEventList"
+        android:label="fragment_event_list" />
 </navigation>

@@ -5,18 +5,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
-import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.thanoseventmanager.listAdapter.EventListAdapter;
-import com.example.thanoseventmanager.modeles.Event;
-import com.example.thanoseventmanager.modeles.Groupe;
-import com.example.thanoseventmanager.modeles.Lieu;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 public class MainAfterLogin extends AppCompatActivity {
 
@@ -24,50 +14,6 @@ public class MainAfterLogin extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_after_login);
-
-        //Création d'un objet ListView correspondant à "listEvents" du layout activity_main_after_login.xml
-        ListView listView = (ListView)findViewById(R.id.listEvents);
-
-        //Création liste d'évènements à partir de la méthode getListData
-        List<Event> listeEvent = getListData();
-        listView.setAdapter(new EventListAdapter(this,listeEvent));
-
-    }
-
-    private  List<Event> getListData() {
-        List<Event> list = new ArrayList<Event>();
-
-        Groupe team_andor = new Groupe();
-        team_andor.setNom("Team Andor");
-
-        Lieu chez_toinou = new Lieu();
-        chez_toinou.setNom("Chez toinou");
-
-        Event event1 = new Event("1","Pyjama Party", new Date(), team_andor, chez_toinou);
-        Event event2 = new Event("2","Andor", new Date(), team_andor, chez_toinou);
-        Event event3 = new Event("3","Super Smash Bros", new Date(), team_andor, chez_toinou);
-        Event event4 = new Event("4","Tonton Foch", new Date(), team_andor, chez_toinou);
-        Event event5 = new Event("5","Soirée chez Arnaud", new Date(), team_andor, chez_toinou);
-        Event event6 = new Event("6","Développement Android", new Date(), team_andor, chez_toinou);
-        Event event7 = new Event("7","Brainstorming intensif", new Date(), team_andor, chez_toinou);
-        Event event8 = new Event("8","Entraînement salto arrière en slip", new Date(), team_andor, chez_toinou);
-
-        event1.setImage("fireworks");
-        event3.setImage("gamepad");
-        event4.setImage("beer");
-        event5.setImage("fireworks");
-        event6.setImage("coding");
-
-        list.add(event1);
-        list.add(event2);
-        list.add(event3);
-        list.add(event4);
-        list.add(event5);
-        list.add(event6);
-        list.add(event7);
-        list.add(event8);
-
-        return list;
     }
 
     @Override
