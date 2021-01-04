@@ -232,7 +232,7 @@ public class MainActivity extends AppCompatActivity {
                                             public void onSuccess(DocumentSnapshot documentSnapshot) {
                                                 User userFound = documentSnapshot.toObject(User.class);
                                                 ((TextView)findViewById(R.id.TestTextView)).setText(userFound.getPseudo());
-                                                GroupeHelper.createGroupe("1533627384", "Thanos Corp").addOnFailureListener(new OnFailureListener() {
+                                                GroupeHelper.createGroupe("1533627384", "Thanos Corp", userFound).addOnFailureListener(new OnFailureListener() {
                                                     @Override
                                                     public void onFailure(@NonNull Exception e) {
                                                         Log.d(TAG, "Create Groupe Firestore fail");
