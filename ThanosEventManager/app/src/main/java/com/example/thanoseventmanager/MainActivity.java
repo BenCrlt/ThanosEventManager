@@ -8,10 +8,15 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
+import com.example.thanoseventmanager.api.GroupeHelper;
 import com.example.thanoseventmanager.api.UserHelper;
+import com.example.thanoseventmanager.modeles.Groupe;
+import com.example.thanoseventmanager.modeles.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.FirebaseTooManyRequestsException;
@@ -22,6 +27,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.concurrent.TimeUnit;
 
@@ -85,6 +91,8 @@ public class MainActivity extends AppCompatActivity {
         Log.i(TAG, "click on Se Connecter" + getLocalClassName()) ;
 
         /* Gestion appui sur le bouton*/
+
+
         Intent intent_Login = new Intent(this, MainAfterLogin.class) ;
         startActivity(intent_Login);
 
@@ -150,10 +158,24 @@ public class MainActivity extends AppCompatActivity {
                             FirebaseUser user = task.getResult().getUser();
 
                             Log.d(TAG, "ID User = " + user.getUid());
-                            UserHelper.createUser(user.getUid(), user.getPhoneNumber(), "Benoit").addOnFailureListener(new OnFailureListener() {
+                            UserHelper.createUser(user.getUid(), user.getPhoneNumber(), "Benoit").addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.d(TAG, "Fail to add on database");
+                                public void onSuccess(Void aVoid) {
+                                    if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                                        UserHelper.getMembreByID(FirebaseAuth.getInstance().getCurrentUser().getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                                User userFound = documentSnapshot.toObject(User.class);
+                                                ((TextView)findViewById(R.id.TestTextView)).setText(userFound.getPseudo());
+                                                GroupeHelper.createGroupe("1533627384", "Thanos Corp").addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+                                                        Log.d(TAG, "Create Groupe Firestore fail");
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    }
                                 }
                             });
                         } else {
@@ -173,7 +195,6 @@ public class MainActivity extends AppCompatActivity {
         //GET EDIT TEXT
         /*String SMSCode = ((EditText)findViewById(R.id.editSMSCode)).getText().toString();
         PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationID, SMSCode);
-        signInWithPhoneAuthCredential(credential);
-         */
+        signInWithPhoneAuthCredential(credential);*/
     }
 }
