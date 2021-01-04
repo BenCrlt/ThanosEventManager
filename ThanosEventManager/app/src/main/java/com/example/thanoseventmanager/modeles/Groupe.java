@@ -14,9 +14,9 @@ public class Groupe {
         this.listeUsers = new ArrayList<User>();
     }
 
-    public Groupe(String nom){
+    public Groupe(String id, String nom){
+        this.id = id;
         this.nom = nom;
-        this.id = new String();
         this.listeUsers = new ArrayList<User>();
     }
 

@@ -55,9 +55,6 @@ public class FragmentMapView extends Fragment implements
     @Nullable
     private FirebaseUser getCurrentUser(){ return FirebaseAuth.getInstance().getCurrentUser(); }
 
-    private Boolean isCurrentUserLogged(){ return (this.getCurrentUser() != null); }
-
-
     public FragmentMapView() {
         // Required empty public constructor
     }
@@ -159,7 +156,6 @@ public class FragmentMapView extends Fragment implements
 
         //Récupération de la carte Google Maps
         gm = googleMap;
-
         //Paramétrages de la carte
         gm.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         gm.getUiSettings().setZoomControlsEnabled(true);
@@ -167,7 +163,6 @@ public class FragmentMapView extends Fragment implements
 
         //Ajout de marqueurs sur la carte
         this.setMarkers();
-
         //Activation de la localisation avec permission requise
         this.enableMyLocation();
     }
@@ -236,6 +231,7 @@ public class FragmentMapView extends Fragment implements
         }
     }
 
+    //Donne la localisation de manière ponctuelle
     public void getMyLocation() {
 
         //Check l'état de la permission d'accès à la localisation
@@ -312,6 +308,7 @@ public class FragmentMapView extends Fragment implements
         };
     }
 
+    //Donne la localisation de manière régulière
     private void startLocationUpdates() {
         //Check l'état de la permission d'accès à la localisation
         String permission = Manifest.permission.ACCESS_FINE_LOCATION;
