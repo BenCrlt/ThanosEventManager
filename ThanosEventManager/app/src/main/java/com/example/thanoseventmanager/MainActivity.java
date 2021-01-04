@@ -1,6 +1,7 @@
 package com.example.thanoseventmanager;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -42,12 +43,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mAuth = FirebaseAuth.getInstance();
-        if (mAuth.getCurrentUser() != null) {
-            Log.d(TAG, mAuth.getCurrentUser().getPhoneNumber());
-        } else {
-            Log.d(TAG, "User Not Connected");
-        }
     }
 
     public void onClickMap(View v) {
@@ -96,13 +91,40 @@ public class MainActivity extends AppCompatActivity {
     public void onClick_Login(View v)
     {
         Log.i(TAG, "click on Se Connecter" + getLocalClassName()) ;
-        String phoneNumber = "+3378798735" ;
+        String phoneNumber = "778798735" ;
 
-        /* Gestion appui sur le bouton*/
+        // Vérification phoneNumber
+        if (phoneNumber.length() != 9)
+        {
+            AlertDialog.Builder ErrorMsg = new AlertDialog.Builder(this);
+            ErrorMsg.setMessage("Erreur dans la saisie du numéro de téléphone")
+                    .setTitle("Erreur");
+            ErrorMsg.create();
+            ErrorMsg.show();
+        }
+        else {
+            /* Gestion appui sur le bouton*/
+            if (phoneNumber == "778798735")
+            {
+                Intent intent_Login = new Intent(this, MapViewActivity.class) ;
+                startActivity(intent_Login);
+            }
+            else {
+                // Modifier texte du bouton "button_seConnecter" en valider
+                ((Button)findViewById(R.id.button_seConnecter)).setText("VALIDER") ;
+                // Clear le champ de texte du phone number
+                ((TextView)findViewById(R.id.editTextPhone)).setText("") ;
+                ((TextView)findViewById(R.id.textView_33)).setText("") ;
 
-        if (mAuth.getCurrentUser() != null) {
-            /*Intent intent_Login = new Intent(this, MainAfterLogin.class) ;
-            startActivity(intent_Login);*/
+                // Faire l'intent
+                Intent intent_Login = new Intent(this, MapViewActivity.class) ;
+                startActivity(intent_Login);
+            }
+        }
+
+
+
+        /*if (mAuth.getCurrentUser() != null) {
             UserHelper.getMembreByID(mAuth.getCurrentUser().getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -126,24 +148,7 @@ public class MainActivity extends AppCompatActivity {
 
         } else {
             ManagePhoneAuthentification();
-        }
-
-        if (phoneNumber == "+33778798735")
-        {
-            Intent intent_Login = new Intent(this, MapViewActivity.class) ;
-            startActivity(intent_Login);
-        }
-        else {
-            // Modifier texte du bouton "button_seConnecter" en valider
-            ((Button)findViewById(R.id.button_seConnecter)).setText("VALIDER") ;
-            // Clear le champ de texte du phone number
-            ((TextView)findViewById(R.id.editTextPhone)).setText("") ;
-            // Faire l'intent
-            Intent intent_Login = new Intent(this, MapViewActivity.class) ;
-            startActivity(intent_Login);
-        }
-
-
+        }*/
 
         // C'est pour l'authentification laisse ça en commentaire pour l'instant
         //ManagePhoneAuthentification();
@@ -151,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void ManagePhoneAuthentification() {
         mAuth = FirebaseAuth.getInstance();
-        String phoneNumber = "+33780348387";
+        String phoneNumber = "+33778798735";
         mAuth.setLanguageCode("fr");
         Log.d(TAG, "Manage Authentification");
 
@@ -207,7 +212,26 @@ public class MainActivity extends AppCompatActivity {
                             FirebaseUser user = task.getResult().getUser();
 
                             Log.d(TAG, "ID User = " + user.getUid());
-                            UserHelper.createUser(user.getUid(), user.getPhoneNumber(), "Benoit");
+                            UserHelper.createUser(user.getUid(), user.getPhoneNumber(), "Benoit").addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                                        UserHelper.getMembreByID(FirebaseAuth.getInstance().getCurrentUser().getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                                User userFound = documentSnapshot.toObject(User.class);
+                                                ((TextView)findViewById(R.id.TestTextView)).setText(userFound.getPseudo());
+                                                GroupeHelper.createGroupe("1533627384", "Thanos Corp").addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+                                                        Log.d(TAG, "Create Groupe Firestore fail");
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    }
+                                }
+                            });
                         } else {
                             Log.w(TAG, "SignInWithCredentials : FAILURE");
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
@@ -223,8 +247,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void OnClickValidCode(View v) {
         //GET EDIT TEXT
-        String SMSCode = ((EditText)findViewById(R.id.editSMSCode)).getText().toString();
+        /*String SMSCode = ((EditText)findViewById(R.id.editSMSCode)).getText().toString();
         PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationID, SMSCode);
-        signInWithPhoneAuthCredential(credential);
+        signInWithPhoneAuthCredential(credential);*/
     }
 }
