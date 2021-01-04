@@ -5,6 +5,9 @@ public class User {
     String id;
     String numero;
     String pseudo;
+    double latitude;
+    double longitude;
+
     
     public User(){
         this.id = new String();
@@ -36,5 +39,21 @@ public class User {
 
     public void setNumero(String numero) {
         this.numero = numero;
+    }
+
+    public double getLat() {
+        return latitude;
+    }
+
+    public void setLat(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLng() {
+        return longitude;
+    }
+
+    public void setLng(double longitude) {
+        this.longitude = longitude;
     }
 }

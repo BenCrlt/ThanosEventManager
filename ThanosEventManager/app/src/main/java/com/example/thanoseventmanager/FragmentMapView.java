@@ -1,6 +1,7 @@
 package com.example.thanoseventmanager;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -17,10 +18,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.thanoseventmanager.geolocalisation.MyLocationCallback;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -28,9 +29,12 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationClickListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class FragmentMapView extends Fragment implements
         OnRequestPermissionsResultCallback,
@@ -47,6 +51,9 @@ public class FragmentMapView extends Fragment implements
     private LocationRequest locationRequest;
     private LocationCallback locationCallback;
 
+    //Récupération de l'utilisateur avec Firebase
+    @Nullable
+    private FirebaseUser getCurrentUser(){ return FirebaseAuth.getInstance().getCurrentUser(); }
 
     public FragmentMapView() {
         // Required empty public constructor
@@ -61,7 +68,7 @@ public class FragmentMapView extends Fragment implements
         //Création d'une requête pour les demandes de localisation
         locationRequest = this.setLocationRequest();
         //Utilisation de la classe Location Callback pour récupérer les localisations
-        locationCallback = new MyLocationCallback();
+        locationCallback = this.setLocationCallback();
     }
 
     @Override
@@ -113,6 +120,26 @@ public class FragmentMapView extends Fragment implements
     }
 
     @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+    }
+
+    @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         mapView.onSaveInstanceState(outState);
@@ -129,19 +156,13 @@ public class FragmentMapView extends Fragment implements
 
         //Récupération de la carte Google Maps
         gm = googleMap;
-
         //Paramétrages de la carte
         gm.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         gm.getUiSettings().setZoomControlsEnabled(true);
         gm.getUiSettings().setMapToolbarEnabled(false);
 
         //Ajout de marqueurs sur la carte
-        gm.addMarker(new MarkerOptions().position(new LatLng(47.528868, -0.568809)).title("Cantenay"));
-        gm.addMarker(new MarkerOptions().position(new LatLng(47.483425, -0.570988)).title("Chez Toinou le rayon X"));
-        gm.addMarker(new MarkerOptions().position(new LatLng(49.418080, -1.627571)).title("BestPlace"));
-        gm.addMarker(new MarkerOptions().position(new LatLng(46.749495, -1.739786)).title("SchmoutLand"));
-        gm.addMarker(new MarkerOptions().position(new LatLng(47.085868, 2.395971)).title("Vilkipu"));
-
+        this.setMarkers();
         //Activation de la localisation avec permission requise
         this.enableMyLocation();
     }
@@ -175,12 +196,12 @@ public class FragmentMapView extends Fragment implements
                 //Active la localisation
                 this.enableMyLocation();
                 //Affiche un message de succès
-                Toast.makeText(this.requireActivity(), "Localisation Permission Granted", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this.requireActivity(), "Location Permission Granted", Toast.LENGTH_SHORT).show();
             }
             //PERMISSION_DENIED : Autorisation rejetée
             else {
                 //Affiche un message d'échec
-                Toast.makeText(this.requireActivity(), "Localisation Permission Denied", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this.requireActivity(), "Location Permission Denied", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -210,6 +231,7 @@ public class FragmentMapView extends Fragment implements
         }
     }
 
+    //Donne la localisation de manière ponctuelle
     public void getMyLocation() {
 
         //Check l'état de la permission d'accès à la localisation
@@ -251,6 +273,20 @@ public class FragmentMapView extends Fragment implements
         gm.moveCamera(CameraUpdateFactory.newLatLngZoom(myCurrentCoords, 15));
     }
 
+    private void setMarkers() {
+        //Ajoute les marqueurs sur la carte
+        gm.addMarker(new MarkerOptions()
+                .position(new LatLng(47.528868, -0.568809))
+                .title("Cantenay")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+        );
+        gm.addMarker(new MarkerOptions().position(new LatLng(47.483425, -0.570988)).title("Chez Toinou le rayon X"));
+        gm.addMarker(new MarkerOptions().position(new LatLng(49.418080, -1.627571)).title("BestPlace"));
+        gm.addMarker(new MarkerOptions().position(new LatLng(46.749495, -1.739786)).title("SchmoutLand"));
+        gm.addMarker(new MarkerOptions().position(new LatLng(47.085868, 2.395971)).title("Vilkipu"));
+        gm.addMarker(new MarkerOptions().position(new LatLng(48.322190, 0.150082)).title("Troudfiak"));
+    }
+
     public LocationRequest setLocationRequest() {
         //Création d'une nouvelle requête
         LocationRequest locationRequest = LocationRequest.create();
@@ -264,6 +300,15 @@ public class FragmentMapView extends Fragment implements
         return locationRequest;
     }
 
+    private LocationCallback setLocationCallback() {
+        return new LocationCallback(){
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+            }
+        };
+    }
+
+    //Donne la localisation de manière régulière
     private void startLocationUpdates() {
         //Check l'état de la permission d'accès à la localisation
         String permission = Manifest.permission.ACCESS_FINE_LOCATION;
@@ -271,11 +316,13 @@ public class FragmentMapView extends Fragment implements
 
         //PERMISSION_GRANTED : Autorisation accordée
         if (permissionState == PackageManager.PERMISSION_GRANTED) {
+            //Démarre les MAJ de la localisation
             fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
         }
     }
 
     private void stopLocationUpdates() {
+        //Arrete les MAJ de la localisation
         fusedLocationClient.removeLocationUpdates(locationCallback);
     }
 }
