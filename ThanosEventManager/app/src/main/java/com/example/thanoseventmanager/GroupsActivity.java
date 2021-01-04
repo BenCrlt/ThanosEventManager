@@ -28,10 +28,14 @@ public class GroupsActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.itemGroup) {
-            startActivity(new Intent(this, GroupsActivity.class));
+            Intent intent = new Intent(this, GroupsActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            startActivity(intent);
             return(true);
         } else if(item.getItemId() == R.id.itemPlus) {
-            startActivity(new Intent(this, CreateEventActivity.class));
+            Intent intent = new Intent(this, CreateEventActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            startActivity(intent);
             return(true);
         }
         return(super.onOptionsItemSelected(item));
