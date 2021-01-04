@@ -41,6 +41,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mAuth = FirebaseAuth.getInstance();
+        if (mAuth.getCurrentUser() != null) {
+            Log.d(TAG, mAuth.getCurrentUser().getPhoneNumber());
+        } else {
+            Log.d(TAG, "User Not Connected");
+        }
     }
 
     public void onClickMap(View v) {
@@ -92,17 +98,38 @@ public class MainActivity extends AppCompatActivity {
 
         /* Gestion appui sur le bouton*/
 
+        if (mAuth.getCurrentUser() != null) {
+            /*Intent intent_Login = new Intent(this, MainAfterLogin.class) ;
+            startActivity(intent_Login);*/
+            UserHelper.getMembreByID(mAuth.getCurrentUser().getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    User userFound = documentSnapshot.toObject(User.class);
+                    ((TextView)findViewById(R.id.TestTextView)).setText(userFound.getPseudo());
+                    GroupeHelper.createGroupe("1533627384", "Thanos Corp").addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Groupe newGroupe = documentSnapshot.toObject(Groupe.class);
+                            Log.d(TAG, "" + newGroupe.getNom());
+                            GroupeHelper.addUser(newGroupe, userFound).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.d(TAG, "Add user : FAILURE");
+                                }
+                            });
+                        }
+                    });
+                }
+            });
 
-        Intent intent_Login = new Intent(this, MainAfterLogin.class) ;
-        startActivity(intent_Login);
-
-           // C'est pour l'authentification laisse ça en commentaire pour l'instant
-        //ManagePhoneAuthentification();
+        } else {
+            ManagePhoneAuthentification();
+        }
     }
 
     private void ManagePhoneAuthentification() {
         mAuth = FirebaseAuth.getInstance();
-        String phoneNumber = "+33778798735";
+        String phoneNumber = "+33780348387";
         mAuth.setLanguageCode("fr");
         Log.d(TAG, "Manage Authentification");
 
@@ -158,26 +185,7 @@ public class MainActivity extends AppCompatActivity {
                             FirebaseUser user = task.getResult().getUser();
 
                             Log.d(TAG, "ID User = " + user.getUid());
-                            UserHelper.createUser(user.getUid(), user.getPhoneNumber(), "Benoit").addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-                                        UserHelper.getMembreByID(FirebaseAuth.getInstance().getCurrentUser().getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                                            @Override
-                                            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                                User userFound = documentSnapshot.toObject(User.class);
-                                                ((TextView)findViewById(R.id.TestTextView)).setText(userFound.getPseudo());
-                                                GroupeHelper.createGroupe("1533627384", "Thanos Corp").addOnFailureListener(new OnFailureListener() {
-                                                    @Override
-                                                    public void onFailure(@NonNull Exception e) {
-                                                        Log.d(TAG, "Create Groupe Firestore fail");
-                                                    }
-                                                });
-                                            }
-                                        });
-                                    }
-                                }
-                            });
+                            UserHelper.createUser(user.getUid(), user.getPhoneNumber(), "Benoit");
                         } else {
                             Log.w(TAG, "SignInWithCredentials : FAILURE");
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
@@ -193,8 +201,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void OnClickValidCode(View v) {
         //GET EDIT TEXT
-        /*String SMSCode = ((EditText)findViewById(R.id.editSMSCode)).getText().toString();
+        String SMSCode = ((EditText)findViewById(R.id.editSMSCode)).getText().toString();
         PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationID, SMSCode);
-        signInWithPhoneAuthCredential(credential);*/
+        signInWithPhoneAuthCredential(credential);
     }
 }

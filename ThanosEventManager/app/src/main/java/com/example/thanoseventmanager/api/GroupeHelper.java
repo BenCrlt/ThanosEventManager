@@ -24,8 +24,9 @@ public class GroupeHelper {
     }
 
     public static Task<Void> addUser(Groupe groupeSelected, User userToAdd) {
-        groupeSelected.getListeUsers().add(userToAdd);
-        return GroupeHelper.getGroupesCollection().document(groupeSelected.getId()).update("listeUsers", groupeSelected.getListeUsers());
+        //groupeSelected.addUser(userToAdd);
+        Log.d(TAG, "Size liste : " + groupeSelected.getNom());
+        return GroupeHelper.getGroupesCollection().document(groupeSelected.getId()).set(groupeSelected);
     }
 
     /*public static Task<Void> deleteUser(Groupe groupeSelected, User userToDelete) {

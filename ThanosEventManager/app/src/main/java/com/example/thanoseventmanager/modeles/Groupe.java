@@ -39,4 +39,6 @@ public class Groupe {
     public void setListeUsers(ArrayList<User> listeUsers) {
         this.listeUsers = listeUsers;
     }
+
+    public void addUser(User newUser) { this.listeUsers.add(newUser); };
 }
