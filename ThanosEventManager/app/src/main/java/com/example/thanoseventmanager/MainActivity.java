@@ -37,6 +37,9 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "CONNECTION";
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     String mVerificationID;
+    User userToDelete;
+
+    private boolean test = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,18 +110,12 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     User userFound = documentSnapshot.toObject(User.class);
+                    userToDelete = userFound;
                     ((TextView)findViewById(R.id.TestTextView)).setText(userFound.getPseudo());
-                    GroupeHelper.createGroupe("1533627384", "Thanos Corp").addOnSuccessListener(new OnSuccessListener<Void>() {
+                    GroupeHelper.createGroupe("1533627384", "Thanos Corp", userFound).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            Groupe newGroupe = documentSnapshot.toObject(Groupe.class);
-                            Log.d(TAG, "" + newGroupe.getNom());
-                            GroupeHelper.addUser(newGroupe, userFound).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.d(TAG, "Add user : FAILURE");
-                                }
-                            });
+                            Log.d(TAG, "Groupe Created SUCESSSS");
                         }
                     });
                 }
@@ -128,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
             ManagePhoneAuthentification();
         }
 
-        if (phoneNumber == "+33778798735")
+        /*if (phoneNumber == "+33778798735")
         {
             Intent intent_Login = new Intent(this, MapViewActivity.class) ;
             startActivity(intent_Login);
@@ -141,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
             // Faire l'intent
             Intent intent_Login = new Intent(this, MapViewActivity.class) ;
             startActivity(intent_Login);
-        }
+        }*/
 
 
 
@@ -222,7 +219,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void OnClickValidCode(View v) {
-        //GET EDIT TEXT
         String SMSCode = ((EditText)findViewById(R.id.editSMSCode)).getText().toString();
         PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationID, SMSCode);
         signInWithPhoneAuthCredential(credential);
