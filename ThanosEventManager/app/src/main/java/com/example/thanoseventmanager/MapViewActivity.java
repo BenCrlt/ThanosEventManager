@@ -1,14 +1,14 @@
 package com.example.thanoseventmanager;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 public class MapViewActivity extends AppCompatActivity {
 
@@ -76,5 +76,10 @@ public class MapViewActivity extends AppCompatActivity {
     public void onClickFragmentUserList(View v) {
         navController.popBackStack(navController.getGraph().getStartDestination(), false);
         navController.navigate(R.id.fragmentUserList);
+    }
+
+    public void onClickFragmentEventList(View v) {
+        navController.popBackStack(navController.getGraph().getStartDestination(), false);
+        navController.navigate(R.id.fragmentEventList);
     }
 }
