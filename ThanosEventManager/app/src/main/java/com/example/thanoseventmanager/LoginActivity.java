@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,9 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.thanoseventmanager.api.GroupeHelper;
 import com.example.thanoseventmanager.api.UserHelper;
-import com.example.thanoseventmanager.modeles.Groupe;
 import com.example.thanoseventmanager.modeles.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -33,19 +32,21 @@ import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.concurrent.TimeUnit;
 
-public class MainActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "CONNECTION";
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     String mVerificationID;
-    User userToDelete;
 
-    private boolean test = true;
+    boolean isCodeSend = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
+        if (mAuth.getCurrentUser() != null) {
+            goToMapView();
+        }
     }
 
     public void onClickMap(View v) {
@@ -90,11 +91,24 @@ public class MainActivity extends AppCompatActivity {
         Log.i(TAG, "on restart" + getLocalClassName()) ;
     }
 
+    private void goToMapView() {
+        Intent intent_Login = new Intent(this, MapViewActivity.class) ;
+        startActivity(intent_Login);
+    }
+
     // Bouton Se connecter
     public void onClick_Login(View v)
     {
+        if (!isCodeSend) {
+            SeConnecter();
+        } else {
+            ValidationCode();
+        }
+    }
+
+    private void SeConnecter() {
         Log.i(TAG, "click on Se Connecter" + getLocalClassName()) ;
-        String phoneNumber = "617205306" ;
+        String phoneNumber = ((EditText)findViewById(R.id.editText_LoginActivity)).getText().toString();
 
         // Vérification phoneNumber
         if (phoneNumber.length() != 9)
@@ -106,68 +120,27 @@ public class MainActivity extends AppCompatActivity {
             ErrorMsg.show();
         }
         else {
+            phoneNumber = "+33" + phoneNumber;
             /* Gestion appui sur le bouton*/
-            if (phoneNumber == "617205306")
-            {
-                Intent intent_Login = new Intent(this, MapViewActivity.class) ;
-                startActivity(intent_Login);
-            }
-            else {
-                // Modifier texte du bouton "button_seConnecter" en valider
-                ((Button)findViewById(R.id.button_seConnecter)).setText("VALIDER") ;
-                // Clear le champ de texte du phone number
-                ((TextView)findViewById(R.id.editTextPhone)).setText("") ;
-                ((TextView)findViewById(R.id.textView_33)).setText("") ;
-                // Faire l'intent
-                Intent intent_Login = new Intent(this, MapViewActivity.class) ;
-                startActivity(intent_Login);
-            }
-        }
-
-
-
-        /*if (mAuth.getCurrentUser() != null) {
-            UserHelper.getMembreByID(mAuth.getCurrentUser().getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                @Override
-                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    User userFound = documentSnapshot.toObject(User.class);
-                    userToDelete = userFound;
-                    ((TextView)findViewById(R.id.TestTextView)).setText(userFound.getPseudo());
-                    GroupeHelper.createGroupe("1533627384", "Thanos Corp", userFound).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Log.d(TAG, "Groupe Created SUCESSSS");
-                        }
-                    });
-                }
-            });
-
-        } else {
-            ManagePhoneAuthentification();
-        }
-
-        /*if (phoneNumber == "+33778798735")
-        {
-            Intent intent_Login = new Intent(this, MapViewActivity.class) ;
-            startActivity(intent_Login);
-        }
-        else {
             // Modifier texte du bouton "button_seConnecter" en valider
-            ((Button)findViewById(R.id.button_seConnecter)).setText("VALIDER") ;
+            ((Button)findViewById(R.id.btn_LoginActivity)).setText("VALIDER") ;
             // Clear le champ de texte du phone number
-            ((TextView)findViewById(R.id.editTextPhone)).setText("") ;
-            // Faire l'intent
-            Intent intent_Login = new Intent(this, MapViewActivity.class) ;
-            startActivity(intent_Login);
-        }*/
-
-        // C'est pour l'authentification laisse ça en commentaire pour l'instant
-        //ManagePhoneAuthentification();
+            ((TextView)findViewById(R.id.editText_LoginActivity)).setText("") ;
+            ((TextView)findViewById(R.id.phoneIndicator_LoginActivity)).setText("") ;
+            ((TextView)findViewById(R.id.Title_LoginActivity)).setText("Entrez le code envoyé par SMS");
+            ManagePhoneAuthentification(phoneNumber);
+        }
     }
 
-    private void ManagePhoneAuthentification() {
+    private void ValidationCode() {
+        Log.i(TAG, "click on Validation Code " + getLocalClassName()) ;
+        String SMSCode = ((EditText)findViewById(R.id.editText_LoginActivity)).getText().toString();
+        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationID, SMSCode);
+        signInWithPhoneAuthCredential(credential);
+    }
+
+    private void ManagePhoneAuthentification(String phoneNumber) {
         mAuth = FirebaseAuth.getInstance();
-        String phoneNumber = "+33778798735";
         mAuth.setLanguageCode("fr");
         Log.d(TAG, "Manage Authentification");
 
@@ -181,6 +154,7 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
                                 mVerificationID = s;
+                                isCodeSend = true;
                                 Log.d(TAG, "On Code Sent" + mVerificationID);
                                 super.onCodeSent(s, forceResendingToken);
                             }
@@ -214,6 +188,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
+        Context context = this;
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -221,46 +196,34 @@ public class MainActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             Log.d(TAG, "SignInWithCredentials : SUCCESS");
                             FirebaseUser user = task.getResult().getUser();
-
                             Log.d(TAG, "ID User = " + user.getUid());
-                            UserHelper.createUser(user.getUid(), user.getPhoneNumber(), "Benoit").addOnSuccessListener(new OnSuccessListener<Void>() {
+
+                            UserHelper.getMembreByID(user.getUid()).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                 @Override
-                                public void onSuccess(Void aVoid) {
-                                    if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-                                        UserHelper.getMembreByID(FirebaseAuth.getInstance().getCurrentUser().getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                                            @Override
-                                            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                                User userFound = documentSnapshot.toObject(User.class);
-                                                ((TextView)findViewById(R.id.TestTextView)).setText(userFound.getPseudo());
-                                                GroupeHelper.createGroupe("1533627384", "Thanos Corp", userFound).addOnFailureListener(new OnFailureListener() {
-                                                    @Override
-                                                    public void onFailure(@NonNull Exception e) {
-                                                        Log.d(TAG, "Create Groupe Firestore fail");
-                                                    }
-                                                });
-                                            }
-                                        });
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if (!task.isSuccessful()) {
+                                        Log.d(TAG, "User not found CREATE USER");
+                                        UserHelper.createUser(user.getUid(), user.getPhoneNumber(), "");
+                                    } else {
+                                        Log.d(TAG, "User found NO CREATE USER");
                                     }
                                 }
                             });
+                            goToMapView();
                         } else {
                             Log.w(TAG, "SignInWithCredentials : FAILURE");
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
                                 Log.d(TAG, "Code Incorrect");
                                 // The verification code entered was invalid
+                                AlertDialog.Builder ErrorMsg = new AlertDialog.Builder(context);
+                                ErrorMsg.setMessage("Code incorrect !")
+                                        .setTitle("Erreur");
+                                ErrorMsg.create();
+                                ErrorMsg.show();
                             }
                         }
                     }
                 });
     }
 
-
-
-    public void OnClickValidCode(View v) {
-        String SMSCode = ((EditText)findViewById(R.id.editSMSCode)).getText().toString();
-        //GET EDIT TEXT
-        /*String SMSCode = ((EditText)findViewById(R.id.editSMSCode)).getText().toString();
-        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationID, SMSCode);
-        signInWithPhoneAuthCredential(credential);*/
-    }
 }

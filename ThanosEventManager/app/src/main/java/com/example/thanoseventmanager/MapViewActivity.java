@@ -13,6 +13,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class MapViewActivity extends AppCompatActivity {
 
     private static final String TAG = "Hello";
@@ -92,7 +94,12 @@ public class MapViewActivity extends AppCompatActivity {
 
     public void onClickMainActivity(View v){
         //Launch the main activity
-        Intent intent = new Intent(this, MainAfterLogin.class);
+        /*Intent intent = new Intent(this, MainAfterLogin.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);*/
+        //Pour test déconnexion
+        FirebaseAuth.getInstance().signOut();
+        Intent intent = new Intent(this, LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
     }
