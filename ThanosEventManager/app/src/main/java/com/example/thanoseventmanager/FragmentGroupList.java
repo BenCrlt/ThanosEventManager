@@ -12,31 +12,28 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.thanoseventmanager.listAdapter.EventListAdapter;
-import com.example.thanoseventmanager.modeles.Event;
+import com.example.thanoseventmanager.listAdapter.GroupListAdapter;
 import com.example.thanoseventmanager.modeles.Groupe;
-import com.example.thanoseventmanager.modeles.Lieu;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-public class FragmentEventList extends Fragment {
+public class FragmentGroupList extends Fragment {
     private static final String TAG = "Hello";
 
-    public FragmentEventList() {
+    public FragmentGroupList() {
         // Required empty public constructor
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //Création d'un objet ListView correspondant à "listEvents" du layout activity_main_after_login.xml
-        View v = inflater.inflate(R.layout.fragment_event_list, container, false);
+        View v = inflater.inflate(R.layout.fragment_group_list, container, false);
         ListView listView = v.findViewById(R.id.listGroups);
 
         //Création liste d'évènements à partir de la méthode getListData
-        List<Event> listeEvent = getListData();
-        listView.setAdapter(new EventListAdapter(getContext(),listeEvent));
+        List<Groupe> listeGroupe = getListData();
+        listView.setAdapter(new GroupListAdapter(getContext(),listeGroupe));
 
         // Inflate the layout for this fragment
         return v;
@@ -47,38 +44,13 @@ public class FragmentEventList extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-    private  List<Event> getListData() {
-        List<Event> list = new ArrayList<Event>();
+    private  List<Groupe> getListData() {
+        List<Groupe> list = new ArrayList<Groupe>();
 
         Groupe team_andor = new Groupe();
         team_andor.setNom("Team Andor");
 
-        Lieu chez_toinou = new Lieu();
-        chez_toinou.setNom("Chez toinou");
-
-        Event event1 = new Event("1","Pyjama Party", new Date(), team_andor, chez_toinou);
-        Event event2 = new Event("2","Andor", new Date(), team_andor, chez_toinou);
-        Event event3 = new Event("3","Super Smash Bros", new Date(), team_andor, chez_toinou);
-        Event event4 = new Event("4","Tonton Foch", new Date(), team_andor, chez_toinou);
-        Event event5 = new Event("5","Soirée chez Arnaud", new Date(), team_andor, chez_toinou);
-        Event event6 = new Event("6","Développement Android", new Date(), team_andor, chez_toinou);
-        Event event7 = new Event("7","Brainstorming intensif", new Date(), team_andor, chez_toinou);
-        Event event8 = new Event("8","Entraînement salto arrière en slip", new Date(), team_andor, chez_toinou);
-
-        event1.setImage("fireworks");
-        event3.setImage("gamepad");
-        event4.setImage("beer");
-        event5.setImage("fireworks");
-        event6.setImage("coding");
-
-        list.add(event1);
-        list.add(event2);
-        list.add(event3);
-        list.add(event4);
-        list.add(event5);
-        list.add(event6);
-        list.add(event7);
-        list.add(event8);
+        list.add(team_andor);
 
         return list;
     }
