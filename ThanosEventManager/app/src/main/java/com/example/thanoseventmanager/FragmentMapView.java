@@ -327,6 +327,9 @@ public class FragmentMapView extends Fragment implements
         //Boucle pour chaque event de la liste
         for( Event event : listeEvents) {
 
+            //Par défaut, on considère que l'event n'est pas affiché sur la map
+            event.setFlagMarker(false);
+
             //Adresse totale de l'event
             String adresse = event.getLieu().getAdresse() + " , " + event.getLieu().getVille();
 
@@ -340,6 +343,9 @@ public class FragmentMapView extends Fragment implements
                         .title(event.getNom())
                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
                 );
+
+                //Le marqueur est placé, on met un drapeau
+                event.setFlagMarker(true);
             }
         }
     }
