@@ -1,7 +1,6 @@
 package com.example.thanoseventmanager;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -22,8 +21,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.thanoseventmanager.modeles.Event;
-import com.example.thanoseventmanager.modeles.Groupe;
-import com.example.thanoseventmanager.modeles.Lieu;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -42,8 +39,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.util.ArrayList;
-import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class FragmentMapView extends Fragment implements
@@ -172,7 +169,7 @@ public class FragmentMapView extends Fragment implements
         gm.getUiSettings().setMapToolbarEnabled(false);
 
         //Ajout de marqueurs sur la carte
-        this.setMarkers();
+        //this.setMarkers();
         this.setEventMarkers();
 
         //Activation de la localisation avec permission requise
@@ -309,11 +306,7 @@ public class FragmentMapView extends Fragment implements
 
     private void setMarkers() {
         //Ajoute les marqueurs sur la carte
-        gm.addMarker(new MarkerOptions()
-                .position(new LatLng(47.528868, -0.568809))
-                .title("Cantenay")
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-        );
+        gm.addMarker(new MarkerOptions().position(new LatLng(47.528868, -0.568809)).title("Cantenay"));
         gm.addMarker(new MarkerOptions().position(new LatLng(49.418080, -1.627571)).title("BestPlace"));
         gm.addMarker(new MarkerOptions().position(new LatLng(46.749495, -1.739786)).title("SchmoutLand"));
         gm.addMarker(new MarkerOptions().position(new LatLng(47.085868, 2.395971)).title("Vilkipu"));
@@ -334,6 +327,10 @@ public class FragmentMapView extends Fragment implements
             //Adresse totale de l'event
             String adresse = event.getLieu().getAdresse() + " , " + event.getLieu().getVille();
 
+            //Date de l'event
+            DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            String dateEvent = format.format(event.getDate());
+
             //Récupération des coordonnées de l'event
             LatLng coordsEvent = this.getLocationFromAddress(adresse);
 
@@ -342,6 +339,7 @@ public class FragmentMapView extends Fragment implements
                 gm.addMarker(new MarkerOptions()
                         .position(coordsEvent)
                         .title(event.getNom())
+                        .snippet("Date : " + dateEvent + "\nGroupe : " + event.getGroupe().getNom())
                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
                 );
 
