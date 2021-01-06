@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/navigation_groups"
+    app:startDestination="@id/fragmentGroupList">
+
+    <fragment
+        android:id="@+id/fragmentGroupList"
+        android:name="com.example.thanoseventmanager.FragmentGroupList"
+        android:label="FragmentGroupList" />
+    <fragment
+        android:id="@+id/fragmentGroupCreate"
+        android:name="com.example.thanoseventmanager.FragmentGroupCreate"
+        android:label="FragmentGroupCreate" />
+</navigation>

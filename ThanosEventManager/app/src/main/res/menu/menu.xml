@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android" >
     <item android:id="@+id/itemParam" android:title="Paramètres"></item>
     <item android:id="@+id/itemNotif" android:title="Notifications" android:checkable="true"/>
-    <item android:id="@+id/itemDeconnexion" android:title="Se déconnecter" android:checkable="true"/>
+    <item android:id="@+id/itemDeconnexion" android:title="Se déconnecter"></item>
 
     <item  android:id="@+id/itemPlus"
         android:title="Item Plus"

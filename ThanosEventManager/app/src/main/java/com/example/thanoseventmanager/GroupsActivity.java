@@ -9,12 +9,18 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 public class GroupsActivity extends AppCompatActivity {
+
+    NavController navController;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_groups);
+        navController = Navigation.findNavController(this, R.id.fragment_nav_host_GroupsActivity);
     }
 
     @Override
@@ -42,9 +48,12 @@ public class GroupsActivity extends AppCompatActivity {
         return(super.onOptionsItemSelected(item));
     }
 
-    // Méthode pour le bouton "Nouveau Groupe"
-    public void onClick_new_grp(View v)
-    {
-        // TODO
+    public void onClickMyGroups(View v) {
+        navController.popBackStack(navController.getGraph().getStartDestination(), false);
+    }
+
+    public void onClickGroupCreate(View v) {
+        navController.popBackStack(navController.getGraph().getStartDestination(), false);
+        navController.navigate(R.id.fragmentGroupCreate);
     }
 }
