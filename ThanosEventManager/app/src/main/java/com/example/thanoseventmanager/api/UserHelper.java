@@ -27,11 +27,11 @@ public class UserHelper {
 
     // --- GET ---
 
-    public static Task<DocumentSnapshot> getMembreByID(String id) {
+    public static Task<DocumentSnapshot> getUserByID(String id) {
         return UserHelper.getMembersCollection().document(id).get();
     }
 
-    public static Task<DocumentSnapshot> getMembreByPhone(String phone) {
+    public static Task<DocumentSnapshot> getUserByPhone(String phone) {
         return UserHelper.getMembersCollection().document(phone).get();
     }
 

@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.thanoseventmanager.api.UserHelper;
 import com.example.thanoseventmanager.modeles.User;
@@ -121,13 +122,6 @@ public class LoginActivity extends AppCompatActivity {
         }
         else {
             phoneNumber = "+33" + phoneNumber;
-            /* Gestion appui sur le bouton*/
-            // Modifier texte du bouton "button_seConnecter" en valider
-            ((Button)findViewById(R.id.btn_LoginActivity)).setText("VALIDER") ;
-            // Clear le champ de texte du phone number
-            ((TextView)findViewById(R.id.editText_LoginActivity)).setText("") ;
-            ((TextView)findViewById(R.id.phoneIndicator_LoginActivity)).setText("") ;
-            ((TextView)findViewById(R.id.Title_LoginActivity)).setText("Entrez le code envoyé par SMS");
             ManagePhoneAuthentification(phoneNumber);
         }
     }
@@ -155,7 +149,9 @@ public class LoginActivity extends AppCompatActivity {
                             public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
                                 mVerificationID = s;
                                 isCodeSend = true;
+                                updateUI();
                                 Log.d(TAG, "On Code Sent" + mVerificationID);
+                                Toast.makeText(getApplicationContext(), "Code envoyé !", Toast.LENGTH_LONG).show();
                                 super.onCodeSent(s, forceResendingToken);
                             }
 
@@ -198,15 +194,18 @@ public class LoginActivity extends AppCompatActivity {
                             FirebaseUser user = task.getResult().getUser();
                             Log.d(TAG, "ID User = " + user.getUid());
 
-                            UserHelper.getMembreByID(user.getUid()).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            UserHelper.getUserByID(user.getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                                 @Override
-                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                    if (!task.isSuccessful()) {
-                                        Log.d(TAG, "User not found CREATE USER");
+                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                    User userFound = documentSnapshot.toObject(User.class);
+                                    if (userFound == null) {
+                                        Log.d(TAG, "User not found ");
                                         UserHelper.createUser(user.getUid(), user.getPhoneNumber(), "");
                                     } else {
-                                        Log.d(TAG, "User found NO CREATE USER");
+                                        Log.d(TAG, "User found ");
                                     }
+                                    isCodeSend = false;
+                                    updateUI();
                                 }
                             });
                             goToMapView();
@@ -226,4 +225,21 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
+    private void updateUI() {
+        if (!isCodeSend) {
+            // Modifier texte du bouton "button_seConnecter" en valider
+            ((Button)findViewById(R.id.btn_LoginActivity)).setText("SE CONNECTER") ;
+            // Clear le champ de texte du phone number
+            ((TextView)findViewById(R.id.editText_LoginActivity)).setText("") ;
+            ((TextView)findViewById(R.id.phoneIndicator_LoginActivity)).setText("+33") ;
+            ((TextView)findViewById(R.id.Title_LoginActivity)).setText("Entrez votre numéro de téléphone");
+        } else {
+            // Modifier texte du bouton "button_seConnecter" en valider
+            ((Button)findViewById(R.id.btn_LoginActivity)).setText("VALIDER") ;
+            // Clear le champ de texte du phone number
+            ((TextView)findViewById(R.id.editText_LoginActivity)).setText("") ;
+            ((TextView)findViewById(R.id.phoneIndicator_LoginActivity)).setText("") ;
+            ((TextView)findViewById(R.id.Title_LoginActivity)).setText("Entrez le code reçu par SMS");
+        }
+    }
 }
