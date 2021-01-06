@@ -3,14 +3,19 @@ package com.example.thanoseventmanager;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Looper;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -33,6 +38,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -41,6 +47,7 @@ import com.google.firebase.auth.FirebaseUser;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class FragmentMapView extends Fragment implements
         OnRequestPermissionsResultCallback,
@@ -326,8 +333,8 @@ public class FragmentMapView extends Fragment implements
             //Adresse totale de l'event
             String adresse = event.getLieu().getAdresse() + " , " + event.getLieu().getVille();
 
-            //Date de l'event
-            DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            //Date de l'event (
+            DateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.FRANCE);
             String dateEvent = format.format(event.getDate());
 
             //Récupération des coordonnées de l'event
@@ -341,6 +348,42 @@ public class FragmentMapView extends Fragment implements
                         .snippet("Date : " + dateEvent + "\nGroupe : " + event.getGroupe().getNom())
                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
                 );
+
+                gm.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+
+                    @Override
+                    public View getInfoWindow(Marker marker) {
+                        //Si renvoie null, l'API appelle getInfoContents
+                        return null;
+                    }
+
+                    @Override
+                    public View getInfoContents(Marker marker) {
+
+                        Context context = getActivity();
+
+                        LinearLayout info = new LinearLayout(context);
+                        info.setOrientation(LinearLayout.VERTICAL);
+                        info.setPadding(10,10,10,10);
+
+                        TextView title = new TextView(context);
+                        title.setTextColor(Color.BLUE);
+                        title.setGravity(Gravity.CENTER);
+                        title.setTypeface(null, Typeface.BOLD);
+                        title.setPadding(5,5,5,5);
+                        title.setText(marker.getTitle());
+
+                        TextView snippet = new TextView(context);
+                        snippet.setTextColor(Color.GRAY);
+                        snippet.setGravity(Gravity.LEFT);
+                        snippet.setText(marker.getSnippet());
+
+                        info.addView(title);
+                        info.addView(snippet);
+
+                        return info;
+                    }
+                });
 
                 //Le marqueur est placé, on met un drapeau
                 event.setFlagMarker(true);
