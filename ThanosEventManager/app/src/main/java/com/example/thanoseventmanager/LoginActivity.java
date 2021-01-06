@@ -98,13 +98,18 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     // Bouton Se connecter
-    public void onClick_Login(View v)
-    {
+    public void onClick_Login(View v) {
+
+        //Shunt pcq Benoit a tout pété
+        goToMapView();
+
+        /*
         if (!isCodeSend) {
             SeConnecter();
         } else {
             ValidationCode();
         }
+         */
     }
 
     private void SeConnecter() {

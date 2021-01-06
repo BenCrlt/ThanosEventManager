@@ -1,6 +1,7 @@
 package com.example.thanoseventmanager;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -322,10 +323,13 @@ public class FragmentMapView extends Fragment implements
     private void setEventMarkers(){
 
         //Récupération de la liste des events
-        List<Event> listeEvents = this.getListData();
+        List<Event> listeEvents = new TestListeEvents().getListData();
 
         //Boucle pour chaque event de la liste
         for( Event event : listeEvents) {
+
+            //Par défaut, on considère que l'event n'est pas affiché sur la map
+            event.setFlagMarker(false);
 
             //Adresse totale de l'event
             String adresse = event.getLieu().getAdresse() + " , " + event.getLieu().getVille();
@@ -340,6 +344,9 @@ public class FragmentMapView extends Fragment implements
                         .title(event.getNom())
                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
                 );
+
+                //Le marqueur est placé, on met un drapeau
+                event.setFlagMarker(true);
             }
         }
     }
@@ -381,55 +388,5 @@ public class FragmentMapView extends Fragment implements
     private void stopLocationUpdates() {
         //Arrete les MAJ de la localisation
         fusedLocationClient.removeLocationUpdates(locationCallback);
-    }
-
-    private List<Event> getListData() {
-        List<Event> list = new ArrayList<>();
-
-        Groupe team_andor = new Groupe();
-        team_andor.setNom("Team Andor");
-
-        Lieu chez_toinou = new Lieu();
-        chez_toinou.setNom("Chez toinou");
-        chez_toinou.setAdresse("6 Rue des Gouronnières");
-        chez_toinou.setVille("Angers");
-        chez_toinou.setCp("49100");
-
-        Lieu chez_pierrot = new Lieu();
-        chez_pierrot.setNom("Chez pierrot");
-        chez_pierrot.setAdresse("Clos de l'Etriviere");
-        chez_pierrot.setVille("Cantenay-Epinard");
-
-        Lieu nulle_part = new Lieu();
-
-        Lieu tonton_foch = new Lieu();
-        tonton_foch.setAdresse("Tonton Foch");
-        tonton_foch.setVille("Angers");
-
-        Event event1 = new Event("1", "Pyjama Party", new Date(), team_andor, chez_toinou);
-        Event event2 = new Event("2", "Andor", new Date(), team_andor, nulle_part);
-        Event event3 = new Event("3", "Super Smash Bros", new Date(), team_andor, nulle_part);
-        Event event4 = new Event("4", "Tonton Foch", new Date(), team_andor, tonton_foch);
-        Event event5 = new Event("5", "Soirée chez Arnaud", new Date(), team_andor, nulle_part);
-        Event event6 = new Event("6", "Développement Android", new Date(), team_andor, nulle_part);
-        Event event7 = new Event("7", "Brainstorming intensif", new Date(), team_andor, chez_pierrot);
-        Event event8 = new Event("8", "Entraînement salto arrière en slip", new Date(), team_andor, nulle_part);
-
-        event1.setImage("fireworks");
-        event3.setImage("gamepad");
-        event4.setImage("beer");
-        event5.setImage("fireworks");
-        event6.setImage("coding");
-
-        list.add(event1);
-        list.add(event2);
-        list.add(event3);
-        list.add(event4);
-        list.add(event5);
-        list.add(event6);
-        list.add(event7);
-        list.add(event8);
-
-        return list;
     }
 }

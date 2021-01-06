@@ -11,4 +11,10 @@ public class EventHelper {
     public static CollectionReference getEventsCollection() {
         return FirebaseFirestore.getInstance().collection(COLLECTION_NAME);
     }
+
+    // --- UPDATE ---
+
+    public static Task<Void> updateFlagMarker(String id, double flagMarker) {
+        return EventHelper.getEventsCollection().document(id).update("flagMarker", flagMarker);
+    }
 }

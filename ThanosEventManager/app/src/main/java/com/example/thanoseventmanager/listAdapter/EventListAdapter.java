@@ -1,6 +1,7 @@
 package com.example.thanoseventmanager.listAdapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +52,7 @@ public class EventListAdapter extends BaseAdapter {
             holder.nomEventView = (TextView) convertView.findViewById(R.id.textView_nom);
             holder.dateEventView = (TextView)convertView.findViewById(R.id.textView_date);
             holder.nomGroupeView = (TextView) convertView.findViewById(R.id.textView_groupe);
+            holder.imageMarker = (ImageView) convertView.findViewById(R.id.markerView);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -62,15 +64,21 @@ public class EventListAdapter extends BaseAdapter {
         holder.dateEventView.setText(event.getDate().toString());
         holder.nomGroupeView.setText("Groupe: " + event.getGroupe().getNom());
 
-        //Pour l'image
+        //Pour le logo de l'event
         int imageId = this.getMipmapResIdByName(event.getImage());
-
         holder.imageEvent.setImageResource(imageId);
+
+        //Pour indiquer si l'event est affiché sur la map ou non
+        if (event.getFlagMarker()) {
+            holder.imageMarker.setVisibility(View.VISIBLE);
+        } else {
+            holder.imageMarker.setVisibility(View.INVISIBLE);
+        }
 
         return convertView;
     }
 
-    // Retrouver l'ID d'une image à l'aide du nom du fichie rimage dans /mipmap
+    // Retrouver l'ID d'une image à l'aide du nom du fichier image dans /mipmap
     public int getMipmapResIdByName(String resName)  {
         String pkgName = context.getPackageName();
         // Return 0 if not found.
@@ -83,5 +91,6 @@ public class EventListAdapter extends BaseAdapter {
         TextView nomEventView;
         TextView dateEventView;
         TextView nomGroupeView;
+        ImageView imageMarker;
     }
 }

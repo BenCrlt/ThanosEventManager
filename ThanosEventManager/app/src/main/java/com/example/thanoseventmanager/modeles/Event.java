@@ -1,7 +1,9 @@
 package com.example.thanoseventmanager.modeles;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Event implements Serializable {
 
@@ -11,6 +13,7 @@ public class Event implements Serializable {
     Date date;
     Groupe groupe;
     Lieu lieu;
+    boolean isShowedOnMap;
 
     public Event(){
         this.id = new String();
@@ -44,9 +47,9 @@ public class Event implements Serializable {
         this.lieu = lieu;
     }
 
-    public void setId(String id){this.id = id;}
+    public void setId(String id) { this.id = id; }
 
-    public String getId(){return this.id;}
+    public String getId() { return this.id; }
 
     public String getNom() {
         return nom;
@@ -68,6 +71,10 @@ public class Event implements Serializable {
         return groupe;
     }
 
-    public void setGroupe(Groupe groupe) {this.groupe = groupe;}
+    public void setGroupe(Groupe groupe) { this.groupe = groupe; }
+
+    public boolean getFlagMarker() { return this.isShowedOnMap; }
+
+    public void setFlagMarker(boolean flag) { this.isShowedOnMap = flag; }
 
 }

@@ -35,7 +35,7 @@ public class FragmentEventList extends Fragment {
         ListView listView = v.findViewById(R.id.listGroups);
 
         //Création liste d'évènements à partir de la méthode getListData
-        List<Event> listeEvent = getListData();
+        List<Event> listeEvent = new TestListeEvents().getListData();
         listView.setAdapter(new EventListAdapter(getContext(),listeEvent));
 
         // Inflate the layout for this fragment
@@ -45,42 +45,6 @@ public class FragmentEventList extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
-
-    private  List<Event> getListData() {
-        List<Event> list = new ArrayList<Event>();
-
-        Groupe team_andor = new Groupe();
-        team_andor.setNom("Team Andor");
-
-        Lieu chez_toinou = new Lieu();
-        chez_toinou.setNom("Chez toinou");
-
-        Event event1 = new Event("1","Pyjama Party", new Date(), team_andor, chez_toinou);
-        Event event2 = new Event("2","Andor", new Date(), team_andor, chez_toinou);
-        Event event3 = new Event("3","Super Smash Bros", new Date(), team_andor, chez_toinou);
-        Event event4 = new Event("4","Tonton Foch", new Date(), team_andor, chez_toinou);
-        Event event5 = new Event("5","Soirée chez Arnaud", new Date(), team_andor, chez_toinou);
-        Event event6 = new Event("6","Développement Android", new Date(), team_andor, chez_toinou);
-        Event event7 = new Event("7","Brainstorming intensif", new Date(), team_andor, chez_toinou);
-        Event event8 = new Event("8","Entraînement salto arrière en slip", new Date(), team_andor, chez_toinou);
-
-        event1.setImage("fireworks");
-        event3.setImage("gamepad");
-        event4.setImage("beer");
-        event5.setImage("fireworks");
-        event6.setImage("coding");
-
-        list.add(event1);
-        list.add(event2);
-        list.add(event3);
-        list.add(event4);
-        list.add(event5);
-        list.add(event6);
-        list.add(event7);
-        list.add(event8);
-
-        return list;
     }
 
     @Override
