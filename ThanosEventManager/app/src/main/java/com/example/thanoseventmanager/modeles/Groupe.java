@@ -62,4 +62,21 @@ public class Groupe {
 
     public ArrayList<Event> getListeEvents() { return listeEvents; }
 
+    public void addEvent(Event eventToAdd) { this.listeEvents.add(eventToAdd); }
+
+    public void deleteEvent(Event eventToDeleted) {
+        for (int i = 0; i < this.listeEvents.size(); i++) {
+            if (this.listeEvents.get(i).getId() == eventToDeleted.getId()) {
+                this.listeEvents.remove(i);
+            }
+        }
+    }
+
+    public void updateEvent(Event eventToUpdate) {
+        for (int i = 0; i < this.listeEvents.size(); i++) {
+            if (this.listeEvents.get(i).getId() == eventToUpdate.getId()) {
+                this.listeEvents.set(i, eventToUpdate);
+            }
+        }
+    }
 }

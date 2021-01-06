@@ -11,24 +11,24 @@ public class Event implements Serializable {
     String nom;
     String image = "event";
     Date date;
-    Groupe groupe;
     Lieu lieu;
     boolean isShowedOnMap;
+    boolean isInProgress;
 
     public Event(){
         this.id = new String();
         this.nom = new String();
         this.date = new Date();
-        this.groupe = new Groupe();
         this.lieu = new Lieu();
+        this.isInProgress = true;
     }
 
-    public Event(String id, String nom, Date date, Groupe grp, Lieu lieu){
+    public Event(String id, String nom, Date date, Lieu lieu){
         this.id = id;
         this.nom = nom;
         this.date = date;
-        this.groupe = grp;
         this.lieu = lieu;
+        this.isInProgress = true;
     }
 
     public String getImage() {
@@ -66,12 +66,6 @@ public class Event implements Serializable {
     public void setDate(Date date) {
         this.date = date;
     }
-
-    public Groupe getGroupe() {
-        return groupe;
-    }
-
-    public void setGroupe(Groupe groupe) { this.groupe = groupe; }
 
     public boolean getFlagMarker() { return this.isShowedOnMap; }
 
