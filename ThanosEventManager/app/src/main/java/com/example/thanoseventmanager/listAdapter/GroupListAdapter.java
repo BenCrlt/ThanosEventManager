@@ -59,6 +59,10 @@ public class GroupListAdapter extends BaseAdapter {
 
         holder.nomGroupeView.setText(groupe.getNom());
 
+        //Pour le logo de l'event
+        int imageId = this.getMipmapResIdByName("teamwork");
+        holder.imageGroupe.setImageResource(imageId);
+
         //Pour l'image
         //int imageId = this.getMipmapResIdByName(groupe.getImage());
 
