@@ -50,7 +50,19 @@ public class FragmentGroupList extends Fragment {
         Groupe team_andor = new Groupe();
         team_andor.setNom("Team Andor");
 
+        Groupe a3eseo = new Groupe();
+        a3eseo.setNom("A3 ESEO");
+
+        Groupe club_petanque = new Groupe();
+        club_petanque.setNom("Team Petanque 49");
+
+        Groupe hells = new Groupe();
+        hells.setNom("Hell's Angels");
+
         list.add(team_andor);
+        list.add(a3eseo);
+        list.add(club_petanque);
+        list.add(hells);
 
         return list;
     }
