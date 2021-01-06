@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:id="@+id/itemProfil" android:title="Mon profil"></item>
     <item android:id="@+id/itemParam" android:title="Paramètres"></item>
     <item android:id="@+id/itemNotif" android:title="Notifications" android:checkable="true"/>
     <item android:id="@+id/itemDeconnexion" android:title="Se déconnecter"></item>
