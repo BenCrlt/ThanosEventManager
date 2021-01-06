@@ -101,15 +101,14 @@ public class LoginActivity extends AppCompatActivity {
     public void onClick_Login(View v) {
 
         //Shunt pcq Benoit a tout pété
-        goToMapView();
+        //goToMapView();
 
-        /*
         if (!isCodeSend) {
             SeConnecter();
         } else {
             ValidationCode();
         }
-         */
+
     }
 
     private void SeConnecter() {
