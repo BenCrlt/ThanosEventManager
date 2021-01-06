@@ -15,6 +15,8 @@ public class Event implements Serializable {
     boolean isShowedOnMap;
     boolean isInProgress;
 
+    Groupe grp;
+
     public Event(){
         this.id = new String();
         this.nom = new String();
@@ -29,6 +31,15 @@ public class Event implements Serializable {
         this.date = date;
         this.lieu = lieu;
         this.isInProgress = true;
+    }
+
+    public Event(String id, String nom, Date date, Groupe grp, Lieu lieu){
+        this.id = id;
+        this.nom = nom;
+        this.date = date;
+        this.lieu = lieu;
+        this.isInProgress = true;
+        this.grp = grp;
     }
 
     public String getImage() {
@@ -70,5 +81,7 @@ public class Event implements Serializable {
     public boolean getFlagMarker() { return this.isShowedOnMap; }
 
     public void setFlagMarker(boolean flag) { this.isShowedOnMap = flag; }
+
+    public Groupe getGroupe() { return this.grp;}
 
 }

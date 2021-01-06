@@ -155,13 +155,13 @@ public class LoginActivity extends AppCompatActivity {
                                 isCodeSend = true;
                                 Log.d(TAG, "On Code Sent" + mVerificationID);
                                 Toast.makeText(getApplicationContext(), "Code envoyé !", Toast.LENGTH_LONG).show();
+                                updateUI();
                                 super.onCodeSent(s, forceResendingToken);
                             }
 
                             @Override
                             public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
                                 Log.d(TAG, "On Verification Complete");
-                                updateUI();
                             }
 
                             @Override
