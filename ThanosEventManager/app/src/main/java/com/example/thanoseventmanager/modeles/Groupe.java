@@ -9,11 +9,13 @@ public class Groupe {
     String id;
     String nom;
     ArrayList<User> listeUsers;
+    ArrayList<Event> listeEvents;
 
     public Groupe(){
         this.id = new String();
         this.nom = new String();
         this.listeUsers = new ArrayList<User>();
+        this.listeEvents = new ArrayList<Event>();
     }
 
     public Groupe(String id, String nom, User userAdmin){
@@ -21,6 +23,7 @@ public class Groupe {
         this.nom = nom;
         this.listeUsers = new ArrayList<User>();
         this.listeUsers.add(userAdmin);
+        this.listeEvents = new ArrayList<Event>();
     }
 
     public void setId(String id){this.id = id;}
@@ -34,6 +37,8 @@ public class Groupe {
     public void setNom(String nom) {
         this.nom = nom;
     }
+
+    // LISTE USERS
 
     public ArrayList<User> getListeUsers() {
         return listeUsers;
@@ -52,4 +57,9 @@ public class Groupe {
             }
         }
     };
+
+    // LISTE EVENTS
+
+    public ArrayList<Event> getListeEvents() { return listeEvents; }
+
 }
