@@ -6,23 +6,17 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-public class GroupsActivity extends AppCompatActivity {
-
-    NavController navController;
-
+public class ProfileActivity extends AppCompatActivity {
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_groups);
-        navController = Navigation.findNavController(this, R.id.fragment_nav_host_GroupsActivity);
+        setContentView(R.layout.activity_profil);
     }
 
     @Override
@@ -61,12 +55,10 @@ public class GroupsActivity extends AppCompatActivity {
         return(super.onOptionsItemSelected(item));
     }
 
-    public void onClickMyGroups(View v) {
-        navController.popBackStack(navController.getGraph().getStartDestination(), false);
+    public void onClickBoutonEnregistrer(View v) {
+        EditText editTextNewPseudo =findViewById(R.id.editTextNewPseudo);
+        String newName = editTextNewPseudo.getText().toString();
+        //TODO userHelper.setNom();
     }
 
-    public void onClickGroupCreate(View v) {
-        navController.popBackStack(navController.getGraph().getStartDestination(), false);
-        navController.navigate(R.id.fragmentGroupCreate);
-    }
 }
