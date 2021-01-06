@@ -7,9 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import com.example.thanoseventmanager.api.GroupeHelper;
@@ -17,12 +19,14 @@ import com.example.thanoseventmanager.api.UserHelper;
 import com.example.thanoseventmanager.modeles.User;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 public class FragmentGroupCreate extends Fragment implements View.OnClickListener {
     private static final String TAG = "Hello";
 
     Button boutonCreerGroupe;
+    EditText editTextNewGroupName;
 
     public FragmentGroupCreate() {
         // Required empty public constructor
@@ -36,6 +40,7 @@ public class FragmentGroupCreate extends Fragment implements View.OnClickListene
         View v = inflater.inflate(R.layout.fragment_group_create, container, false);
         boutonCreerGroupe = v.findViewById(R.id.buttonCreateNewGroup);
         boutonCreerGroupe.setOnClickListener(this);
+        editTextNewGroupName = v.findViewById(R.id.editTextNewGroupName);
 
         return v;
     }
@@ -102,18 +107,24 @@ public class FragmentGroupCreate extends Fragment implements View.OnClickListene
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.buttonCreateNewGroup){
-            UserHelper.getUserByID(FirebaseAuth.getInstance().getCurrentUser().getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                @Override
-                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    User usr = documentSnapshot.toObject(User.class);
-                    if (usr != null){
-                        GroupeHelper.createGroupe("666","Team Andor Test", usr) ;
-                        GroupeHelper.createGroupe("222","Club de pétanque", usr) ;
-                        GroupeHelper.createGroupe("333","A3 ESEO", usr) ;
-                        GroupeHelper.createGroupe("444","Poney club", usr) ;
+            String nomGroupe = editTextNewGroupName.getText().toString();
+            if (!nomGroupe.isEmpty()) {
+                UserHelper.getUserByID(FirebaseAuth.getInstance().getCurrentUser().getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        User usr = documentSnapshot.toObject(User.class);
+                        if (usr != null){
+                            GroupeHelper.createGroupe(nomGroupe, usr);
+                        }
                     }
-                }
-            });
+                });
+            } else {
+                AlertDialog.Builder ErrorMsg = new AlertDialog.Builder(v.getContext());
+                ErrorMsg.setMessage("Veuillez rentrer un nom de groupe")
+                        .setTitle("Erreur");
+                ErrorMsg.create();
+                ErrorMsg.show();
+            }
         }
 
     }

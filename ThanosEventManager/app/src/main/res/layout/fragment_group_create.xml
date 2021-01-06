@@ -22,8 +22,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="154dp"
         android:ems="10"
+        android:hint="Nom du groupe"
         android:inputType="textPersonName"
-        android:text="Nom du groupe"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

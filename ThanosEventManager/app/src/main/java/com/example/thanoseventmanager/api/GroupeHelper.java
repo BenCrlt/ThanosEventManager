@@ -6,13 +6,17 @@ import com.example.thanoseventmanager.modeles.Event;
 import com.example.thanoseventmanager.modeles.Groupe;
 import com.example.thanoseventmanager.modeles.Lieu;
 import com.example.thanoseventmanager.modeles.User;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.security.acl.Group;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GroupeHelper {
 
@@ -25,9 +29,14 @@ public class GroupeHelper {
 
     // GROUPE MANAGER
 
-    public static Task<Void> createGroupe(String id, String nom, User userAdmin) {
-        Groupe newGroupe = new Groupe(id, nom, userAdmin);
-        return GroupeHelper.getGroupesCollection().document(id).set(newGroupe);
+    public static void createGroupe(String nom, User userAdmin) {
+        Groupe newGroupe = new Groupe(nom, userAdmin);
+        GroupeHelper.getGroupesCollection().add(newGroupe).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
+                GroupeHelper.getGroupesCollection().document(documentReference.getId()).update("id", documentReference.getId());
+            }
+        });
     }
 
     public static Task<DocumentSnapshot> getGroupeById(String id) {
