@@ -18,8 +18,8 @@ public class Groupe {
         this.listeEvents = new ArrayList<Event>();
     }
 
-    public Groupe(String nom, User userAdmin){
-        this.id = "";
+    public Groupe(String id, String nom, User userAdmin){
+        this.id = id;
         this.nom = nom;
         this.listeUsers = new ArrayList<User>();
         this.listeUsers.add(userAdmin);

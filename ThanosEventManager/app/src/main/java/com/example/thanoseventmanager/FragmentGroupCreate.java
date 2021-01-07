@@ -109,15 +109,7 @@ public class FragmentGroupCreate extends Fragment implements View.OnClickListene
         if (v.getId() == R.id.buttonCreateNewGroup){
             String nomGroupe = editTextNewGroupName.getText().toString();
             if (!nomGroupe.isEmpty()) {
-                UserHelper.getUserByID(FirebaseAuth.getInstance().getCurrentUser().getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        User usr = documentSnapshot.toObject(User.class);
-                        if (usr != null){
-                            GroupeHelper.createGroupe(nomGroupe, usr);
-                        }
-                    }
-                });
+                CreateGroupe(nomGroupe);
             } else {
                 AlertDialog.Builder ErrorMsg = new AlertDialog.Builder(v.getContext());
                 ErrorMsg.setMessage("Veuillez rentrer un nom de groupe")
@@ -127,5 +119,23 @@ public class FragmentGroupCreate extends Fragment implements View.OnClickListene
             }
         }
 
+    }
+
+    public void CreateGroupe(String nomGroupe) {
+        UserHelper.getUserByID(FirebaseAuth.getInstance().getCurrentUser().getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                User usr = documentSnapshot.toObject(User.class);
+                if (usr != null){
+                    GroupeHelper.generateGroupeId().addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                            String idGenerate = documentReference.getId();
+                            GroupeHelper.createGroupe(idGenerate, nomGroupe, usr);
+                        }
+                    });
+                }
+            }
+        });
     }
 }

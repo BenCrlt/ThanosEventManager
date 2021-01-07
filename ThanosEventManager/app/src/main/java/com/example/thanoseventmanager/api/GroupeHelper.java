@@ -29,14 +29,14 @@ public class GroupeHelper {
 
     // GROUPE MANAGER
 
-    public static void createGroupe(String nom, User userAdmin) {
-        Groupe newGroupe = new Groupe(nom, userAdmin);
-        GroupeHelper.getGroupesCollection().add(newGroupe).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-            @Override
-            public void onSuccess(DocumentReference documentReference) {
-                GroupeHelper.getGroupesCollection().document(documentReference.getId()).update("id", documentReference.getId());
-            }
-        });
+    public static Task<Void> createGroupe(String id, String nom, User userAdmin) {
+        Groupe newGroupe = new Groupe(id, nom, userAdmin);
+        return GroupeHelper.getGroupesCollection().document(id).set(newGroupe);
+    }
+
+    public static Task<DocumentReference> generateGroupeId() {
+        Groupe emptyGroupe = new Groupe();
+        return GroupeHelper.getGroupesCollection().add(emptyGroupe);
     }
 
     public static Task<DocumentSnapshot> getGroupeById(String id) {
