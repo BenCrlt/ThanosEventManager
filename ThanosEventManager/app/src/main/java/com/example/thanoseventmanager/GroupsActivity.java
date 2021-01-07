@@ -1,11 +1,13 @@
 package com.example.thanoseventmanager;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -59,14 +61,5 @@ public class GroupsActivity extends AppCompatActivity {
             return(true);
         }
         return(super.onOptionsItemSelected(item));
-    }
-
-    public void onClickMyGroups(View v) {
-        navController.popBackStack(navController.getGraph().getStartDestination(), false);
-    }
-
-    public void onClickGroupCreate(View v) {
-        navController.popBackStack(navController.getGraph().getStartDestination(), false);
-        navController.navigate(R.id.fragmentGroupCreate);
     }
 }

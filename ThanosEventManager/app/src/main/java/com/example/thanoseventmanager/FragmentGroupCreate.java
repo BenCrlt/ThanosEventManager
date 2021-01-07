@@ -13,6 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.example.thanoseventmanager.api.GroupeHelper;
 import com.example.thanoseventmanager.api.UserHelper;
@@ -25,7 +27,10 @@ import com.google.firebase.firestore.DocumentSnapshot;
 public class FragmentGroupCreate extends Fragment implements View.OnClickListener {
     private static final String TAG = "Hello";
 
+    NavController navController;
+
     Button boutonCreerGroupe;
+    Button btn_back;
     EditText editTextNewGroupName;
 
     public FragmentGroupCreate() {
@@ -38,8 +43,11 @@ public class FragmentGroupCreate extends Fragment implements View.OnClickListene
 
         //Création d'un objet Button correspondant à "buttonCreateNewGroup" du fragment fragment_group_create
         View v = inflater.inflate(R.layout.fragment_group_create, container, false);
+        navController = Navigation.findNavController(getActivity(), R.id.fragment_nav_host_GroupsActivity);
         boutonCreerGroupe = v.findViewById(R.id.buttonCreateNewGroup);
         boutonCreerGroupe.setOnClickListener(this);
+        btn_back = v.findViewById(R.id.btn_back_activityGroup);
+        btn_back.setOnClickListener(this);
         editTextNewGroupName = v.findViewById(R.id.editTextNewGroupName);
 
         return v;
@@ -106,17 +114,24 @@ public class FragmentGroupCreate extends Fragment implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.buttonCreateNewGroup){
-            String nomGroupe = editTextNewGroupName.getText().toString();
-            if (!nomGroupe.isEmpty()) {
-                CreateGroupe(nomGroupe);
-            } else {
-                AlertDialog.Builder ErrorMsg = new AlertDialog.Builder(v.getContext());
-                ErrorMsg.setMessage("Veuillez rentrer un nom de groupe")
-                        .setTitle("Erreur");
-                ErrorMsg.create();
-                ErrorMsg.show();
-            }
+        switch (v.getId()) {
+            case R.id.buttonCreateNewGroup:
+                String nomGroupe = editTextNewGroupName.getText().toString();
+                if (!nomGroupe.isEmpty()) {
+                    CreateGroupe(nomGroupe);
+                } else {
+                    AlertDialog.Builder ErrorMsg = new AlertDialog.Builder(v.getContext());
+                    ErrorMsg.setMessage("Veuillez rentrer un nom de groupe")
+                            .setTitle("Erreur");
+                    ErrorMsg.create();
+                    ErrorMsg.show();
+                }
+                break;
+            case R.id.btn_back_activityGroup:
+                navController.popBackStack(navController.getGraph().getStartDestination(), false);
+                break;
+            default:
+                break;
         }
 
     }
@@ -132,6 +147,7 @@ public class FragmentGroupCreate extends Fragment implements View.OnClickListene
                         public void onSuccess(DocumentReference documentReference) {
                             String idGenerate = documentReference.getId();
                             GroupeHelper.createGroupe(idGenerate, nomGroupe, usr);
+                            navController.popBackStack(navController.getGraph().getStartDestination(), false);
                         }
                     });
                 }
