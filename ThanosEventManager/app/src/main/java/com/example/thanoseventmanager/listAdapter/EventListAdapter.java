@@ -1,7 +1,6 @@
 package com.example.thanoseventmanager.listAdapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,11 +47,11 @@ public class EventListAdapter extends BaseAdapter {
         if (convertView == null) {
             convertView = layoutInflater.inflate(R.layout.listeevent_event_layout, null);
             holder = new ViewHolder();
-            holder.imageEvent = (ImageView) convertView.findViewById(R.id.imageView);
-            holder.nomEventView = (TextView) convertView.findViewById(R.id.textView_nom);
-            holder.dateEventView = (TextView)convertView.findViewById(R.id.textView_date);
-            holder.nomGroupeView = (TextView) convertView.findViewById(R.id.textView_groupe);
-            holder.imageMarker = (ImageView) convertView.findViewById(R.id.markerView);
+            holder.imageEvent = convertView.findViewById(R.id.imageView);
+            holder.nomEventView = convertView.findViewById(R.id.textView_nom);
+            holder.dateEventView = convertView.findViewById(R.id.textView_date);
+            holder.nomGroupeView = convertView.findViewById(R.id.textView_groupe);
+            holder.imageMarker = convertView.findViewById(R.id.markerView);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -82,8 +81,7 @@ public class EventListAdapter extends BaseAdapter {
     public int getMipmapResIdByName(String resName)  {
         String pkgName = context.getPackageName();
         // Return 0 if not found.
-        int resID = context.getResources().getIdentifier(resName , "mipmap", pkgName);
-        return resID;
+        return context.getResources().getIdentifier(resName , "mipmap", pkgName);
     }
 
     static class ViewHolder{

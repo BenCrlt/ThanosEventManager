@@ -34,6 +34,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -334,15 +335,17 @@ public class FragmentMapView extends Fragment implements
                         .snippet("Date : " + dateEvent + "\nGroupe : " + event.getGroupe().getNom())
                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
 
-                //Set Custom InfoWindow Adapter
-                CustomInfoWindowAdapter adapter = new CustomInfoWindowAdapter(getLayoutInflater());
-                gm.setInfoWindowAdapter(adapter);
-
                 //Ajout d'un marqueur
-                gm.addMarker(options);
+                Marker marker = gm.addMarker(options);
+                marker.setTag(event);
 
                 //Le marqueur est placé, on met un drapeau
                 event.setFlagMarker(true);
+
+                //Personalisation de la fenêtre d'informations du marqueur
+                CustomInfoWindowAdapter adapter = new CustomInfoWindowAdapter(this.requireActivity());
+                gm.setInfoWindowAdapter(adapter);
+
             }
         }
     }
