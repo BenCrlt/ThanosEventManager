@@ -6,11 +6,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.example.thanoseventmanager.listAdapter.GroupListAdapter;
 import com.example.thanoseventmanager.modeles.Groupe;
@@ -18,8 +21,11 @@ import com.example.thanoseventmanager.modeles.Groupe;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FragmentGroupList extends Fragment {
+public class FragmentGroupList extends Fragment implements View.OnClickListener {
     private static final String TAG = "Hello";
+
+    NavController navController;
+    Button btn_createGroupe;
 
     public FragmentGroupList() {
         // Required empty public constructor
@@ -30,13 +36,24 @@ public class FragmentGroupList extends Fragment {
         //Création d'un objet ListView correspondant à "listEvents" du layout activity_main_after_login.xml
         View v = inflater.inflate(R.layout.fragment_group_list, container, false);
         ListView listView = v.findViewById(R.id.listGroups);
+        navController = Navigation.findNavController(getActivity(), R.id.fragment_nav_host_GroupsActivity);
 
         //Création liste d'évènements à partir de la méthode getListData
         List<Groupe> listeGroupe = getListData();
         listView.setAdapter(new GroupListAdapter(getContext(),listeGroupe));
 
+        btn_createGroupe = v.findViewById(R.id.btn_createGroupe);
+        btn_createGroupe.setOnClickListener(this);
         // Inflate the layout for this fragment
         return v;
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.btn_createGroupe) {
+            navController.popBackStack(navController.getGraph().getStartDestination(), false);
+            navController.navigate(R.id.fragmentGroupCreate);
+        }
     }
 
     @Override
@@ -70,6 +87,7 @@ public class FragmentGroupList extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+
         Log.i(TAG, "on start " + getClass().getSimpleName());
     }
 

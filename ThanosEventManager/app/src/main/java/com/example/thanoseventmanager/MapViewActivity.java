@@ -103,18 +103,6 @@ public class MapViewActivity extends AppCompatActivity {
         Log.i(TAG, "on resume " + getLocalClassName()) ;
     }
 
-    public void onClickMainActivity(View v){
-        //Launch the main activity
-        /*Intent intent = new Intent(this, MainAfterLogin.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivity(intent);*/
-        //Pour test déconnexion
-        FirebaseAuth.getInstance().signOut();
-        Intent intent = new Intent(this, LoginActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivity(intent);
-    }
-
     public void onClickFragmentMapView(View v) {
         navController.popBackStack(navController.getGraph().getStartDestination(), false);
     }
