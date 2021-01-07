@@ -3,19 +3,14 @@ package com.example.thanoseventmanager;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Looper;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -24,6 +19,7 @@ import androidx.core.app.ActivityCompat.OnRequestPermissionsResultCallback;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.example.thanoseventmanager.custom.CustomInfoWindowAdapter;
 import com.example.thanoseventmanager.modeles.Event;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -38,7 +34,6 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -175,7 +170,6 @@ public class FragmentMapView extends Fragment implements
         gm.getUiSettings().setMapToolbarEnabled(false);
 
         //Ajout de marqueurs sur la carte
-        //this.setMarkers();
         this.setEventMarkers();
 
         //Activation de la localisation avec permission requise
@@ -310,15 +304,6 @@ public class FragmentMapView extends Fragment implements
         gm.moveCamera(CameraUpdateFactory.newLatLngZoom(myCurrentCoords, 15));
     }
 
-    private void setMarkers() {
-        //Ajoute les marqueurs sur la carte
-        gm.addMarker(new MarkerOptions().position(new LatLng(47.528868, -0.568809)).title("Cantenay"));
-        gm.addMarker(new MarkerOptions().position(new LatLng(49.418080, -1.627571)).title("BestPlace"));
-        gm.addMarker(new MarkerOptions().position(new LatLng(46.749495, -1.739786)).title("SchmoutLand"));
-        gm.addMarker(new MarkerOptions().position(new LatLng(47.085868, 2.395971)).title("Vilkipu"));
-        gm.addMarker(new MarkerOptions().position(new LatLng(48.322190, 0.150082)).title("Troudfiak"));
-    }
-
     private void setEventMarkers(){
 
         //Récupération de la liste des events
@@ -341,49 +326,20 @@ public class FragmentMapView extends Fragment implements
             LatLng coordsEvent = this.getLocationFromAddress(adresse);
 
             if (coordsEvent != null) {
-                //Ajout d'un marqueur
-                gm.addMarker(new MarkerOptions()
+
+                // Set up des options du marqueur
+                MarkerOptions options = new MarkerOptions()
                         .position(coordsEvent)
                         .title(event.getNom())
                         .snippet("Date : " + dateEvent + "\nGroupe : " + event.getGroupe().getNom())
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
-                );
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
 
-                gm.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+                //Set Custom InfoWindow Adapter
+                CustomInfoWindowAdapter adapter = new CustomInfoWindowAdapter(getLayoutInflater());
+                gm.setInfoWindowAdapter(adapter);
 
-                    @Override
-                    public View getInfoWindow(Marker marker) {
-                        //Si renvoie null, l'API appelle getInfoContents
-                        return null;
-                    }
-
-                    @Override
-                    public View getInfoContents(Marker marker) {
-
-                        Context context = getActivity();
-
-                        LinearLayout info = new LinearLayout(context);
-                        info.setOrientation(LinearLayout.VERTICAL);
-                        info.setPadding(10,10,10,10);
-
-                        TextView title = new TextView(context);
-                        title.setTextColor(Color.BLUE);
-                        title.setGravity(Gravity.CENTER);
-                        title.setTypeface(null, Typeface.BOLD);
-                        title.setPadding(5,5,5,5);
-                        title.setText(marker.getTitle());
-
-                        TextView snippet = new TextView(context);
-                        snippet.setTextColor(Color.GRAY);
-                        snippet.setGravity(Gravity.LEFT);
-                        snippet.setText(marker.getSnippet());
-
-                        info.addView(title);
-                        info.addView(snippet);
-
-                        return info;
-                    }
-                });
+                //Ajout d'un marqueur
+                gm.addMarker(options);
 
                 //Le marqueur est placé, on met un drapeau
                 event.setFlagMarker(true);
