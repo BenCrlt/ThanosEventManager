@@ -146,7 +146,7 @@ public class FragmentGroupCreate extends Fragment implements View.OnClickListene
                         @Override
                         public void onSuccess(DocumentReference documentReference) {
                             String idGenerate = documentReference.getId();
-                            GroupeHelper.createGroupe(idGenerate, nomGroupe, usr);
+                            GroupeHelper.createGroupe(idGenerate, nomGroupe, usr.getId());
                             navController.popBackStack(navController.getGraph().getStartDestination(), false);
                         }
                     });

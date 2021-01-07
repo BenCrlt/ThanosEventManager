@@ -8,21 +8,21 @@ public class Groupe {
 
     String id;
     String nom;
-    ArrayList<User> listeUsers;
+    ArrayList<String> listeIdUsers;
     ArrayList<Event> listeEvents;
 
     public Groupe(){
         this.id = new String();
         this.nom = new String();
-        this.listeUsers = new ArrayList<User>();
+        this.listeIdUsers = new ArrayList<String>();
         this.listeEvents = new ArrayList<Event>();
     }
 
-    public Groupe(String id, String nom, User userAdmin){
+    public Groupe(String id, String nom, String idUserAdmin){
         this.id = id;
         this.nom = nom;
-        this.listeUsers = new ArrayList<User>();
-        this.listeUsers.add(userAdmin);
+        this.listeIdUsers = new ArrayList<String>();
+        this.listeIdUsers.add(idUserAdmin);
         this.listeEvents = new ArrayList<Event>();
     }
 
@@ -38,22 +38,22 @@ public class Groupe {
         this.nom = nom;
     }
 
-    // LISTE USERS
+    // LISTE USERS ID
 
-    public ArrayList<User> getListeUsers() {
-        return listeUsers;
+    public ArrayList<String> getListeIdUsers() {
+        return this.listeIdUsers;
     }
 
-    public void setListeUsers(ArrayList<User> listeUsers) {
-        this.listeUsers = listeUsers;
+    public void setListeIdUsers(ArrayList<String> listeIdUsers) {
+        this.listeIdUsers = listeIdUsers;
     }
 
-    public void addUser(User newUser) { this.listeUsers.add(newUser); };
+    public void addUser(String newUserId) { this.listeIdUsers.add(newUserId); };
 
-    public void removeUser(User userToDelete) {
-        for (int i = 0; i < this.listeUsers.size(); i++) {
-            if ((this.listeUsers.get(i)).getId().equalsIgnoreCase(userToDelete.getId())) {
-                this.listeUsers.remove(i);
+    public void removeUser(String userIdToDelete) {
+        for (int i = 0; i < this.listeIdUsers.size(); i++) {
+            if ((this.listeIdUsers.get(i)).equalsIgnoreCase(userIdToDelete)) {
+                this.listeIdUsers.remove(i);
             }
         }
     };

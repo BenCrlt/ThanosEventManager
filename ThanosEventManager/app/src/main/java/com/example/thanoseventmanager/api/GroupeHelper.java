@@ -12,6 +12,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 import java.security.acl.Group;
 import java.util.Date;
@@ -29,8 +30,8 @@ public class GroupeHelper {
 
     // GROUPE MANAGER
 
-    public static Task<Void> createGroupe(String id, String nom, User userAdmin) {
-        Groupe newGroupe = new Groupe(id, nom, userAdmin);
+    public static Task<Void> createGroupe(String id, String nom, String idUserAdmin) {
+        Groupe newGroupe = new Groupe(id, nom, idUserAdmin);
         return GroupeHelper.getGroupesCollection().document(id).set(newGroupe);
     }
 
@@ -43,6 +44,10 @@ public class GroupeHelper {
         return GroupeHelper.getGroupesCollection().document(id).get();
     }
 
+    public static Query getAllGroupesOfUser(String userId) {
+        return GroupeHelper.getGroupesCollection().whereArrayContains("listeIdUsers", userId);
+    }
+
     public static Task<Void> deleteGroupe(Groupe groupeToDelete) {
         return GroupeHelper.getGroupesCollection().document(groupeToDelete.getId()).delete();
     }
@@ -53,14 +58,14 @@ public class GroupeHelper {
 
     // USER MANAGER
 
-    public static Task<Void> addUser(Groupe groupeSelected, User userToAdd) {
-        groupeSelected.addUser(userToAdd);
-        return GroupeHelper.getGroupesCollection().document(groupeSelected.getId()).update("listeUsers", groupeSelected.getListeUsers());
+    public static Task<Void> addUser(Groupe groupeSelected, String userIdToAdd) {
+        groupeSelected.addUser(userIdToAdd);
+        return GroupeHelper.getGroupesCollection().document(groupeSelected.getId()).update("listeIdUsers", groupeSelected.getListeIdUsers());
     }
 
-    public static Task<Void> deleteUser(Groupe groupeSelected, User userToDelete) {
-        groupeSelected.removeUser(userToDelete);
-        return GroupeHelper.getGroupesCollection().document(groupeSelected.getId()).update("listeUsers", groupeSelected.getListeUsers());
+    public static Task<Void> deleteUser(Groupe groupeSelected, String userIdToDelete) {
+        groupeSelected.removeUser(userIdToDelete);
+        return GroupeHelper.getGroupesCollection().document(groupeSelected.getId()).update("listeIdUsers", groupeSelected.getListeIdUsers());
     }
 
     // EVENT MANAGER
