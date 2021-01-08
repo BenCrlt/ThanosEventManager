@@ -46,9 +46,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        if (mAuth.getCurrentUser() != null) {
-            goToMapView();
-        }
     }
 
     public void onClickMap(View v) {
@@ -61,6 +58,9 @@ public class LoginActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         Log.i(TAG, "on start" + getLocalClassName()) ;
+        if (mAuth.getCurrentUser() != null) {
+            goToMapView();
+        }
     }
 
     @Override

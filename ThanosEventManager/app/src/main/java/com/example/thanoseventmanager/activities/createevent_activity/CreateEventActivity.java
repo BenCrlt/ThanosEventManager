@@ -8,6 +8,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
@@ -19,21 +20,17 @@ import com.example.thanoseventmanager.activities.groups_activity.GroupsActivity;
 import com.example.thanoseventmanager.activities.login_activity.LoginActivity;
 import com.example.thanoseventmanager.activities.profile_activity.ProfileActivity;
 import com.example.thanoseventmanager.firebase.GroupeHelper;
+import com.example.thanoseventmanager.firebase.GroupeHelper;
+import com.example.thanoseventmanager.modeles.Event;
 import com.example.thanoseventmanager.modeles.Groupe;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.api.model.RectangularBounds;
-import com.google.android.libraries.places.api.model.TypeFilter;
-import com.google.android.libraries.places.api.net.PlacesClient;
-import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
-import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 public class CreateEventActivity extends AppCompatActivity {
@@ -48,29 +45,6 @@ public class CreateEventActivity extends AppCompatActivity {
         /********* Spinner Groupe **********/
         //Récupération du Spinner déclaré dans le fichier main.xml de res/layout
         spinner_grp = (Spinner) findViewById(R.id.spinner_group);
-
-        /********* Spinner Event **********/
-        //Récupération du Spinner déclaré dans le fichier main.xml de res/layout
-        //spinner_evt = (Spinner) findViewById(R.id.spinner_event);
-        //Création d'une liste d'élément à mettre dans le Spinner(pour l'exemple)
-        /*List exempleList2 = new ArrayList();
-        exempleList2.add("Assinie");
-        exempleList2.add("Bassam");
-        exempleList2.add("Abidjan");
-*/
-        /*Le Spinner a besoin d'un adapter pour sa presentation alors on lui passe le context(this) et
-                un fichier de presentation par défaut( android.R.layout.simple_spinner_item)
-        Avec la liste des elements (exemple) */
-        /*ArrayAdapter adapter2 = new ArrayAdapter(
-                this,
-                android.R.layout.simple_spinner_item,
-                exempleList2
-        );
-*/
-        /* On definit une présentation du spinner quand il est déroulé         (android.R.layout.simple_spinner_dropdown_item) */
-        //adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //Enfin on passe l'adapter au Spinner et c'est tout
-        //spinner_evt.setAdapter(adapter2);
     }
 
     @Override
@@ -141,13 +115,17 @@ public class CreateEventActivity extends AppCompatActivity {
     // Bouton Créer
     public void onClick_create_event(View v)
     {
+        Event new_event = new Event() ;
+
+        String nom_event ;
+        Date date_event ;
         // Récupérer Nom Event
-
-
+        nom_event = ((EditText)findViewById(R.id.editText_Name_event)).getText().toString() ;
+        new_event.setNom(nom_event);
 
         // Récupérer date event
-
-
+        //date_event = ((com.google.type.Date)findViewById(R.id.editText_Date_event)) ;
+        //new_event.setDate(date_event) ;
 
         // Récupérer groupe event
 
