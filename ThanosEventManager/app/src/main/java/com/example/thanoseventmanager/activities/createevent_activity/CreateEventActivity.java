@@ -71,32 +71,6 @@ public class CreateEventActivity extends AppCompatActivity {
         //adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //Enfin on passe l'adapter au Spinner et c'est tout
         //spinner_evt.setAdapter(adapter2);
-
-        //Autocompletion place
-        //initialize the SDK + create new place instance
-        Places.initialize(getApplicationContext(), "AIzaSyAnAk7lrVjKFFdj3BaozOEFThgFDdb4SIA");
-        PlacesClient placesClient = Places.createClient(this);
-
-        AutocompleteSupportFragment autocompleteSupportFragment = (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
-        autocompleteSupportFragment.setTypeFilter(TypeFilter.ESTABLISHMENT);
-        autocompleteSupportFragment.setLocationBias(RectangularBounds.newInstance(
-                new LatLng(-33.880490, 151.184363),
-                new LatLng(-33.858754, 151.229596)
-        ));
-        autocompleteSupportFragment.setCountries("FR");
-        autocompleteSupportFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
-
-        autocompleteSupportFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-            @Override
-            public void onPlaceSelected(@NonNull Place place) {
-                Log.d(TAG, "Place " + place.getName() + " , " + place.getId());
-            }
-
-            @Override
-            public void onError(@NonNull Status status) {
-                Log.d(TAG, "ERRROOOOOOOOOOR " + status);
-            }
-        });
     }
 
     @Override
