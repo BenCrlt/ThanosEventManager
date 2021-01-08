@@ -132,7 +132,7 @@ public class CreateEventActivity extends AppCompatActivity {
         // Récupérer groupe event
         // Voir avec Benoit
 
-        /****** Récupérer localisation event ******/
+        /******* Récupérer localisation event *******/
         // Récupérer Addresse
         address_event = ((EditText)findViewById(R.id.editText_address_event)).getText().toString() ;
         new_event.getLieu().setAdresse(address_event);
