@@ -11,12 +11,11 @@
         android:label="fragment_map_view"
         tools:layout="@layout/fragment_map_view" />
     <fragment
-        android:id="@+id/fragmentUserList"
-        android:name="com.example.thanoseventmanager.activities.main_activity.FragmentEventView"
-        android:label="fragment_user_list"
-        tools:layout="@layout/fragment_event_view" />
-    <fragment
         android:id="@+id/fragmentEventList"
         android:name="com.example.thanoseventmanager.activities.main_activity.FragmentEventList"
         android:label="fragment_event_list" />
+    <fragment
+        android:id="@+id/fragmentEventView"
+        android:name="com.example.thanoseventmanager.activities.main_activity.FragmentEventView"
+        android:label="FragmentEventView" />
 </navigation>
