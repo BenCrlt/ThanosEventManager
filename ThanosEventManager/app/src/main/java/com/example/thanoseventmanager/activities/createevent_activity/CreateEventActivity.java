@@ -43,9 +43,7 @@ import java.util.List;
 public class CreateEventActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
     private final static String TAG = "hello";
     Spinner spinner_grp, spinner_evt ;
-    Button btnDatePicker;
     EditText editDateTime;
-    String test;
     int year, month, day, hour, minute;
 
     @Override
@@ -68,18 +66,6 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
                 datePickerDialog.show();
             }
         });
-        /*btnDatePicker = (Button)findViewById(R.id.btn_datePicker);
-        btnDatePicker.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calendar calendar = Calendar.getInstance();
-                year = calendar.get(Calendar.YEAR);
-                month = calendar.get(Calendar.MONTH);
-                day = calendar.get(Calendar.DAY_OF_MONTH);
-                DatePickerDialog datePickerDialog = new DatePickerDialog(CreateEventActivity.this, CreateEventActivity.this,year, month,day);
-                datePickerDialog.show();
-            }
-        });*/
     }
 
     @Override
