@@ -1,37 +1,54 @@
-package com.example.thanoseventmanager;
+package com.example.thanoseventmanager.activities.groups_activity;
 
 import android.content.Context;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
-public class FragmentUserList extends Fragment {
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+
+import com.example.thanoseventmanager.R;
+import com.example.thanoseventmanager.viewmodels.ViewModel_GroupsActivity;
+
+public class FragmentGroupProfile extends Fragment {
+
+    ViewModel_GroupsActivity viewModel;
 
     private static final String TAG = "Hello";
 
-    public FragmentUserList() {
-        // Required empty public constructor
+    public void FragmentGroupProfile(){
+        //empty constructor
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_group_profile, container, false);
 
-        Log.i(TAG, "on create view " + getClass().getSimpleName());
+        //Récupération des informations du groupe
+        TextView nomGroupe = (TextView)v.findViewById(R.id.fragmentGroupProfile_groupName);
+        viewModel = new ViewModelProvider(getActivity()).get(ViewModel_GroupsActivity.class);
+        nomGroupe.setText(viewModel.getGroupSelected().getValue().getNom());
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_user_list, container, false);
+        return v;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     @Override
     public void onStart() {
         super.onStart();
         Log.i(TAG, "on start " + getClass().getSimpleName());
+
     }
 
     @Override
@@ -81,4 +98,5 @@ public class FragmentUserList extends Fragment {
         super.onDetach();
         Log.i(TAG, "on detach " + getClass().getSimpleName());
     }
+
 }

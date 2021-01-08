@@ -11,4 +11,8 @@
         android:id="@+id/fragmentGroupCreate"
         android:name="com.example.thanoseventmanager.activities.groups_activity.FragmentGroupCreate"
         android:label="FragmentGroupCreate" />
+    <fragment
+        android:id="@+id/fragmentGroupProfile"
+        android:name="com.example.thanoseventmanager.activities.groups_activity.FragmentGroupProfile"
+        android:label="FragmentGroupProfile" />
 </navigation>

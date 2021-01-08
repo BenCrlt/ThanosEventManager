@@ -22,9 +22,12 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.thanoseventmanager.R;
 import com.example.thanoseventmanager.TestListeEvents;
+import com.example.thanoseventmanager.api.GroupeHelper;
 import com.example.thanoseventmanager.custom.CustomInfoWindowAdapter;
 import com.example.thanoseventmanager.listAdapter.EventListAdapter;
 import com.example.thanoseventmanager.modeles.Event;
+import com.example.thanoseventmanager.modeles.Groupe;
+
 import com.example.thanoseventmanager.viewmodels.ViewModel_MainActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -42,8 +45,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -58,16 +59,13 @@ public class FragmentMapView extends Fragment implements
 
     //Initialisation variables locales
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+    private List<Event> eventList;
     private MapView mapView;
     private GoogleMap gm;
     private FusedLocationProviderClient fusedLocationClient;
     private LocationRequest locationRequest;
     private LocationCallback locationCallback;
     private ViewModel_MainActivity viewModel;
-
-    //Récupération de l'utilisateur avec Firebase
-    @Nullable
-    private FirebaseUser getCurrentUser(){ return FirebaseAuth.getInstance().getCurrentUser(); }
 
     public FragmentMapView() {
         // Required empty public constructor
@@ -83,6 +81,9 @@ public class FragmentMapView extends Fragment implements
         locationRequest = this.setLocationRequest();
         //Utilisation de la classe Location Callback pour récupérer les localisations
         locationCallback = this.setLocationCallback();
+
+        //Générer la liste des events de l'utilisateur
+        //eventList = ((MainActivity)getActivity()).getEventList();
 
         viewModel = new ViewModelProvider(getActivity()).get(ViewModel_MainActivity.class);
     }
@@ -346,12 +347,16 @@ public class FragmentMapView extends Fragment implements
                 Marker marker = gm.addMarker(options);
                 marker.setTag(event);
 
-                //Le marqueur est placé, on met un drapeau
-                event.setFlagMarker(true);
-
                 //Personalisation de la fenêtre d'informations du marqueur
                 CustomInfoWindowAdapter adapter = new CustomInfoWindowAdapter(this.requireActivity());
                 gm.setInfoWindowAdapter(adapter);
+
+                //Le marqueur est placé, on met un drapeau
+                event.setFlagMarker(true);
+
+                //MAJ de l'event dans Firebase
+                //Groupe groupe = event.getGroupe();
+                //GroupeHelper.updateEvent(groupe, event);
 
             }
         }
