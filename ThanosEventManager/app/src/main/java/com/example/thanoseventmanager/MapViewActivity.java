@@ -48,11 +48,6 @@ public class MapViewActivity extends AppCompatActivity {
             intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             startActivity(intent);
             return(true);
-        } else if(item.getItemId() == R.id.itemPlus) {
-            Intent intent = new Intent(this, CreateEventActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-            startActivity(intent);
-            return(true);
         } else if (item.getItemId() == R.id.itemDeconnexion){
             FirebaseAuth.getInstance().signOut();
             Intent intent = new Intent(this, LoginActivity.class);
