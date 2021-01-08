@@ -14,7 +14,7 @@ public class UserHelper {
     private static final String TAG = "CONNECTION";
     private static final String COLLECTION_NAME = "users";
 
-    public static CollectionReference getMembersCollection() {
+    public static CollectionReference getUsersCollection() {
         return FirebaseFirestore.getInstance().collection(COLLECTION_NAME);
     }
 
@@ -23,32 +23,36 @@ public class UserHelper {
     public static Task<Void> createUser(String id, String numero, String pseudo) {
         User newUser = new User(id, numero, pseudo);
         Log.d(TAG, "Create Membre");
-        return UserHelper.getMembersCollection().document(id).set(newUser);
+        return UserHelper.getUsersCollection().document(id).set(newUser);
     }
 
     // --- GET ---
 
     public static Task<DocumentSnapshot> getUserByID(String id) {
-        return UserHelper.getMembersCollection().document(id).get();
+        return UserHelper.getUsersCollection().document(id).get();
     }
 
-    public static Task<DocumentSnapshot> getUserByPhone(String phone) {
-        return UserHelper.getMembersCollection().document(phone).get();
+    public static Query getUserByPhone(String phone) {
+        return UserHelper.getUsersCollection().whereEqualTo("numero", phone);
     }
 
     // --- UPDATE ---
 
+    public static Task<Void> updateUserPseudo(String id, String pseudo) {
+        return UserHelper.getUsersCollection().document(id).update("pseudo", pseudo);
+    }
+
     public static Task<Void> updateUserLat(String id, double latitude) {
-        return UserHelper.getMembersCollection().document(id).update("latitude", latitude);
+        return UserHelper.getUsersCollection().document(id).update("latitude", latitude);
     }
 
     public static Task<Void> updateUserLng(String id, double longitude) {
-        return UserHelper.getMembersCollection().document(id).update("longitude", longitude);
+        return UserHelper.getUsersCollection().document(id).update("longitude", longitude);
     }
 
     // --- DELETE ---
 
     public static Task<Void> deleteMember(String id) {
-        return UserHelper.getMembersCollection().document(id).delete();
+        return UserHelper.getUsersCollection().document(id).delete();
     }
 }
