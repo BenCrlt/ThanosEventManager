@@ -123,7 +123,16 @@ public class CreateEventActivity extends AppCompatActivity {
 
 
 
-        // Récupérer localisation event
+        /****** Récupérer localisation event ******/
+        // Récupérer Addresse
+
+
+
+        // Récupérer Code Postal
+
+
+
+        // Récupérer Ville
 
 
 
