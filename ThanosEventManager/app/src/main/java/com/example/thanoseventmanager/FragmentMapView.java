@@ -34,6 +34,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -54,7 +55,6 @@ public class FragmentMapView extends Fragment implements
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private MapView mapView;
     private GoogleMap gm;
-    private Location myCurrentLocation;
     private FusedLocationProviderClient fusedLocationClient;
     private LocationRequest locationRequest;
     private LocationCallback locationCallback;
@@ -164,6 +164,7 @@ public class FragmentMapView extends Fragment implements
 
         //Récupération de la carte Google Maps
         gm = googleMap;
+        
         //Paramétrages de la carte
         gm.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         gm.getUiSettings().setZoomControlsEnabled(true);
@@ -215,7 +216,10 @@ public class FragmentMapView extends Fragment implements
         }
     }
 
-    public void enableMyLocation() {
+    ////////////////////////////   METHODES PRIVEES DE LA CLASSE   /////////////////////////////////
+
+    private void enableMyLocation() {
+
         //Check l'état de la permission d'accès à la localisation
         String permission = Manifest.permission.ACCESS_FINE_LOCATION;
         int permissionState = ContextCompat.checkSelfPermission(this.requireActivity(), permission);
@@ -228,8 +232,8 @@ public class FragmentMapView extends Fragment implements
                 gm.setOnMyLocationButtonClickListener(this);
                 gm.setOnMyLocationClickListener(this);
 
-                //Recherche de la localisation de l'utilisateur
-                this.getMyLocation();
+                //Initialisation de la caméra
+                this.initCamera();
             }
         }
         //PERMISSION_DENIED : Autorisation rejetée
@@ -239,8 +243,9 @@ public class FragmentMapView extends Fragment implements
         }
     }
 
-    //Donne la localisation de manière ponctuelle
-    public void getMyLocation() {
+    //Récupère une fois la localisation pour zoomer la caméra
+    private void initCamera() {
+
         //Check l'état de la permission d'accès à la localisation
         String permission = Manifest.permission.ACCESS_FINE_LOCATION;
         int permissionState = ContextCompat.checkSelfPermission(this.requireActivity(), permission);
@@ -254,10 +259,14 @@ public class FragmentMapView extends Fragment implements
             getLocation.addOnSuccessListener(this.requireActivity(),
                     location -> {
                         if (location != null) {
-                            //Récupération de la localisation actuelle
-                            myCurrentLocation = location;
-                            //Zoom de la camera sur la position actuelle
-                            this.setMyCamera(myCurrentLocation);
+
+                            //Récupération des coordonnées de la localisation
+                            double lat = location.getLatitude();
+                            double lng = location.getLongitude();
+                            LatLng coords = new LatLng(lat, lng);
+
+                            //Zoom la caméra sur la position
+                            gm.moveCamera(CameraUpdateFactory.newLatLngZoom(coords, 15));
                         }
                     });
 
@@ -266,21 +275,23 @@ public class FragmentMapView extends Fragment implements
         }
     }
 
-    public LatLng getLocationFromAddress(String address) {
+    //Conversion d'une adresse textuelle en points de coordonéees
+    private LatLng getLocationFromAddress(String address) {
 
+        //Utilisation de Geocoder pour la conversion
         Geocoder coder = new Geocoder(this.requireActivity());
         List<Address> results;
         LatLng coords = null;
 
         try {
+            //Récupération d'une liste de 5 résultats maximum
             results = coder.getFromLocationName(address, 5);
             if (results == null) {
                 return null;
             }
+            //Choisir le premier résultat
             Address location = results.get(0);
-            location.getLatitude();
-            location.getLongitude();
-
+            //Création de la coordonées à partir du résultat
             coords = new LatLng(location.getLatitude(), location.getLongitude() );
 
         } catch (Exception ex) {
@@ -290,20 +301,7 @@ public class FragmentMapView extends Fragment implements
         return coords;
     }
 
-    public LatLng getMyCoords(Location location) {
-        //Récupération des coordonnées de la localisation
-        double lat = location.getLatitude();
-        double lng = location.getLongitude();
-        return new LatLng(lat, lng);
-    }
-
-    public void setMyCamera(@NonNull Location location) {
-        //Récupère les cooordonnées de la position donnée
-        LatLng myCurrentCoords = getMyCoords(location);
-        //Zoom la caméra sur la position
-        gm.moveCamera(CameraUpdateFactory.newLatLngZoom(myCurrentCoords, 15));
-    }
-
+    //Placement des marqueurs des différents events sur la carte
     private void setEventMarkers(){
 
         //Récupération de la liste des events
@@ -334,20 +332,24 @@ public class FragmentMapView extends Fragment implements
                         .snippet("Date : " + dateEvent + "\nGroupe : " + event.getGroupe().getNom())
                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
 
-                //Set Custom InfoWindow Adapter
-                CustomInfoWindowAdapter adapter = new CustomInfoWindowAdapter(getLayoutInflater());
-                gm.setInfoWindowAdapter(adapter);
-
                 //Ajout d'un marqueur
-                gm.addMarker(options);
+                Marker marker = gm.addMarker(options);
+                marker.setTag(event);
 
                 //Le marqueur est placé, on met un drapeau
                 event.setFlagMarker(true);
+
+                //Personalisation de la fenêtre d'informations du marqueur
+                CustomInfoWindowAdapter adapter = new CustomInfoWindowAdapter(this.requireActivity());
+                gm.setInfoWindowAdapter(adapter);
+
             }
         }
     }
 
-    public LocationRequest setLocationRequest() {
+    //Paramétrage de la requete pour les MAJ de la localisation
+    private LocationRequest setLocationRequest() {
+
         //Création d'une nouvelle requête
         LocationRequest locationRequest = LocationRequest.create();
         //Détermine l'intervalle (en ms) entre chaque MAJ de la localisation
@@ -360,7 +362,9 @@ public class FragmentMapView extends Fragment implements
         return locationRequest;
     }
 
+    //Résultats suite à la MAJ de la localisation
     private LocationCallback setLocationCallback() {
+
         return new LocationCallback(){
             @Override
             public void onLocationResult(LocationResult locationResult) {
@@ -368,8 +372,9 @@ public class FragmentMapView extends Fragment implements
         };
     }
 
-    //Donne la localisation de manière régulière
+    //Démarre une MAJ régulière de la localisation
     private void startLocationUpdates() {
+
         //Check l'état de la permission d'accès à la localisation
         String permission = Manifest.permission.ACCESS_FINE_LOCATION;
         int permissionState = ContextCompat.checkSelfPermission(this.requireActivity(), permission);
@@ -381,6 +386,7 @@ public class FragmentMapView extends Fragment implements
         }
     }
 
+    //Stop la MAJ régulière de la localisation
     private void stopLocationUpdates() {
         //Arrete les MAJ de la localisation
         fusedLocationClient.removeLocationUpdates(locationCallback);
