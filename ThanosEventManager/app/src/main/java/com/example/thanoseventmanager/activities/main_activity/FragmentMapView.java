@@ -19,15 +19,14 @@ import androidx.core.app.ActivityCompat.OnRequestPermissionsResultCallback;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.example.thanoseventmanager.R;
 import com.example.thanoseventmanager.TestListeEvents;
 import com.example.thanoseventmanager.firebase.GroupeHelper;
 import com.example.thanoseventmanager.custom.CustomInfoWindowAdapter;
-import com.example.thanoseventmanager.listAdapter.EventListAdapter;
 import com.example.thanoseventmanager.modeles.Event;
-import com.example.thanoseventmanager.modeles.Groupe;
-
 import com.example.thanoseventmanager.viewmodels.ViewModel_MainActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -85,7 +84,7 @@ public class FragmentMapView extends Fragment implements
         //Générer la liste des events de l'utilisateur
         //eventList = ((MainActivity)getActivity()).getEventList();
 
-        viewModel = new ViewModelProvider(getActivity()).get(ViewModel_MainActivity.class);
+        viewModel = new ViewModelProvider(this.requireActivity()).get(ViewModel_MainActivity.class);
     }
 
     @Override
@@ -327,7 +326,7 @@ public class FragmentMapView extends Fragment implements
             //Adresse totale de l'event
             String adresse = event.getLieu().getAdresse() + " , " + event.getLieu().getVille();
 
-            //Date de l'event (
+            //Date de l'event
             DateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.FRANCE);
             String dateEvent = format.format(event.getDate());
 
@@ -350,6 +349,12 @@ public class FragmentMapView extends Fragment implements
                 //Personalisation de la fenêtre d'informations du marqueur
                 CustomInfoWindowAdapter adapter = new CustomInfoWindowAdapter(this.requireActivity());
                 gm.setInfoWindowAdapter(adapter);
+                gm.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+                    @Override
+                    public void onInfoWindowClick(Marker marker) {
+                        //((MainActivity)getActivity()).onClickFragmentEventView();
+                    }
+                });
 
                 //Le marqueur est placé, on met un drapeau
                 event.setFlagMarker(true);

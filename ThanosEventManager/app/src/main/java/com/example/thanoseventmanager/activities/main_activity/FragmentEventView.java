@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.util.Log;
@@ -33,11 +34,16 @@ public class FragmentEventView extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         viewModel = new ViewModelProvider(this.requireActivity()).get(ViewModel_MainActivity.class);
-        //viewModel.getEventToView().observe(this.requireActivity(), event -> listView.setAdapter(new EventListAdapter(getContext(),listEvents)));
 
         View view = inflater.inflate(R.layout.fragment_event_view, container, false);
 
         TextView nomEvent = view.findViewById(R.id.viewNomEvent);
+
+        Event dataEvent = viewModel.getEventToView().getValue();
+
+        if (dataEvent != null) {
+            nomEvent.setText(dataEvent.getNom());
+        }
 
         return view;
 
