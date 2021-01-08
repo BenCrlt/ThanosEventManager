@@ -3,6 +3,7 @@ package com.example.thanoseventmanager.modeles;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Groupe {
 

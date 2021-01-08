@@ -11,6 +11,7 @@ import android.widget.ListView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.thanoseventmanager.R;
 import com.example.thanoseventmanager.api.GroupeHelper;
@@ -19,6 +20,7 @@ import com.example.thanoseventmanager.listAdapter.GroupListAdapter;
 import com.example.thanoseventmanager.modeles.Event;
 import com.example.thanoseventmanager.modeles.Groupe;
 import com.example.thanoseventmanager.modeles.Lieu;
+import com.example.thanoseventmanager.viewmodels.ViewModel_MainActivity;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -30,6 +32,7 @@ import java.util.List;
 public class FragmentEventList extends Fragment {
     private static final String TAG = "Hello";
     ListView listView;
+    ViewModel_MainActivity viewModel;
 
     public FragmentEventList() {
         // Required empty public constructor
@@ -40,7 +43,8 @@ public class FragmentEventList extends Fragment {
         //Création d'un objet ListView correspondant à "listEvents" du layout activity_main_after_login.xml
         View v = inflater.inflate(R.layout.fragment_event_list, container, false);
         listView = v.findViewById(R.id.listGroups);
-
+        viewModel = new ViewModelProvider(getActivity()).get(ViewModel_MainActivity.class);
+        viewModel.getListAllEvent().observe(getActivity(), listEvents -> listView.setAdapter(new EventListAdapter(getContext(),listEvents)));
         //Création liste d'évènements à partir de la méthode getListData
         //List<Event> listeEvent = new TestListeEvents().getListData();
         //listView.setAdapter(new EventListAdapter(getContext(),listeEvent));
@@ -58,6 +62,7 @@ public class FragmentEventList extends Fragment {
     public void onStart() {
         super.onStart();
         Log.i(TAG, "on start " + getClass().getSimpleName());
+
     }
 
     @Override

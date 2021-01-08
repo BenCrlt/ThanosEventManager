@@ -10,6 +10,7 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
@@ -18,14 +19,26 @@ import com.example.thanoseventmanager.activities.groups_activity.GroupsActivity;
 import com.example.thanoseventmanager.activities.profile_activity.ProfileActivity;
 import com.example.thanoseventmanager.R;
 import com.example.thanoseventmanager.activities.login_activity.LoginActivity;
+import com.example.thanoseventmanager.api.GroupeHelper;
+import com.example.thanoseventmanager.modeles.Event;
+import com.example.thanoseventmanager.modeles.Groupe;
+import com.example.thanoseventmanager.viewmodels.ViewModel_MainActivity;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "Hello";
 
+    ViewModel_MainActivity viewModel;
     FragmentManager fm = getSupportFragmentManager();
     NavController navController;
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
         Log.i(TAG, "on create " + getLocalClassName()) ;
 
         navController = Navigation.findNavController(this, R.id.fragment_nav_host);
+
+        this.viewModel = new ViewModelProvider(this).get(ViewModel_MainActivity.class);
     }
 
     @Override
@@ -71,8 +86,23 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
         Log.i(TAG, "on start " + getLocalClassName()) ;
+        if (mAuth.getCurrentUser() != null) {
+            GroupeHelper.getAllGroupesOfUser(mAuth.getCurrentUser().getUid())
+                    .get()
+                    .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                            Groupe groupeFound;
+                            List<Event> listAllEvents = new ArrayList<Event>();
+                            for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                                groupeFound = document.toObject(Groupe.class);
+                                listAllEvents.addAll(groupeFound.getListeEvents());
+                            }
+                            viewModel.setListAllEvents(listAllEvents);
+                        }
+                    });
+        }
     }
 
     @Override
