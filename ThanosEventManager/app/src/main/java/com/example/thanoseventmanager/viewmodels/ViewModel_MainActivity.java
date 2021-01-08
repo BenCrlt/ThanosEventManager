@@ -9,9 +9,15 @@ import com.example.thanoseventmanager.modeles.Event;
 import java.util.List;
 
 public class ViewModel_MainActivity extends ViewModel {
+
     private MutableLiveData<List<Event>> listAllEvents = new MutableLiveData<List<Event>>();
+    private MutableLiveData<Event> eventToView = new MutableLiveData<>();
 
     public LiveData<List<Event>> getListAllEvent() { return this.listAllEvents; }
 
     public void setListAllEvents(List<Event> newListEvents) { this.listAllEvents.setValue(newListEvents); }
+
+    public LiveData<Event> getEventToView() { return this.eventToView; }
+
+    public void setEventToView(Event event) { this.eventToView.setValue(event); }
 }

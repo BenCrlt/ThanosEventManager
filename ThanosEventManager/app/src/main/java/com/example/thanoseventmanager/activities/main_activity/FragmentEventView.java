@@ -1,31 +1,46 @@
-package com.example.thanoseventmanager;
+package com.example.thanoseventmanager.activities.main_activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-public class FragmentUserList extends Fragment {
+import com.example.thanoseventmanager.R;
+import com.example.thanoseventmanager.listAdapter.EventListAdapter;
+import com.example.thanoseventmanager.modeles.Event;
+import com.example.thanoseventmanager.viewmodels.ViewModel_MainActivity;
 
+public class FragmentEventView extends Fragment {
+
+    ViewModel_MainActivity viewModel;
     private static final String TAG = "Hello";
 
-    public FragmentUserList() {
+    public FragmentEventView() {
         // Required empty public constructor
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        Log.i(TAG, "on create view " + getClass().getSimpleName());
+        viewModel = new ViewModelProvider(this.requireActivity()).get(ViewModel_MainActivity.class);
+        //viewModel.getEventToView().observe(this.requireActivity(), event -> listView.setAdapter(new EventListAdapter(getContext(),listEvents)));
 
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_user_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_event_view, container, false);
+
+        TextView nomEvent = view.findViewById(R.id.viewNomEvent);
+
+        return view;
+
     }
 
     @Override

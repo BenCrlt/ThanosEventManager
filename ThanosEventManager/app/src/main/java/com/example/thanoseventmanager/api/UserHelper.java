@@ -42,14 +42,6 @@ public class UserHelper {
         return UserHelper.getUsersCollection().document(id).update("pseudo", pseudo);
     }
 
-    public static Task<Void> updateUserLat(String id, double latitude) {
-        return UserHelper.getUsersCollection().document(id).update("latitude", latitude);
-    }
-
-    public static Task<Void> updateUserLng(String id, double longitude) {
-        return UserHelper.getUsersCollection().document(id).update("longitude", longitude);
-    }
-
     // --- DELETE ---
 
     public static Task<Void> deleteMember(String id) {
