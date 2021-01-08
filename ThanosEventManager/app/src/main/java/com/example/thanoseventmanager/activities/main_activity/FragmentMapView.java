@@ -1,4 +1,4 @@
-package com.example.thanoseventmanager;
+package com.example.thanoseventmanager.activities.main_activity;
 
 import android.Manifest;
 import android.content.Context;
@@ -19,6 +19,8 @@ import androidx.core.app.ActivityCompat.OnRequestPermissionsResultCallback;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.example.thanoseventmanager.R;
+import com.example.thanoseventmanager.TestListeEvents;
 import com.example.thanoseventmanager.custom.CustomInfoWindowAdapter;
 import com.example.thanoseventmanager.modeles.Event;
 import com.google.android.gms.location.FusedLocationProviderClient;

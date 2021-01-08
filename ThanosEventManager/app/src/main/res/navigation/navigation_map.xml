@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/fragmentMapView"
-        android:name="com.example.thanoseventmanager.FragmentMapView"
+        android:name="com.example.thanoseventmanager.activities.main_activity.FragmentMapView"
         android:label="fragment_map_view"
         tools:layout="@layout/fragment_map_view" />
     <fragment
@@ -17,6 +17,6 @@
         tools:layout="@layout/fragment_user_list" />
     <fragment
         android:id="@+id/fragmentEventList"
-        android:name="com.example.thanoseventmanager.FragmentEventList"
+        android:name="com.example.thanoseventmanager.activities.main_activity.FragmentEventList"
         android:label="fragment_event_list" />
 </navigation>

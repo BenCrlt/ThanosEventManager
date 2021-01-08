@@ -1,4 +1,4 @@
-package com.example.thanoseventmanager;
+package com.example.thanoseventmanager.activities.login_activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -14,10 +14,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.thanoseventmanager.activities.main_activity.MainActivity;
+import com.example.thanoseventmanager.R;
 import com.example.thanoseventmanager.api.UserHelper;
 import com.example.thanoseventmanager.modeles.User;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
@@ -52,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onClickMap(View v) {
         //Launch the map view activity
-        Intent intent = new Intent(this, MapViewActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
@@ -93,7 +94,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void goToMapView() {
-        Intent intent_Login = new Intent(this, MapViewActivity.class) ;
+        Intent intent_Login = new Intent(this, MainActivity.class) ;
         startActivity(intent_Login);
     }
 

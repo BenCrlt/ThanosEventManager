@@ -5,10 +5,10 @@
 
     <fragment
         android:id="@+id/fragmentGroupList"
-        android:name="com.example.thanoseventmanager.FragmentGroupList"
+        android:name="com.example.thanoseventmanager.activities.groups_activity.FragmentGroupList"
         android:label="FragmentGroupList" />
     <fragment
         android:id="@+id/fragmentGroupCreate"
-        android:name="com.example.thanoseventmanager.FragmentGroupCreate"
+        android:name="com.example.thanoseventmanager.activities.groups_activity.FragmentGroupCreate"
         android:label="FragmentGroupCreate" />
 </navigation>

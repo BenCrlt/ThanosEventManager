@@ -1,4 +1,4 @@
-package com.example.thanoseventmanager;
+package com.example.thanoseventmanager.activities.createevent_activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,20 +8,18 @@ import android.view.MenuItem;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 
+import com.example.thanoseventmanager.R;
+import com.example.thanoseventmanager.activities.groups_activity.GroupsActivity;
+import com.example.thanoseventmanager.activities.login_activity.LoginActivity;
+import com.example.thanoseventmanager.activities.profile_activity.ProfileActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class GroupsActivity extends AppCompatActivity {
-
-    NavController navController;
-
+public class CreateEventActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_groups);
-        navController = Navigation.findNavController(this, R.id.fragment_nav_host_GroupsActivity);
+        setContentView(R.layout.activity_create_event);
     }
 
     @Override
@@ -54,4 +52,6 @@ public class GroupsActivity extends AppCompatActivity {
         }
         return(super.onOptionsItemSelected(item));
     }
+
+
 }

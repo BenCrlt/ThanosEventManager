@@ -1,4 +1,4 @@
-package com.example.thanoseventmanager;
+package com.example.thanoseventmanager.activities.main_activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,9 +13,14 @@ import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.example.thanoseventmanager.activities.createevent_activity.CreateEventActivity;
+import com.example.thanoseventmanager.activities.groups_activity.GroupsActivity;
+import com.example.thanoseventmanager.activities.profile_activity.ProfileActivity;
+import com.example.thanoseventmanager.R;
+import com.example.thanoseventmanager.activities.login_activity.LoginActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class MapViewActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "Hello";
 
@@ -25,7 +30,7 @@ public class MapViewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_map_view);
+        setContentView(R.layout.activity_main);
 
         Log.i(TAG, "on create " + getLocalClassName()) ;
 

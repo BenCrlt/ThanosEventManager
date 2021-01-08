@@ -1,22 +1,30 @@
-package com.example.thanoseventmanager;
+package com.example.thanoseventmanager.activities.groups_activity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.EditText;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
+import com.example.thanoseventmanager.activities.profile_activity.ProfileActivity;
+import com.example.thanoseventmanager.R;
+import com.example.thanoseventmanager.activities.login_activity.LoginActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class ProfileActivity extends AppCompatActivity {
+public class GroupsActivity extends AppCompatActivity {
+
+    NavController navController;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profil);
+        setContentView(R.layout.activity_groups);
+        navController = Navigation.findNavController(this, R.id.fragment_nav_host_GroupsActivity);
     }
 
     @Override
@@ -49,11 +57,4 @@ public class ProfileActivity extends AppCompatActivity {
         }
         return(super.onOptionsItemSelected(item));
     }
-
-    public void onClickBoutonEnregistrer(View v) {
-        EditText editTextNewPseudo =findViewById(R.id.editTextNewPseudo);
-        String newName = editTextNewPseudo.getText().toString();
-        //TODO userHelper.setNom();
-    }
-
 }

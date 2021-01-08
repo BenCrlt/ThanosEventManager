@@ -1,21 +1,25 @@
-package com.example.thanoseventmanager;
+package com.example.thanoseventmanager.activities.profile_activity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.thanoseventmanager.R;
+import com.example.thanoseventmanager.activities.groups_activity.GroupsActivity;
+import com.example.thanoseventmanager.activities.login_activity.LoginActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class CreateEventActivity extends AppCompatActivity {
+public class ProfileActivity extends AppCompatActivity {
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_event);
+        setContentView(R.layout.activity_profil);
     }
 
     @Override
@@ -49,5 +53,10 @@ public class CreateEventActivity extends AppCompatActivity {
         return(super.onOptionsItemSelected(item));
     }
 
+    public void onClickBoutonEnregistrer(View v) {
+        EditText editTextNewPseudo =findViewById(R.id.editTextNewPseudo);
+        String newName = editTextNewPseudo.getText().toString();
+        //TODO userHelper.setNom();
+    }
 
 }

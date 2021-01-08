@@ -30,17 +30,17 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".MapViewActivity" />
-        <activity android:name=".LoginActivity">
+        <activity android:name=".activities.main_activity.MainActivity" />
+        <activity android:name=".activities.login_activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".GroupsActivity" />
-        <activity android:name=".CreateEventActivity" />
-        <activity android:name=".ProfileActivity" />
+        <activity android:name=".activities.groups_activity.GroupsActivity" />
+        <activity android:name=".activities.createevent_activity.CreateEventActivity" />
+        <activity android:name=".activities.profile_activity.ProfileActivity" />
     </application>
 
 </manifest>

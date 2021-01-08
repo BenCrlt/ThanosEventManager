@@ -1,4 +1,4 @@
-package com.example.thanoseventmanager;
+package com.example.thanoseventmanager.activities.groups_activity;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.example.thanoseventmanager.R;
 import com.example.thanoseventmanager.api.GroupeHelper;
 import com.example.thanoseventmanager.api.UserHelper;
 import com.example.thanoseventmanager.modeles.User;
