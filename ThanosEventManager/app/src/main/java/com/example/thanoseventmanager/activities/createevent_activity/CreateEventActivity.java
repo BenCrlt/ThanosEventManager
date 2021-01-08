@@ -41,28 +41,6 @@ public class CreateEventActivity extends AppCompatActivity {
         //Récupération du Spinner déclaré dans le fichier main.xml de res/layout
         spinner_grp = (Spinner) findViewById(R.id.spinner_group);
 
-        /********* Spinner Event **********/
-        //Récupération du Spinner déclaré dans le fichier main.xml de res/layout
-        //spinner_evt = (Spinner) findViewById(R.id.spinner_event);
-        //Création d'une liste d'élément à mettre dans le Spinner(pour l'exemple)
-        /*List exempleList2 = new ArrayList();
-        exempleList2.add("Assinie");
-        exempleList2.add("Bassam");
-        exempleList2.add("Abidjan");
-*/
-        /*Le Spinner a besoin d'un adapter pour sa presentation alors on lui passe le context(this) et
-                un fichier de presentation par défaut( android.R.layout.simple_spinner_item)
-        Avec la liste des elements (exemple) */
-        /*ArrayAdapter adapter2 = new ArrayAdapter(
-                this,
-                android.R.layout.simple_spinner_item,
-                exempleList2
-        );
-*/
-        /* On definit une présentation du spinner quand il est déroulé         (android.R.layout.simple_spinner_dropdown_item) */
-        //adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //Enfin on passe l'adapter au Spinner et c'est tout
-        //spinner_evt.setAdapter(adapter2);
     }
 
     @Override
