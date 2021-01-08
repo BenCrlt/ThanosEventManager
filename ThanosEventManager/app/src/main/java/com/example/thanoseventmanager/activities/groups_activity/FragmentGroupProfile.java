@@ -6,19 +6,26 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.thanoseventmanager.R;
+import com.example.thanoseventmanager.firebase.UserHelper;
+import com.example.thanoseventmanager.modeles.User;
 import com.example.thanoseventmanager.viewmodels.ViewModel_GroupsActivity;
+
+import java.util.List;
 
 public class FragmentGroupProfile extends Fragment {
 
     ViewModel_GroupsActivity viewModel;
+    ListView listView;
 
     private static final String TAG = "Hello";
 
@@ -34,6 +41,15 @@ public class FragmentGroupProfile extends Fragment {
         TextView nomGroupe = (TextView)v.findViewById(R.id.fragmentGroupProfile_groupName);
         viewModel = new ViewModelProvider(getActivity()).get(ViewModel_GroupsActivity.class);
         nomGroupe.setText(viewModel.getGroupSelected().getValue().getNom());
+
+        //Récupération des utilisateurs
+        List<User> userList = (List<User>)UserHelper.getAllUsersFromGroupe(viewModel.getGroupSelected().getValue());
+
+        AlertDialog.Builder ErrorMsg = new AlertDialog.Builder(v.getContext());
+        ErrorMsg.setMessage(userList.get(0).getPseudo())
+                .setTitle("Erreur");
+        ErrorMsg.create();
+        ErrorMsg.show();
 
         // Inflate the layout for this fragment
         return v;

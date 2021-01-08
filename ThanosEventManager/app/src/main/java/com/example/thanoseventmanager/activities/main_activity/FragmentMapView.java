@@ -24,10 +24,7 @@ import com.example.thanoseventmanager.R;
 import com.example.thanoseventmanager.TestListeEvents;
 import com.example.thanoseventmanager.firebase.GroupeHelper;
 import com.example.thanoseventmanager.custom.CustomInfoWindowAdapter;
-import com.example.thanoseventmanager.listAdapter.EventListAdapter;
 import com.example.thanoseventmanager.modeles.Event;
-import com.example.thanoseventmanager.modeles.Groupe;
-
 import com.example.thanoseventmanager.viewmodels.ViewModel_MainActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
