@@ -16,7 +16,7 @@ import android.widget.Toast;
 
 import com.example.thanoseventmanager.activities.main_activity.MainActivity;
 import com.example.thanoseventmanager.R;
-import com.example.thanoseventmanager.api.UserHelper;
+import com.example.thanoseventmanager.firebase.UserHelper;
 import com.example.thanoseventmanager.modeles.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -46,9 +46,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        if (mAuth.getCurrentUser() != null) {
-            goToMapView();
-        }
     }
 
     public void onClickMap(View v) {
@@ -61,6 +58,9 @@ public class LoginActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         Log.i(TAG, "on start" + getLocalClassName()) ;
+        if (mAuth.getCurrentUser() != null) {
+            goToMapView();
+        }
     }
 
     @Override

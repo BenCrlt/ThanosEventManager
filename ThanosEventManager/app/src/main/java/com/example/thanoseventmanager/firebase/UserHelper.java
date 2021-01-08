@@ -1,7 +1,8 @@
-package com.example.thanoseventmanager.api;
+package com.example.thanoseventmanager.firebase;
 
 import android.util.Log;
 
+import com.example.thanoseventmanager.modeles.Groupe;
 import com.example.thanoseventmanager.modeles.User;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -34,6 +35,10 @@ public class UserHelper {
 
     public static Query getUserByPhone(String phone) {
         return UserHelper.getUsersCollection().whereEqualTo("numero", phone);
+    }
+
+    public static Query getAllUsersFromGroupe(Groupe grpSelected) {
+        return UserHelper.getUsersCollection().whereIn("id", grpSelected.getListeIdUsers());
     }
 
     // --- UPDATE ---

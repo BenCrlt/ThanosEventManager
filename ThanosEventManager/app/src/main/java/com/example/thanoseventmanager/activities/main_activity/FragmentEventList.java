@@ -33,7 +33,6 @@ public class FragmentEventList extends Fragment {
         listView = v.findViewById(R.id.listGroups);
         viewModel = new ViewModelProvider(getActivity()).get(ViewModel_MainActivity.class);
         viewModel.getListAllEvent().observe(getActivity(), listEvents -> listView.setAdapter(new EventListAdapter(getContext(),listEvents)));
-        //Création liste d'évènements à partir de la méthode getListData
 
         // Inflate the layout for this fragment
         return v;

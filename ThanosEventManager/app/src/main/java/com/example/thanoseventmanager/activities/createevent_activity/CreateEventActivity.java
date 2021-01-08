@@ -2,15 +2,16 @@ package com.example.thanoseventmanager.activities.createevent_activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.ListView;
+import android.widget.EditText;
 import android.widget.Spinner;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,18 +19,22 @@ import com.example.thanoseventmanager.R;
 import com.example.thanoseventmanager.activities.groups_activity.GroupsActivity;
 import com.example.thanoseventmanager.activities.login_activity.LoginActivity;
 import com.example.thanoseventmanager.activities.profile_activity.ProfileActivity;
-import com.example.thanoseventmanager.api.GroupeHelper;
+import com.example.thanoseventmanager.firebase.GroupeHelper;
+import com.example.thanoseventmanager.firebase.GroupeHelper;
+import com.example.thanoseventmanager.modeles.Event;
 import com.example.thanoseventmanager.modeles.Groupe;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
-import static com.example.thanoseventmanager.api.GroupeHelper.getAllGroupesOfUser;
-
 public class CreateEventActivity extends AppCompatActivity {
+    private final static String TAG = "hello";
     Spinner spinner_grp, spinner_evt ;
 
     @Override
@@ -40,7 +45,6 @@ public class CreateEventActivity extends AppCompatActivity {
         /********* Spinner Groupe **********/
         //Récupération du Spinner déclaré dans le fichier main.xml de res/layout
         spinner_grp = (Spinner) findViewById(R.id.spinner_group);
-
     }
 
     @Override
@@ -111,13 +115,17 @@ public class CreateEventActivity extends AppCompatActivity {
     // Bouton Créer
     public void onClick_create_event(View v)
     {
+        Event new_event = new Event() ;
+
+        String nom_event ;
+        Date date_event ;
         // Récupérer Nom Event
-
-
+        nom_event = ((EditText)findViewById(R.id.editText_Name_event)).getText().toString() ;
+        new_event.setNom(nom_event);
 
         // Récupérer date event
-
-
+        //date_event = ((com.google.type.Date)findViewById(R.id.editText_Date_event)) ;
+        //new_event.setDate(date_event) ;
 
         // Récupérer groupe event
 

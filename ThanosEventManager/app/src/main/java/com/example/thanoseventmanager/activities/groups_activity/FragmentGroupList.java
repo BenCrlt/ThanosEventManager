@@ -19,7 +19,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.example.thanoseventmanager.R;
-import com.example.thanoseventmanager.api.GroupeHelper;
+import com.example.thanoseventmanager.firebase.GroupeHelper;
 import com.example.thanoseventmanager.listAdapter.GroupListAdapter;
 import com.example.thanoseventmanager.modeles.Groupe;
 import com.example.thanoseventmanager.viewmodels.ViewModel_GroupsActivity;

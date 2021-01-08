@@ -1,12 +1,8 @@
-package com.example.thanoseventmanager.api;
-
-import android.util.Log;
+package com.example.thanoseventmanager.firebase;
 
 import com.example.thanoseventmanager.modeles.Event;
 import com.example.thanoseventmanager.modeles.Groupe;
 import com.example.thanoseventmanager.modeles.Lieu;
-import com.example.thanoseventmanager.modeles.User;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -14,10 +10,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
-import java.security.acl.Group;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 public class GroupeHelper {
 
@@ -71,7 +64,7 @@ public class GroupeHelper {
     // EVENT MANAGER
 
     public static Task<Void> addEvent(Groupe grp, String id, String nom, Date date, Lieu lieu) {
-        grp.addEvent(new Event(id, nom, date, lieu));
+        grp.addEvent(new Event(id, nom, date, grp, lieu));
         return GroupeHelper.getGroupesCollection().document(grp.getId()).update("listEvents", grp.getListeEvents());
     }
 
