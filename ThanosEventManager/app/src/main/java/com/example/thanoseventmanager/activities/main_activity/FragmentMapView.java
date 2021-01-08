@@ -18,13 +18,17 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat.OnRequestPermissionsResultCallback;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.thanoseventmanager.R;
 import com.example.thanoseventmanager.TestListeEvents;
 import com.example.thanoseventmanager.api.GroupeHelper;
 import com.example.thanoseventmanager.custom.CustomInfoWindowAdapter;
+import com.example.thanoseventmanager.listAdapter.EventListAdapter;
 import com.example.thanoseventmanager.modeles.Event;
 import com.example.thanoseventmanager.modeles.Groupe;
+
+import com.example.thanoseventmanager.viewmodels.ViewModel_MainActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -61,6 +65,7 @@ public class FragmentMapView extends Fragment implements
     private FusedLocationProviderClient fusedLocationClient;
     private LocationRequest locationRequest;
     private LocationCallback locationCallback;
+    private ViewModel_MainActivity viewModel;
 
     public FragmentMapView() {
         // Required empty public constructor
@@ -79,6 +84,8 @@ public class FragmentMapView extends Fragment implements
 
         //Générer la liste des events de l'utilisateur
         //eventList = ((MainActivity)getActivity()).getEventList();
+
+        viewModel = new ViewModelProvider(getActivity()).get(ViewModel_MainActivity.class);
     }
 
     @Override
@@ -173,7 +180,9 @@ public class FragmentMapView extends Fragment implements
         gm.getUiSettings().setMapToolbarEnabled(false);
 
         //Ajout de marqueurs sur la carte
-        this.setEventMarkers();
+        if (viewModel.getListAllEvent().getValue() != null) {
+            setEventMarkers(viewModel.getListAllEvent().getValue());
+        }
 
         //Activation de la localisation avec permission requise
         this.enableMyLocation();
@@ -304,10 +313,10 @@ public class FragmentMapView extends Fragment implements
     }
 
     //Placement des marqueurs des différents events sur la carte
-    private void setEventMarkers(){
+    private void setEventMarkers(List<Event> listeEvents){
 
         //Récupération de la liste des events
-        List<Event> listeEvents = new TestListeEvents().getListData();
+        //List<Event> listeEvents = new TestListeEvents().getListData();
 
         //Boucle pour chaque event de la liste
         for( Event event : listeEvents) {
@@ -331,7 +340,7 @@ public class FragmentMapView extends Fragment implements
                 MarkerOptions options = new MarkerOptions()
                         .position(coordsEvent)
                         .title(event.getNom())
-                        .snippet("Date : " + dateEvent + "\nGroupe : " + event.getGroupe().getNom())
+                        .snippet("Date : " + dateEvent + "\nGroupe : " + event.getGrpName())
                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
 
                 //Ajout d'un marqueur

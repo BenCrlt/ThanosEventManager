@@ -61,8 +61,7 @@ public class EventListAdapter extends BaseAdapter {
 
         holder.nomEventView.setText(event.getNom());
         holder.dateEventView.setText(event.getDate().toString());
-        //holder.nomGroupeView.setText("Groupe: " + event.getGroupe().getNom());
-        holder.nomGroupeView.setText("Groupe: ");
+        holder.nomGroupeView.setText("Groupe: " + event.getGrpName());
 
         //Pour le logo de l'event
         int imageId = this.getMipmapResIdByName(event.getImage());

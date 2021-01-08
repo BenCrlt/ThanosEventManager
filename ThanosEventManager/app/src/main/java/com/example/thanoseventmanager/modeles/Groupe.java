@@ -39,6 +39,8 @@ public class Groupe {
         this.nom = nom;
     }
 
+    public String toString() { return this.getNom(); };
+
     // LISTE USERS ID
 
     public ArrayList<String> getListeIdUsers() {
