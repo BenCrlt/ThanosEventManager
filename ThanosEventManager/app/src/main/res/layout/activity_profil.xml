@@ -22,8 +22,8 @@
         android:layout_height="49dp"
         android:layout_marginTop="16dp"
         android:ems="10"
+        android:hint="Saisir un nouveau pseudo"
         android:inputType="textPersonName"
-        android:text="Saisir un nouveau pseudo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView104" />
@@ -33,6 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="42dp"
+        android:onClick="onClickBoutonEnregistrer"
         android:text="Enregistrer"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
