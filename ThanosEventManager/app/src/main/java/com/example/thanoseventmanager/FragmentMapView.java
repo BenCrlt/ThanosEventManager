@@ -164,7 +164,7 @@ public class FragmentMapView extends Fragment implements
 
         //Récupération de la carte Google Maps
         gm = googleMap;
-        
+
         //Paramétrages de la carte
         gm.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         gm.getUiSettings().setZoomControlsEnabled(true);
