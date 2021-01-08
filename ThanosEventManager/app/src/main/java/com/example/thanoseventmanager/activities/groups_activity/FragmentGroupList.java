@@ -6,12 +6,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
@@ -19,13 +22,10 @@ import com.example.thanoseventmanager.R;
 import com.example.thanoseventmanager.api.GroupeHelper;
 import com.example.thanoseventmanager.listAdapter.GroupListAdapter;
 import com.example.thanoseventmanager.modeles.Groupe;
+import com.example.thanoseventmanager.viewmodels.ViewModel_GroupsActivity;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class FragmentGroupList extends Fragment implements View.OnClickListener {
     private static final String TAG = "Hello";
@@ -33,6 +33,7 @@ public class FragmentGroupList extends Fragment implements View.OnClickListener 
     NavController navController;
     Button btn_createGroupe;
     ListView listView;
+    ViewModel_GroupsActivity viewModel;
 
     public FragmentGroupList() {
         // Required empty public constructor
@@ -43,10 +44,25 @@ public class FragmentGroupList extends Fragment implements View.OnClickListener 
         //Création d'un objet ListView correspondant à "listEvents" du layout activity_main_after_login.xml
         View v = inflater.inflate(R.layout.fragment_group_list, container, false);
         listView = v.findViewById(R.id.listGroups);
+        listView.addHeaderView(setTitle("Mes groupes"));
+
         navController = Navigation.findNavController(getActivity(), R.id.fragment_nav_host_GroupsActivity);
 
         btn_createGroupe = v.findViewById(R.id.btn_createGroupe);
         btn_createGroupe.setOnClickListener(this);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                Groupe groupSelected = (Groupe)listView.getItemAtPosition(position);
+                viewModel = new ViewModelProvider(getActivity()).get(ViewModel_GroupsActivity.class);
+                viewModel.setGroupSelected(groupSelected);
+                navController.popBackStack(navController.getGraph().getStartDestination(), false);
+                navController.navigate(R.id.fragmentGroupProfile);
+            }
+        });
+
         // Inflate the layout for this fragment
         return v;
     }
@@ -126,5 +142,15 @@ public class FragmentGroupList extends Fragment implements View.OnClickListener 
     public void onDetach() {
         super.onDetach();
         Log.i(TAG, "on detach " + getClass().getSimpleName());
+    }
+
+    public TextView setTitle(String name){
+        TextView textView = new TextView(this.getContext());
+        textView.setText(name);
+        textView.setTextSize(30);
+        textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        textView.setHeight(150);
+
+        return textView;
     }
 }
