@@ -41,10 +41,6 @@ public class CreateEventActivity extends AppCompatActivity {
         //Récupération du Spinner déclaré dans le fichier main.xml de res/layout
         spinner_grp = (Spinner) findViewById(R.id.spinner_group);
 
-
-
-
-
         /********* Spinner Event **********/
         //Récupération du Spinner déclaré dans le fichier main.xml de res/layout
         //spinner_evt = (Spinner) findViewById(R.id.spinner_event);
@@ -100,8 +96,6 @@ public class CreateEventActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //Enfin on passe l'adapter au Spinner et c'est tout
         spinner_grp.setAdapter(adapter);
-
-
     }
 
     @Override
