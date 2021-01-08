@@ -39,8 +39,10 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import static com.example.thanoseventmanager.firebase.GroupeHelper.updateEvent;
 
 public class CreateEventActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+
     private final static String TAG = "hello";
     Spinner spinner_grp, spinner_evt ;
     EditText editDateTime;
@@ -159,7 +161,7 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
     {
         Event new_event = new Event() ;
 
-        String nom_event ;
+        String nom_event, address_event, cp_event, ville_event ;
         Date date_event ;
         // Récupérer Nom Event
         nom_event = ((EditText)findViewById(R.id.editText_Name_event)).getText().toString() ;
@@ -170,22 +172,23 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         //new_event.setDate(date_event) ;
 
         // Récupérer groupe event
+        // Voir avec Benoit
 
-
-
-        /****** Récupérer localisation event ******/
+        /******* Récupérer localisation event *******/
         // Récupérer Addresse
-
-
+        address_event = ((EditText)findViewById(R.id.editText_address_event)).getText().toString() ;
+        new_event.getLieu().setAdresse(address_event);
 
         // Récupérer Code Postal
-
-
+        cp_event = ((EditText)findViewById(R.id.editText_cp_event)).getText().toString() ;
+        new_event.getLieu().setCp(cp_event);
 
         // Récupérer Ville
+        ville_event = ((EditText)findViewById(R.id.editText_ville_event)).getText().toString() ;
+        new_event.getLieu().setVille(ville_event) ;
 
-
-
+        // Update Event
+        //updateEvent(grp_event, new_event) ;
         
     }
 

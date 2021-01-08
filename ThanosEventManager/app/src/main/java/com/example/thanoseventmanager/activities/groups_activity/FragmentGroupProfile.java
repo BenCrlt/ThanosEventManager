@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,6 +20,7 @@ import com.example.thanoseventmanager.viewmodels.ViewModel_GroupsActivity;
 public class FragmentGroupProfile extends Fragment {
 
     ViewModel_GroupsActivity viewModel;
+    ListView listView;
 
     private static final String TAG = "Hello";
 
@@ -34,6 +36,11 @@ public class FragmentGroupProfile extends Fragment {
         TextView nomGroupe = (TextView)v.findViewById(R.id.fragmentGroupProfile_groupName);
         viewModel = new ViewModelProvider(getActivity()).get(ViewModel_GroupsActivity.class);
         nomGroupe.setText(viewModel.getGroupSelected().getValue().getNom());
+
+        //Récupération des utilisateurs
+        //List<User> userList = UserHelper.getAllUsersFromGroupe((Groupe)viewModel.getGroupSelected().getValue());
+
+        //TODO : modification groupe, voir les utilisateurs
 
         // Inflate the layout for this fragment
         return v;

@@ -137,14 +137,14 @@ public class MainActivity extends AppCompatActivity {
         navController.popBackStack(navController.getGraph().getStartDestination(), false);
     }
 
-    public void onClickFragmentUserList(View v) {
-        navController.popBackStack(navController.getGraph().getStartDestination(), false);
-        navController.navigate(R.id.fragmentUserList);
-    }
-
     public void onClickFragmentEventList(View v) {
         navController.popBackStack(navController.getGraph().getStartDestination(), false);
         navController.navigate(R.id.fragmentEventList);
+    }
+
+    public void onClickFragmentEventView(View v) {
+        navController.popBackStack(navController.getGraph().getStartDestination(), false);
+        navController.navigate(R.id.fragmentEventView);
     }
 
     public void onClickCreateEvent(View v) {
