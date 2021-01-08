@@ -11,16 +11,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.thanoseventmanager.R;
-import com.example.thanoseventmanager.firebase.UserHelper;
-import com.example.thanoseventmanager.modeles.User;
 import com.example.thanoseventmanager.viewmodels.ViewModel_GroupsActivity;
-
-import java.util.List;
 
 public class FragmentGroupProfile extends Fragment {
 
@@ -43,13 +38,9 @@ public class FragmentGroupProfile extends Fragment {
         nomGroupe.setText(viewModel.getGroupSelected().getValue().getNom());
 
         //Récupération des utilisateurs
-        List<User> userList = (List<User>)UserHelper.getAllUsersFromGroupe(viewModel.getGroupSelected().getValue());
+        //List<User> userList = UserHelper.getAllUsersFromGroupe((Groupe)viewModel.getGroupSelected().getValue());
 
-        AlertDialog.Builder ErrorMsg = new AlertDialog.Builder(v.getContext());
-        ErrorMsg.setMessage(userList.get(0).getPseudo())
-                .setTitle("Erreur");
-        ErrorMsg.create();
-        ErrorMsg.show();
+        //TODO : modification groupe, voir les utilisateurs
 
         // Inflate the layout for this fragment
         return v;
