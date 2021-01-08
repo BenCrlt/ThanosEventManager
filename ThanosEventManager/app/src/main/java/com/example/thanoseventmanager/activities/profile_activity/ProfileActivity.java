@@ -8,12 +8,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.thanoseventmanager.R;
 import com.example.thanoseventmanager.activities.groups_activity.GroupsActivity;
 import com.example.thanoseventmanager.activities.login_activity.LoginActivity;
+import com.example.thanoseventmanager.api.GroupeHelper;
+import com.example.thanoseventmanager.api.UserHelper;
+import com.example.thanoseventmanager.modeles.User;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 public class ProfileActivity extends AppCompatActivity {
     @Override
@@ -56,7 +63,35 @@ public class ProfileActivity extends AppCompatActivity {
     public void onClickBoutonEnregistrer(View v) {
         EditText editTextNewPseudo =findViewById(R.id.editTextNewPseudo);
         String newName = editTextNewPseudo.getText().toString();
-        //TODO userHelper.setNom();
+
+        UserHelper.getUserByID(FirebaseAuth.getInstance().getCurrentUser().getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                User usr = documentSnapshot.toObject(User.class);
+                if (usr != null){
+                    GroupeHelper.generateGroupeId().addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                            if(!editTextNewPseudo.getText().toString().isEmpty()) {
+                                UserHelper.updateUserPseudo(usr.getId(), newName);
+
+                                AlertDialog.Builder ErrorMsg = new AlertDialog.Builder(v.getContext());
+                                ErrorMsg.setMessage("Votre nouvelle identité : " + newName)
+                                        .setTitle("Changement effectué");
+                                ErrorMsg.create();
+                                ErrorMsg.show();
+                            }else {
+                                AlertDialog.Builder ErrorMsg = new AlertDialog.Builder(v.getContext());
+                                ErrorMsg.setMessage("Veuillez rentrer un pseudo")
+                                        .setTitle("Erreur");
+                                ErrorMsg.create();
+                                ErrorMsg.show();
+                            }
+                        }
+                    });
+                }
+            }
+        });
     }
 
 }
