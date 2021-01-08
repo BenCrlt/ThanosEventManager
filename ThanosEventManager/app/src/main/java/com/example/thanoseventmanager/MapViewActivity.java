@@ -111,4 +111,10 @@ public class MapViewActivity extends AppCompatActivity {
         navController.popBackStack(navController.getGraph().getStartDestination(), false);
         navController.navigate(R.id.fragmentEventList);
     }
+
+    public void onClickCreateEvent(View v) {
+        Intent intent = new Intent(this, CreateEventActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        startActivity(intent);
+    }
 }

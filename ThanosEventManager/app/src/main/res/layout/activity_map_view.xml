@@ -43,6 +43,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:background="@drawable/baseline_add_box_24"
+            android:onClick="onClickCreateEvent"
             app:iconPadding="8dp" />
 
         <Button
