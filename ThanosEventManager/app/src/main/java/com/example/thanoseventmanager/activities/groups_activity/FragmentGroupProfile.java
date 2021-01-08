@@ -1,4 +1,4 @@
-package com.example.thanoseventmanager.activities.main_activity;
+package com.example.thanoseventmanager.activities.groups_activity;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -6,7 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,26 +14,26 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.thanoseventmanager.R;
-import com.example.thanoseventmanager.listAdapter.EventListAdapter;
-import com.example.thanoseventmanager.viewmodels.ViewModel_MainActivity;
+import com.example.thanoseventmanager.viewmodels.ViewModel_GroupsActivity;
 
-public class FragmentEventList extends Fragment {
+public class FragmentGroupProfile extends Fragment {
+
+    ViewModel_GroupsActivity viewModel;
+
     private static final String TAG = "Hello";
-    ListView listView;
-    ViewModel_MainActivity viewModel;
 
-    public FragmentEventList() {
-        // Required empty public constructor
+    public void FragmentGroupProfile(){
+        //empty constructor
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //Création d'un objet ListView correspondant à "listEvents" du layout activity_main_after_login.xml
-        View v = inflater.inflate(R.layout.fragment_event_list, container, false);
-        listView = v.findViewById(R.id.listGroups);
-        viewModel = new ViewModelProvider(getActivity()).get(ViewModel_MainActivity.class);
-        viewModel.getListAllEvent().observe(getActivity(), listEvents -> listView.setAdapter(new EventListAdapter(getContext(),listEvents)));
-        //Création liste d'évènements à partir de la méthode getListData
+        View v = inflater.inflate(R.layout.fragment_group_profile, container, false);
+
+        //Récupération des informations du groupe
+        TextView nomGroupe = (TextView)v.findViewById(R.id.fragmentGroupProfile_groupName);
+        viewModel = new ViewModelProvider(getActivity()).get(ViewModel_GroupsActivity.class);
+        nomGroupe.setText(viewModel.getGroupSelected().getValue().getNom());
 
         // Inflate the layout for this fragment
         return v;
@@ -98,4 +98,5 @@ public class FragmentEventList extends Fragment {
         super.onDetach();
         Log.i(TAG, "on detach " + getClass().getSimpleName());
     }
+
 }
