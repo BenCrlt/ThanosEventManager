@@ -133,16 +133,16 @@ public class MainActivity extends AppCompatActivity {
         Log.i(TAG, "on resume " + getLocalClassName()) ;
     }
 
-    public void onClickFragmentMapView() {
+    public void onClickFragmentMapView(View v) {
         navController.popBackStack(navController.getGraph().getStartDestination(), false);
     }
 
-    public void onClickFragmentEventList() {
+    public void onClickFragmentEventList(View v) {
         navController.popBackStack(navController.getGraph().getStartDestination(), false);
         navController.navigate(R.id.fragmentEventList);
     }
 
-    public void onClickFragmentEventView() {
+    public void onClickFragmentEventView(View v) {
         navController.popBackStack(navController.getGraph().getStartDestination(), false);
         navController.navigate(R.id.fragmentEventView);
     }
