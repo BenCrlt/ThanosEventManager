@@ -1,15 +1,21 @@
 package com.example.thanoseventmanager.activities.createevent_activity;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TimePicker;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,12 +36,17 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class CreateEventActivity extends AppCompatActivity {
+public class CreateEventActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
     private final static String TAG = "hello";
     Spinner spinner_grp, spinner_evt ;
+    Button btnDatePicker;
+    EditText editDateTime;
+    String test;
+    int year, month, day, hour, minute;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,6 +56,51 @@ public class CreateEventActivity extends AppCompatActivity {
         /********* Spinner Groupe **********/
         //Récupération du Spinner déclaré dans le fichier main.xml de res/layout
         spinner_grp = (Spinner) findViewById(R.id.spinner_group);
+        editDateTime = (EditText)findViewById(R.id.editText_Date_event);
+        editDateTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar calendar = Calendar.getInstance();
+                year = calendar.get(Calendar.YEAR);
+                month = calendar.get(Calendar.MONTH);
+                day = calendar.get(Calendar.DAY_OF_MONTH);
+                DatePickerDialog datePickerDialog = new DatePickerDialog(CreateEventActivity.this, CreateEventActivity.this,year, month,day);
+                datePickerDialog.show();
+            }
+        });
+        /*btnDatePicker = (Button)findViewById(R.id.btn_datePicker);
+        btnDatePicker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar calendar = Calendar.getInstance();
+                year = calendar.get(Calendar.YEAR);
+                month = calendar.get(Calendar.MONTH);
+                day = calendar.get(Calendar.DAY_OF_MONTH);
+                DatePickerDialog datePickerDialog = new DatePickerDialog(CreateEventActivity.this, CreateEventActivity.this,year, month,day);
+                datePickerDialog.show();
+            }
+        });*/
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int yearSet, int monthSet, int dayOfMonth) {
+        year = yearSet;
+        day = dayOfMonth;
+        month = monthSet;
+        Calendar c = Calendar.getInstance();
+        hour = c.get(Calendar.HOUR);
+        minute = c.get(Calendar.MINUTE);
+        TimePickerDialog timePickerDialog = new TimePickerDialog(CreateEventActivity.this, CreateEventActivity.this, hour, minute, DateFormat.is24HourFormat(this));
+        timePickerDialog.show();
+    }
+
+    @Override
+    public void onTimeSet(TimePicker view, int hourOfDay, int minuteSet) {
+        hour = hourOfDay;
+        minute = minuteSet;
+        Calendar selectedDate = Calendar.getInstance();
+        selectedDate.set(year, month, day, hour, minute);
+        editDateTime.setText(selectedDate.getTime().toString());
     }
 
     @Override
@@ -146,4 +202,5 @@ public class CreateEventActivity extends AppCompatActivity {
 
         
     }
+
 }
