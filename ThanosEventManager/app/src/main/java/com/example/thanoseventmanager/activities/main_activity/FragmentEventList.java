@@ -14,20 +14,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.thanoseventmanager.R;
-import com.example.thanoseventmanager.api.GroupeHelper;
 import com.example.thanoseventmanager.listAdapter.EventListAdapter;
-import com.example.thanoseventmanager.listAdapter.GroupListAdapter;
-import com.example.thanoseventmanager.modeles.Event;
-import com.example.thanoseventmanager.modeles.Groupe;
-import com.example.thanoseventmanager.modeles.Lieu;
 import com.example.thanoseventmanager.viewmodels.ViewModel_MainActivity;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.QuerySnapshot;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 public class FragmentEventList extends Fragment {
     private static final String TAG = "Hello";

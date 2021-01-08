@@ -16,16 +16,12 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.example.thanoseventmanager.R;
-import com.example.thanoseventmanager.api.GroupeHelper;
+import com.example.thanoseventmanager.firebase.GroupeHelper;
 import com.example.thanoseventmanager.listAdapter.GroupListAdapter;
 import com.example.thanoseventmanager.modeles.Groupe;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class FragmentGroupList extends Fragment implements View.OnClickListener {
     private static final String TAG = "Hello";

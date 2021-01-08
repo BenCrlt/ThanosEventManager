@@ -16,7 +16,7 @@ import android.widget.Toast;
 
 import com.example.thanoseventmanager.activities.main_activity.MainActivity;
 import com.example.thanoseventmanager.R;
-import com.example.thanoseventmanager.api.UserHelper;
+import com.example.thanoseventmanager.firebase.UserHelper;
 import com.example.thanoseventmanager.modeles.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;

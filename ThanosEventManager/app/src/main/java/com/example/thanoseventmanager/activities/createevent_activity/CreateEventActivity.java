@@ -2,15 +2,15 @@ package com.example.thanoseventmanager.activities.createevent_activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.ListView;
 import android.widget.Spinner;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,18 +18,26 @@ import com.example.thanoseventmanager.R;
 import com.example.thanoseventmanager.activities.groups_activity.GroupsActivity;
 import com.example.thanoseventmanager.activities.login_activity.LoginActivity;
 import com.example.thanoseventmanager.activities.profile_activity.ProfileActivity;
-import com.example.thanoseventmanager.api.GroupeHelper;
+import com.example.thanoseventmanager.firebase.GroupeHelper;
 import com.example.thanoseventmanager.modeles.Groupe;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.model.RectangularBounds;
+import com.google.android.libraries.places.api.model.TypeFilter;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import static com.example.thanoseventmanager.api.GroupeHelper.getAllGroupesOfUser;
-
 public class CreateEventActivity extends AppCompatActivity {
+    private final static String TAG = "hello";
     Spinner spinner_grp, spinner_evt ;
 
     @Override
@@ -63,6 +71,32 @@ public class CreateEventActivity extends AppCompatActivity {
         //adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //Enfin on passe l'adapter au Spinner et c'est tout
         //spinner_evt.setAdapter(adapter2);
+
+        //Autocompletion place
+        //initialize the SDK + create new place instance
+        Places.initialize(getApplicationContext(), "AIzaSyAnAk7lrVjKFFdj3BaozOEFThgFDdb4SIA");
+        PlacesClient placesClient = Places.createClient(this);
+
+        AutocompleteSupportFragment autocompleteSupportFragment = (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+        autocompleteSupportFragment.setTypeFilter(TypeFilter.ESTABLISHMENT);
+        autocompleteSupportFragment.setLocationBias(RectangularBounds.newInstance(
+                new LatLng(-33.880490, 151.184363),
+                new LatLng(-33.858754, 151.229596)
+        ));
+        autocompleteSupportFragment.setCountries("FR");
+        autocompleteSupportFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
+
+        autocompleteSupportFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(@NonNull Place place) {
+                Log.d(TAG, "Place " + place.getName() + " , " + place.getId());
+            }
+
+            @Override
+            public void onError(@NonNull Status status) {
+                Log.d(TAG, "ERRROOOOOOOOOOR " + status);
+            }
+        });
     }
 
     @Override

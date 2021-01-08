@@ -1,4 +1,4 @@
-package com.example.thanoseventmanager.api;
+package com.example.thanoseventmanager.firebase;
 
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;

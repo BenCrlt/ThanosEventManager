@@ -17,8 +17,8 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.example.thanoseventmanager.R;
-import com.example.thanoseventmanager.api.GroupeHelper;
-import com.example.thanoseventmanager.api.UserHelper;
+import com.example.thanoseventmanager.firebase.GroupeHelper;
+import com.example.thanoseventmanager.firebase.UserHelper;
 import com.example.thanoseventmanager.modeles.User;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
