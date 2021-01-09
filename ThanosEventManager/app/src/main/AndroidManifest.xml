@@ -41,6 +41,7 @@
         <activity android:name=".activities.groups_activity.GroupsActivity" />
         <activity android:name=".activities.createevent_activity.CreateEventActivity" />
         <activity android:name=".activities.profile_activity.ProfileActivity" />
+        <receiver android:name=".actionreceiver.ActionReceiver" />
     </application>
 
 </manifest>
