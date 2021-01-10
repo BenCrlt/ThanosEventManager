@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
         navController.navigate(R.id.fragmentEventList);
     }
 
-    public void onClickFragmentEventView(View v) {
+    public void onClickFragmentEventView() {
         navController.popBackStack(navController.getGraph().getStartDestination(), false);
         navController.navigate(R.id.fragmentEventView);
     }

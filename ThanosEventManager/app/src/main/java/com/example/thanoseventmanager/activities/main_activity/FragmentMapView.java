@@ -352,7 +352,7 @@ public class FragmentMapView extends Fragment implements
                 gm.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
                     @Override
                     public void onInfoWindowClick(Marker marker) {
-                        //((MainActivity)getActivity()).onClickFragmentEventView();
+                        ((MainActivity)requireActivity()).onClickFragmentEventView();
                     }
                 });
 
