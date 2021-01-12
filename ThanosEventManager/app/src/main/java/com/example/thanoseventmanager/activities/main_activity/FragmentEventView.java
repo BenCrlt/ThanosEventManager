@@ -24,7 +24,7 @@ import com.example.thanoseventmanager.viewmodels.ViewModel_MainActivity;
 public class FragmentEventView extends Fragment {
 
     ViewModel_MainActivity viewModel;
-    private static final String TAG = "Hello";
+    private static final String TAG = "EventView";
 
     public FragmentEventView() {
         // Required empty public constructor
@@ -33,20 +33,34 @@ public class FragmentEventView extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        Log.i(TAG, "on create view " + getClass().getSimpleName());
+
+        //Récupération de l'evet selectionné via le ViewModel
         viewModel = new ViewModelProvider(this.requireActivity()).get(ViewModel_MainActivity.class);
-
-        View view = inflater.inflate(R.layout.fragment_event_view, container, false);
-
-        TextView nomEvent = view.findViewById(R.id.viewNomEvent);
-
         Event dataEvent = viewModel.getEventToView().getValue();
 
+        //Récupération du fragment
+        View view = inflater.inflate(R.layout.fragment_event_view, container, false);
+        TextView nomEvent = view.findViewById(R.id.eventTitre);
+        ImageView eventIcon1 = view.findViewById(R.id.eventIcon1);
+        ImageView eventIcon2 = view.findViewById(R.id.eventIcon2);
+
+        //Traitement des données à afficher
         if (dataEvent != null) {
+
+            //Affichage du titre
             nomEvent.setText(dataEvent.getNom());
+
+            //Récupération de l'id de l'image de l'event
+            int eventIcon = this.getMipmapResIdByName(dataEvent.getImage());
+            //Affichage des images
+            if (eventIcon != 0) {
+                eventIcon1.setImageResource(eventIcon);
+                eventIcon2.setImageResource(eventIcon);
+            }
         }
 
         return view;
-
     }
 
     @Override
@@ -101,5 +115,12 @@ public class FragmentEventView extends Fragment {
     public void onDetach() {
         super.onDetach();
         Log.i(TAG, "on detach " + getClass().getSimpleName());
+    }
+
+    // Retrouver l'ID d'une image à l'aide du nom du fichier image dans /mipmap
+    private int getMipmapResIdByName(String resName)  {
+        String pkgName = this.requireActivity().getPackageName();
+        // Return 0 if not found.
+        return this.requireActivity().getResources().getIdentifier(resName , "mipmap", pkgName);
     }
 }
