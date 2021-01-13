@@ -48,7 +48,7 @@ public class UserListAdapter extends BaseAdapter {
             holder = new UserListAdapter.ViewHolder();
             holder.imageUser = (ImageView) convertView.findViewById(R.id.userListView_userProfilePicture);
             holder.pseudoUserView = (TextView) convertView.findViewById(R.id.userListView_userName);
-            holder.numberUserView = (TextView) convertView.findViewById(R.id.textView_members);
+            holder.numberUserView = (TextView) convertView.findViewById(R.id.userListView_userPhoneNumber);
             convertView.setTag(holder);
         } else {
             holder = (UserListAdapter.ViewHolder) convertView.getTag();
@@ -60,7 +60,7 @@ public class UserListAdapter extends BaseAdapter {
         holder.numberUserView.setText(user.getNumero());
 
         //Pour le logo de l'event
-        int imageId = this.getMipmapResIdByName("teamwork");
+        int imageId = this.getMipmapResIdByName("hipster");
         holder.imageUser.setImageResource(imageId);
 
         //Pour l'image

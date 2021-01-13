@@ -20,8 +20,13 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.thanoseventmanager.R;
 import com.example.thanoseventmanager.actionreceiver.ActionReceiver;
+import com.example.thanoseventmanager.firebase.UserHelper;
+import com.example.thanoseventmanager.listAdapter.UserListAdapter;
 import com.example.thanoseventmanager.modeles.Groupe;
+import com.example.thanoseventmanager.modeles.User;
 import com.example.thanoseventmanager.viewmodels.ViewModel_GroupsActivity;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class FragmentGroupProfile extends Fragment {
 
@@ -43,6 +48,7 @@ public class FragmentGroupProfile extends Fragment {
         TextView nomGroupe = (TextView)v.findViewById(R.id.fragmentGroupProfile_groupName);
         TextView usersCount = (TextView)v.findViewById(R.id.fragmentGroupProfile_groupMembersCount);
         viewModel = new ViewModelProvider(getActivity()).get(ViewModel_GroupsActivity.class);
+        listView = (ListView)v.findViewById(R.id.listView_GroupProfile_userList);
 
         //récupération de l'objet (Java) groupe selectionné
         groupSelected = viewModel.getGroupSelected().getValue();
@@ -50,6 +56,23 @@ public class FragmentGroupProfile extends Fragment {
         nomGroupe.setText(groupSelected.getNom());
         usersCount.setText(String.valueOf(groupSelected.getListeIdUsers().size()) + " membre(s) dans ce groupe");
 
+        populateUserList();
+        sendNotification();
+
+        // Inflate the layout for this fragment
+        return v;
+    }
+
+    public void populateUserList(){
+        UserHelper.getAllUsersFromGroupe(groupSelected).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                listView.setAdapter(new UserListAdapter(getContext(),queryDocumentSnapshots.toObjects(User.class)));
+            }
+        }) ;
+    }
+
+    public void sendNotification(){
         //Création d'une intent correspondant au choix d'utilisateur sur la notification
         Intent acceptIntent = new Intent(this.getContext(), ActionReceiver. class ) ;
         Intent declineIntent = new Intent(this.getContext(), ActionReceiver. class ) ;
@@ -73,24 +96,11 @@ public class FragmentGroupProfile extends Fragment {
         //Faire apparaître la notif
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this.getContext());
         notificationManager.notify(1, builder.build());
-
-        // Inflate the layout for this fragment
-        return v;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-        //TODO : récupérer la liste des utilisateurs du groupes -> listView_userList
-        /*// Peuple la listView à l'aide de UserListAdapter avec les informations de la requête
-        UserHelper.getAllUsersFromGroupe(groupSelected).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                listView.setAdapter(new UserListAdapter(getContext(),queryDocumentSnapshots.toObjects(User.class)));
-            }
-        }) ;*/
     }
 
     @Override
