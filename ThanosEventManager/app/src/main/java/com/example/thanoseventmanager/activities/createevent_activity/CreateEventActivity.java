@@ -89,6 +89,9 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         Calendar selectedDate = Calendar.getInstance();
         selectedDate.set(year, month, day, hour, minute);
         editDateTime.setText(selectedDate.getTime().toString());
+
+
+        Date newDate = selectedDate.getTime();
     }
 
     @Override
