@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import androidx.annotation.NonNull;
@@ -45,7 +46,7 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
 
     private final static String TAG = "hello";
     Spinner spinner_grp, spinner_evt ;
-    EditText editDateTime;
+    TextView infoDateText;
     int year, month, day, hour, minute;
 
     @Override
@@ -56,18 +57,7 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         /********* Spinner Groupe **********/
         //Récupération du Spinner déclaré dans le fichier main.xml de res/layout
         spinner_grp = (Spinner) findViewById(R.id.spinner_group);
-        editDateTime = (EditText)findViewById(R.id.editText_Date_event);
-        editDateTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calendar calendar = Calendar.getInstance();
-                year = calendar.get(Calendar.YEAR);
-                month = calendar.get(Calendar.MONTH);
-                day = calendar.get(Calendar.DAY_OF_MONTH);
-                DatePickerDialog datePickerDialog = new DatePickerDialog(CreateEventActivity.this, CreateEventActivity.this,year, month,day);
-                datePickerDialog.show();
-            }
-        });
+        infoDateText = (TextView) findViewById(R.id.text_infodate_createEvent_activity);
     }
 
     @Override
@@ -88,9 +78,7 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         minute = minuteSet;
         Calendar selectedDate = Calendar.getInstance();
         selectedDate.set(year, month, day, hour, minute);
-        editDateTime.setText(selectedDate.getTime().toString());
-
-
+        infoDateText.setText(selectedDate.getTime().toString());
         Date newDate = selectedDate.getTime();
     }
 
@@ -108,6 +96,15 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         }) ;
 
 
+    }
+
+    public void onClickSelectDate(View v) {
+        Calendar calendar = Calendar.getInstance();
+        year = calendar.get(Calendar.YEAR);
+        month = calendar.get(Calendar.MONTH);
+        day = calendar.get(Calendar.DAY_OF_MONTH);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(CreateEventActivity.this, CreateEventActivity.this,year, month,day);
+        datePickerDialog.show();
     }
 
     private void setSpinnerList(List<Groupe> liste_grp)
