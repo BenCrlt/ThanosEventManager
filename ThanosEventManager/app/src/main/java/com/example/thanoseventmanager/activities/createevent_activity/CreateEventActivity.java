@@ -20,6 +20,7 @@ import android.widget.TimePicker;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.thanoseventmanager.R;
@@ -46,7 +47,9 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
 
     private final static String TAG = "hello";
     Spinner spinner_grp, spinner_evt ;
-    TextView infoDateText;
+    TextView infoDateText, nameEvent_TextView, adresse_TextView, cp_TextView, ville_TextView;
+    Date dateEvent;
+    Groupe groupeEvent;
     int year, month, day, hour, minute;
 
     @Override
@@ -58,6 +61,11 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         //Récupération du Spinner déclaré dans le fichier main.xml de res/layout
         spinner_grp = (Spinner) findViewById(R.id.spinner_group);
         infoDateText = (TextView) findViewById(R.id.text_infodate_createEvent_activity);
+        nameEvent_TextView = (TextView) findViewById(R.id.editText_Name_event);
+        adresse_TextView = (TextView) findViewById(R.id.editText_address_event);
+        cp_TextView = (TextView) findViewById(R.id.editText_cp_event);
+        ville_TextView =  (TextView) findViewById(R.id.editText_ville_event);
+
     }
 
     @Override
@@ -79,7 +87,7 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         Calendar selectedDate = Calendar.getInstance();
         selectedDate.set(year, month, day, hour, minute);
         infoDateText.setText(selectedDate.getTime().toString());
-        Date newDate = selectedDate.getTime();
+        dateEvent = selectedDate.getTime();
     }
 
     @Override
@@ -157,39 +165,51 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
 
 
     // Bouton Créer
-    public void onClick_create_event(View v)
+    public void onClickCreateEvent(View v)
     {
         Event new_event = new Event() ;
-
+        Groupe groupeSelected = new Groupe();
         String nom_event, address_event, cp_event, ville_event ;
         Date date_event ;
         // Récupérer Nom Event
         nom_event = ((EditText)findViewById(R.id.editText_Name_event)).getText().toString() ;
-        new_event.setNom(nom_event);
+        if (!nom_event.isEmpty()) {
+            new_event.setNom(nom_event);
+            if (dateEvent != null) {
+                new_event.setDate(dateEvent);
 
-        // Récupérer date event
-        //date_event = ((com.google.type.Date)findViewById(R.id.editText_Date_event)) ;
-        //new_event.setDate(date_event) ;
+                groupeSelected = (Groupe) spinner_grp.getSelectedItem();
 
-        // Récupérer groupe event
-        // Voir avec Benoit
 
-        /******* Récupérer localisation event *******/
-        // Récupérer Addresse
-        address_event = ((EditText)findViewById(R.id.editText_address_event)).getText().toString() ;
-        new_event.getLieu().setAdresse(address_event);
+                /******* Récupérer localisation event *******/
+                // Récupérer Addresse
+                address_event = ((EditText)findViewById(R.id.editText_address_event)).getText().toString() ;
+                new_event.getLieu().setAdresse(address_event);
 
-        // Récupérer Code Postal
-        cp_event = ((EditText)findViewById(R.id.editText_cp_event)).getText().toString() ;
-        new_event.getLieu().setCp(cp_event);
+                // Récupérer Code Postal
+                cp_event = ((EditText)findViewById(R.id.editText_cp_event)).getText().toString() ;
+                new_event.getLieu().setCp(cp_event);
 
-        // Récupérer Ville
-        ville_event = ((EditText)findViewById(R.id.editText_ville_event)).getText().toString() ;
-        new_event.getLieu().setVille(ville_event) ;
+                // Récupérer Ville
+                ville_event = ((EditText)findViewById(R.id.editText_ville_event)).getText().toString() ;
+                new_event.getLieu().setVille(ville_event) ;
 
-        // Update Event
-        //updateEvent(grp_event, new_event) ;
+                GroupeHelper.addEvent(groupeSelected, "TESTID", new_event.getNom(), new_event.getDate(), new_event.getLieu());
+            } else {
+                showErrorMessage("Veuillez sélectionner une date pour votre événement !");
+            }
+        } else {
+            showErrorMessage("Veuillez rentrer un nom pour l'événement");
+        }
         
+    }
+
+    private void showErrorMessage(String errorMessage) {
+        AlertDialog.Builder ErrorMsg = new AlertDialog.Builder(this);
+        ErrorMsg.setMessage(errorMessage)
+                .setTitle("Erreur");
+        ErrorMsg.create();
+        ErrorMsg.show();
     }
 
 }
