@@ -1,6 +1,9 @@
 package com.example.thanoseventmanager.activities.main_activity;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -46,6 +49,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Log.i(TAG, "on create " + getLocalClassName()) ;
+
+        //Création du channel de notifications de l'app
+        createNotificationChannel();
 
         navController = Navigation.findNavController(this, R.id.fragment_nav_host);
 
@@ -105,6 +111,21 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void createNotificationChannel() {
+        // Créer le channel de notification (nécessaire depuis API 26+)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "channel_Thanos";
+            String description = "channel description of Thanos app";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel channel = new NotificationChannel("thanosNotificationsChannel", name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
     @Override
     protected void onStop() {
         super.onStop();
@@ -142,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
         navController.navigate(R.id.fragmentEventList);
     }
 
-    public void onClickFragmentEventView(View v) {
+    public void onClickFragmentEventView() {
         navController.popBackStack(navController.getGraph().getStartDestination(), false);
         navController.navigate(R.id.fragmentEventView);
     }

@@ -9,30 +9,29 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.thanoseventmanager.R;
-import com.example.thanoseventmanager.modeles.Groupe;
+import com.example.thanoseventmanager.modeles.User;
 
 import java.util.List;
 
-public class GroupListAdapter extends BaseAdapter {
-
-    private List<Groupe> listeGroupe;
+public class UserListAdapter extends BaseAdapter {
+    private List<User> listeUser;
     private Context context;
     private LayoutInflater layoutInflater;
 
-    public GroupListAdapter(Context aContext,  List<Groupe> listData) {
+    public UserListAdapter(Context aContext,  List<User> listData) {
         this.context = aContext;
-        this.listeGroupe = listData;
+        this.listeUser = listData;
         layoutInflater = LayoutInflater.from(aContext);
     }
 
     @Override
     public int getCount() {
-        return listeGroupe.size();
+        return listeUser.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return listeGroupe.get(position);
+        return listeUser.get(position);
     }
 
     @Override
@@ -42,27 +41,27 @@ public class GroupListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        GroupListAdapter.ViewHolder holder;
+        UserListAdapter.ViewHolder holder;
 
         if (convertView == null) {
-            convertView = layoutInflater.inflate(R.layout.listegroupe_groupe_layout, null);
-            holder = new GroupListAdapter.ViewHolder();
-            holder.imageGroupe = (ImageView) convertView.findViewById(R.id.imageView_Groupe);
-            holder.nomGroupeView = (TextView) convertView.findViewById(R.id.textView_nomGroupe);
-            holder.countMembersView = (TextView) convertView.findViewById(R.id.textView_members);
+            convertView = layoutInflater.inflate(R.layout.listeuser_user_layout, null);
+            holder = new UserListAdapter.ViewHolder();
+            holder.imageUser = (ImageView) convertView.findViewById(R.id.userListView_userProfilePicture);
+            holder.pseudoUserView = (TextView) convertView.findViewById(R.id.userListView_userName);
+            holder.numberUserView = (TextView) convertView.findViewById(R.id.textView_members);
             convertView.setTag(holder);
         } else {
-            holder = (GroupListAdapter.ViewHolder) convertView.getTag();
+            holder = (UserListAdapter.ViewHolder) convertView.getTag();
         }
 
-        Groupe groupe = this.listeGroupe.get(position);
+        User user = this.listeUser.get(position);
 
-        holder.nomGroupeView.setText(groupe.getNom());
-        holder.countMembersView.setText(String.valueOf(groupe.getListeIdUsers().size()) + " membre(s)");
+        holder.pseudoUserView.setText(user.getPseudo());
+        holder.numberUserView.setText(user.getNumero());
 
         //Pour le logo de l'event
         int imageId = this.getMipmapResIdByName("teamwork");
-        holder.imageGroupe.setImageResource(imageId);
+        holder.imageUser.setImageResource(imageId);
 
         //Pour l'image
         //int imageId = this.getMipmapResIdByName(groupe.getImage());
@@ -81,8 +80,8 @@ public class GroupListAdapter extends BaseAdapter {
     }
 
     static class ViewHolder{
-        ImageView imageGroupe;
-        TextView nomGroupeView;
-        TextView countMembersView;
+        ImageView imageUser;
+        TextView pseudoUserView;
+        TextView numberUserView;
     }
 }

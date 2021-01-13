@@ -19,8 +19,6 @@ import androidx.core.app.ActivityCompat.OnRequestPermissionsResultCallback;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 
 import com.example.thanoseventmanager.R;
 import com.example.thanoseventmanager.TestListeEvents;
@@ -178,10 +176,14 @@ public class FragmentMapView extends Fragment implements
         gm.getUiSettings().setZoomControlsEnabled(true);
         gm.getUiSettings().setMapToolbarEnabled(false);
 
+        this.setEventMarkers();
+
         //Ajout de marqueurs sur la carte
+        /*
         if (viewModel.getListAllEvent().getValue() != null) {
             setEventMarkers(viewModel.getListAllEvent().getValue());
         }
+        */
 
         //Activation de la localisation avec permission requise
         this.enableMyLocation();
@@ -312,10 +314,10 @@ public class FragmentMapView extends Fragment implements
     }
 
     //Placement des marqueurs des différents events sur la carte
-    private void setEventMarkers(List<Event> listeEvents){
+    private void setEventMarkers(/*List<Event> listeEvents*/){
 
         //Récupération de la liste des events
-        //List<Event> listeEvents = new TestListeEvents().getListData();
+        List<Event> listeEvents = new TestListeEvents().getListData();
 
         //Boucle pour chaque event de la liste
         for( Event event : listeEvents) {
@@ -349,11 +351,16 @@ public class FragmentMapView extends Fragment implements
                 //Personalisation de la fenêtre d'informations du marqueur
                 CustomInfoWindowAdapter adapter = new CustomInfoWindowAdapter(this.requireActivity());
                 gm.setInfoWindowAdapter(adapter);
-                gm.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-                    @Override
-                    public void onInfoWindowClick(Marker marker) {
-                        //((MainActivity)getActivity()).onClickFragmentEventView();
-                    }
+                gm.setOnInfoWindowClickListener(markerSelected -> {
+                    //Récupération de l'objet event dans le tag du Marker
+                    Event eventSelected = (Event) markerSelected.getTag();
+
+                    //Création du ViewModel de cet event
+                    viewModel = new ViewModelProvider(requireActivity()).get(ViewModel_MainActivity.class);
+                    viewModel.setEventToView(eventSelected);
+
+                    //Affichage du fragment Event View
+                    ((MainActivity)requireActivity()).onClickFragmentEventView();
                 });
 
                 //Le marqueur est placé, on met un drapeau
