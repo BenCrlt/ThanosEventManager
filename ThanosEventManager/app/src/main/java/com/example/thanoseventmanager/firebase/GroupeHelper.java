@@ -65,16 +65,16 @@ public class GroupeHelper {
 
     public static Task<Void> addEvent(Groupe grp, String id, String nom, Date date, Lieu lieu) {
         grp.addEvent(new Event(id, nom, date, grp, lieu));
-        return GroupeHelper.getGroupesCollection().document(grp.getId()).update("listEvents", grp.getListeEvents());
+        return GroupeHelper.getGroupesCollection().document(grp.getId()).update("listeEvents", grp.getListeEvents());
     }
 
     public static Task<Void> deleteEvent(Groupe grp, Event eventToDelete) {
         grp.deleteEvent(eventToDelete);
-        return GroupeHelper.getGroupesCollection().document(grp.getId()).update("listEvents", grp.getListeEvents());
+        return GroupeHelper.getGroupesCollection().document(grp.getId()).update("listeEvents", grp.getListeEvents());
     }
 
     public static Task<Void> updateEvent(Groupe grp, Event eventToUpdate) {
         grp.updateEvent(eventToUpdate);
-        return GroupeHelper.getGroupesCollection().document(grp.getId()).update("listEvents", grp.getListeEvents());
+        return GroupeHelper.getGroupesCollection().document(grp.getId()).update("listeEvents", grp.getListeEvents());
     }
 }
