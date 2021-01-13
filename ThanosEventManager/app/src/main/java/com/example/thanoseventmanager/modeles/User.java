@@ -1,10 +1,14 @@
 package com.example.thanoseventmanager.modeles;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class User {
 
     String id;
     String numero;
     String pseudo;
+    List<Invitation> invitList = new ArrayList<Invitation>();
     double latitude;
     double longitude;
 
@@ -19,6 +23,14 @@ public class User {
         this.id = id;
         this.numero = numero;
         this.pseudo = pseudo;
+    }
+
+    public List<Invitation> getInvitList() {
+        return invitList;
+    }
+
+    public void setInvitList(List<Invitation> invitList) {
+        this.invitList = invitList;
     }
 
     public void setId(String id){this.id = id;}

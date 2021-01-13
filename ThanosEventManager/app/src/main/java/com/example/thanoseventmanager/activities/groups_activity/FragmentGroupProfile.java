@@ -8,8 +8,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,11 +31,15 @@ import com.example.thanoseventmanager.viewmodels.ViewModel_GroupsActivity;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.QuerySnapshot;
 
-public class FragmentGroupProfile extends Fragment {
+import java.util.List;
+
+public class FragmentGroupProfile extends Fragment implements View.OnClickListener{
 
     ViewModel_GroupsActivity viewModel;
     ListView listView;
     Groupe groupSelected;
+    Button inviteButton;
+    EditText phoneNumber;
 
     private static final String TAG = "Hello";
 
@@ -49,6 +56,9 @@ public class FragmentGroupProfile extends Fragment {
         TextView usersCount = (TextView)v.findViewById(R.id.fragmentGroupProfile_groupMembersCount);
         viewModel = new ViewModelProvider(getActivity()).get(ViewModel_GroupsActivity.class);
         listView = (ListView)v.findViewById(R.id.listView_GroupProfile_userList);
+        phoneNumber = (EditText)v.findViewById(R.id.groupProfile_editTextPhone);
+        inviteButton = (Button)v.findViewById(R.id.groupProfile_inviteButton);
+        inviteButton.setOnClickListener(this);
 
         //récupération de l'objet (Java) groupe selectionné
         groupSelected = viewModel.getGroupSelected().getValue();
@@ -57,7 +67,6 @@ public class FragmentGroupProfile extends Fragment {
         usersCount.setText(String.valueOf(groupSelected.getListeIdUsers().size()) + " membre(s) dans ce groupe");
 
         populateUserList();
-        sendNotification();
 
         // Inflate the layout for this fragment
         return v;
@@ -77,7 +86,6 @@ public class FragmentGroupProfile extends Fragment {
         Intent acceptIntent = new Intent(this.getContext(), ActionReceiver. class ) ;
         Intent declineIntent = new Intent(this.getContext(), ActionReceiver. class ) ;
 
-
         declineIntent.putExtra("ACTION","DECLINED");
         acceptIntent.putExtra( "ACTION" , "ACCEPTED" ) ;
 
@@ -96,6 +104,30 @@ public class FragmentGroupProfile extends Fragment {
         //Faire apparaître la notif
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this.getContext());
         notificationManager.notify(1, builder.build());
+    }
+
+    @Override
+    public void onClick(View v){
+        switch(v.getId()){
+            case R.id.groupProfile_inviteButton:
+                String phoneStr = "+33" + phoneNumber.getText().toString();
+
+                UserHelper.getUserByPhone(phoneStr).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        List<User> listTest = queryDocumentSnapshots.toObjects(User.class);
+                        if (listTest.size() > 0){
+                            Toast.makeText(getContext(),listTest.get(0).getPseudo(),Toast.LENGTH_SHORT).show();
+                            //User usr = listTest.get(0);
+                            //TODO ajouter un invit a firebase
+
+                        }
+                    }
+                }) ;
+            default:
+                break;
+        }
+
     }
 
     @Override
