@@ -77,6 +77,10 @@ public class MainActivity extends AppCompatActivity {
 
         this.viewModel = new ViewModelProvider(this).get(ViewModel_MainActivity.class);
         updateListeEvents();
+
+        // Color of the button of the menu
+        ((Button)findViewById(R.id.buttonMap)).setBackgroundColor(Color.GRAY);
+        ((Button)findViewById(R.id.buttonList)).setBackgroundColor(Color.BLUE);
     }
 
     @Override
@@ -240,16 +244,19 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClickFragmentMapView(View v) {
         navController.popBackStack(navController.getGraph().getStartDestination(), false);
+        // Modification des couleurs des boutons des menus pour que celui qui est appuyé soit gris et l'autre non appuyé soit bleu
         ((Button)findViewById(R.id.buttonMap)).setBackgroundColor(Color.GRAY);
-
+        ((Button)findViewById(R.id.buttonList)).setBackgroundColor(Color.BLUE);
     }
 
     @SuppressLint("ResourceType")
     public void onClickFragmentEventList(View v) {
         navController.popBackStack(navController.getGraph().getStartDestination(), false);
         navController.navigate(R.id.fragmentEventList);
+        // Modification des couleurs des boutons des menus pour que celui qui est appuyé soit gris et l'autre non appuyé soit bleu
         ((Button)findViewById(R.id.buttonList)).setBackgroundColor(Color.GRAY);
-       // ((Button)findViewById(R.id.buttonMap)).setBackgroundColor(getColor();
+        ((Button)findViewById(R.id.buttonMap)).setBackgroundColor(Color.BLUE);
+
     }
 
     public void onClickFragmentEventView() {
