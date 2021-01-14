@@ -32,11 +32,11 @@
 
         <Button
             android:id="@+id/buttonMap"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="53dp"
+            android:layout_height="match_parent"
             android:layout_marginRight="60dp"
-            android:background="@drawable/ic_baseline_map_24"
-            android:onClick="onClickFragmentMapView" />
+            android:onClick="onClickFragmentMapView"
+            app:icon="@drawable/ic_baseline_map_24" />
 
         <Button
             android:id="@+id/btn_addEvent"
@@ -51,8 +51,8 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginLeft="60dp"
-            android:background="@drawable/ic_baseline_view_list_24"
-            android:onClick="onClickFragmentEventList" />
+            android:onClick="onClickFragmentEventList"
+            app:icon="@drawable/ic_baseline_view_list_24" />
 
     </LinearLayout>
 

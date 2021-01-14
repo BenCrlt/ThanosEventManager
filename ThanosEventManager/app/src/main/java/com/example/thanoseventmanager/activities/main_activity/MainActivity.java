@@ -1,9 +1,11 @@
 package com.example.thanoseventmanager.activities.main_activity;
 
+import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +13,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
@@ -24,6 +28,8 @@ import com.example.thanoseventmanager.R;
 import com.example.thanoseventmanager.actionreceiver.ActionReceiver;
 import com.example.thanoseventmanager.activities.createevent_activity.CreateEventActivity;
 import com.example.thanoseventmanager.activities.groups_activity.GroupsActivity;
+import com.example.thanoseventmanager.activities.profile_activity.ProfileActivity;
+import com.example.thanoseventmanager.R;
 import com.example.thanoseventmanager.activities.login_activity.LoginActivity;
 import com.example.thanoseventmanager.activities.profile_activity.ProfileActivity;
 import com.example.thanoseventmanager.firebase.GroupeHelper;
@@ -234,11 +240,16 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClickFragmentMapView(View v) {
         navController.popBackStack(navController.getGraph().getStartDestination(), false);
+        ((Button)findViewById(R.id.buttonMap)).setBackgroundColor(Color.GRAY);
+
     }
 
+    @SuppressLint("ResourceType")
     public void onClickFragmentEventList(View v) {
         navController.popBackStack(navController.getGraph().getStartDestination(), false);
         navController.navigate(R.id.fragmentEventList);
+        ((Button)findViewById(R.id.buttonList)).setBackgroundColor(Color.GRAY);
+       // ((Button)findViewById(R.id.buttonMap)).setBackgroundColor(getColor();
     }
 
     public void onClickFragmentEventView() {
