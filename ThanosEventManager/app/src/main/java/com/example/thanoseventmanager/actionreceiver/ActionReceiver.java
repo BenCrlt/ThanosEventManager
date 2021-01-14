@@ -32,6 +32,7 @@ public class ActionReceiver extends BroadcastReceiver {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     GroupeHelper.addUser(documentSnapshot.toObject(Groupe.class), FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    //TODO : une fois accepté ou refusé, supprimer l'invitation
                 }
             });
 
