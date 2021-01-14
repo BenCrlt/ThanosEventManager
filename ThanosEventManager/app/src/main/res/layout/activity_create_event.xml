@@ -21,14 +21,15 @@
         android:id="@+id/editText_Name_event"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="100dp"
         android:ems="10"
         android:hint="Nom événement"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toTopOf="@+id/spinner_group"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView_create_event"
-        app:layout_constraintVertical_bias="0.546" />
+        app:layout_constraintVertical_bias="0.288" />
 
     <Button
         android:id="@+id/button_create_event"
@@ -42,16 +43,27 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText_cp_event"
-        app:layout_constraintVertical_bias="0.388" />
+        app:layout_constraintVertical_bias="0.564" />
 
     <Spinner
         android:id="@+id/spinner_group"
         android:layout_width="245dp"
         android:layout_height="36dp"
-        android:layout_marginTop="212dp"
+        android:layout_marginTop="224dp"
         android:background="@android:drawable/btn_dropdown"
         android:spinnerMode="dropdown"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView_choice_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="192dp"
+        android:text="Choisir le groupe"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.272"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -59,33 +71,20 @@
         android:id="@+id/editText_address_event"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="160dp"
+        android:layout_marginTop="112dp"
         android:ems="10"
         android:hint="Adresse"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner_group" />
-
-    <EditText
-        android:id="@+id/editText_cp_event"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:ems="10"
-        android:hint="Code postal"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText_ville_event" />
+        app:layout_constraintTop_toBottomOf="@+id/spinner_group" />
 
     <EditText
         android:id="@+id/editText_ville_event"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="12dp"
         android:ems="10"
         android:hint="Ville"
         android:inputType="textPersonName"
@@ -93,6 +92,19 @@
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText_address_event" />
+
+    <EditText
+        android:id="@+id/editText_cp_event"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="Code postal"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editText_ville_event" />
 
     <Button
         android:id="@+id/button"
