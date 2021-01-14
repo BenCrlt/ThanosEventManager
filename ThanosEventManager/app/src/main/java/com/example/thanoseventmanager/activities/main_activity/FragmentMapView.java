@@ -62,7 +62,7 @@ public class FragmentMapView extends Fragment implements
     private FusedLocationProviderClient fusedLocationClient;
     private LocationRequest locationRequest;
     private LocationCallback locationCallback;
-    private ViewModel_MainActivity viewModel;
+    ViewModel_MainActivity viewModel;
 
     public FragmentMapView() {
         // Required empty public constructor
@@ -176,14 +176,9 @@ public class FragmentMapView extends Fragment implements
         gm.getUiSettings().setZoomControlsEnabled(true);
         gm.getUiSettings().setMapToolbarEnabled(false);
 
-        this.setEventMarkers();
-
-        //Ajout de marqueurs sur la carte
-        /*
         if (viewModel.getListAllEvent().getValue() != null) {
             setEventMarkers(viewModel.getListAllEvent().getValue());
         }
-        */
 
         //Activation de la localisation avec permission requise
         this.enableMyLocation();
@@ -314,10 +309,10 @@ public class FragmentMapView extends Fragment implements
     }
 
     //Placement des marqueurs des différents events sur la carte
-    private void setEventMarkers(/*List<Event> listeEvents*/){
+    private void setEventMarkers(List<Event> listeEvents){
 
         //Récupération de la liste des events
-        List<Event> listeEvents = new TestListeEvents().getListData();
+        //List<Event> listeEvents = new TestListeEvents().getListData();
 
         //Boucle pour chaque event de la liste
         for( Event event : listeEvents) {
