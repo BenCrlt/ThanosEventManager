@@ -26,6 +26,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.thanoseventmanager.R;
 import com.example.thanoseventmanager.activities.groups_activity.GroupsActivity;
 import com.example.thanoseventmanager.activities.login_activity.LoginActivity;
+import com.example.thanoseventmanager.activities.main_activity.MainActivity;
 import com.example.thanoseventmanager.activities.profile_activity.ProfileActivity;
 import com.example.thanoseventmanager.firebase.GroupeHelper;
 import com.example.thanoseventmanager.firebase.GroupeHelper;
@@ -195,6 +196,7 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
                 new_event.getLieu().setVille(ville_event) ;
 
                 GroupeHelper.addEvent(groupeSelected, "TESTID", new_event.getNom(), new_event.getDate(), new_event.getLieu());
+                goToMainActivity();
             } else {
                 showErrorMessage("Veuillez sélectionner une date pour votre événement !");
             }
@@ -210,6 +212,12 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
                 .setTitle("Erreur");
         ErrorMsg.create();
         ErrorMsg.show();
+    }
+
+    public void goToMainActivity() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        startActivity(intent);
     }
 
 }

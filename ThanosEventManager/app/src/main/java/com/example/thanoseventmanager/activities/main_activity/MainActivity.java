@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         navController = Navigation.findNavController(this, R.id.fragment_nav_host);
 
         this.viewModel = new ViewModelProvider(this).get(ViewModel_MainActivity.class);
+        updateListeEvents();
     }
 
     @Override
@@ -96,6 +97,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         Log.i(TAG, "on start " + getLocalClassName()) ;
+        //updateListeEvents();
+    }
+
+    public void updateListeEvents() {
         if (mAuth.getCurrentUser() != null) {
             GroupeHelper.getAllGroupesOfUser(mAuth.getCurrentUser().getUid())
                     .get()

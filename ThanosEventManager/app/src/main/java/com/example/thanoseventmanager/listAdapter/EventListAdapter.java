@@ -40,6 +40,10 @@ public class EventListAdapter extends BaseAdapter {
         return position;
     }
 
+    public void setListeEvent(List<Event> newListeEvents) {
+        listeEvent = newListeEvents;
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
