@@ -178,6 +178,8 @@ public class FragmentMapView extends Fragment implements
 
         if (viewModel.getListAllEvent().getValue() != null) {
             setEventMarkers(viewModel.getListAllEvent().getValue());
+        } else {
+            viewModel.getListAllEvent().observe(this, listeEvents -> setEventMarkers(listeEvents));
         }
 
         //Activation de la localisation avec permission requise
