@@ -1,24 +1,24 @@
 package com.example.thanoseventmanager.modeles;
 
 public class Invitation {
-    String userInvited;
-    String groupToJoin;
+    String idGroupToJoin;
 
-    public String getUserInvited() {
-        return userInvited;
+    public Invitation(){
+        this.idGroupToJoin = null;
     }
 
-    public void setUserInvited(String userInvited) {
-        this.userInvited = userInvited;
+    public Invitation(String idGroupeToJoin){
+        this.idGroupToJoin = idGroupeToJoin;
     }
 
     public String getGroupToJoin() {
-        return groupToJoin;
+        return idGroupToJoin;
     }
 
     public void setGroupToJoin(String groupToJoin) {
-        this.groupToJoin = groupToJoin;
+        this.idGroupToJoin = groupToJoin;
     }
+
 }
 
 

@@ -1,8 +1,6 @@
 package com.example.thanoseventmanager.activities.groups_activity;
 
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,13 +14,10 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.thanoseventmanager.R;
-import com.example.thanoseventmanager.actionreceiver.ActionReceiver;
 import com.example.thanoseventmanager.firebase.UserHelper;
 import com.example.thanoseventmanager.listAdapter.UserListAdapter;
 import com.example.thanoseventmanager.modeles.Groupe;
@@ -81,30 +76,7 @@ public class FragmentGroupProfile extends Fragment implements View.OnClickListen
         }) ;
     }
 
-    public void sendNotification(){
-        //Création d'une intent correspondant au choix d'utilisateur sur la notification
-        Intent acceptIntent = new Intent(this.getContext(), ActionReceiver. class ) ;
-        Intent declineIntent = new Intent(this.getContext(), ActionReceiver. class ) ;
 
-        declineIntent.putExtra("ACTION","DECLINED");
-        acceptIntent.putExtra( "ACTION" , "ACCEPTED" ) ;
-
-        PendingIntent acceptPendingIntent = PendingIntent.getBroadcast(this.getContext(),1,acceptIntent,PendingIntent.FLAG_UPDATE_CURRENT);
-        PendingIntent declinePendingIntent = PendingIntent.getBroadcast(this.getContext(),2,declineIntent,PendingIntent.FLAG_UPDATE_CURRENT);
-
-        //Création d'une notification
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this.getContext(), "thanosNotificationsChannel")
-                .setSmallIcon(R.mipmap.ic_launcher_foreground)
-                .setContentTitle("Invitation à un groupe")
-                .setContentText("Vous avez été invité(e) à rejoindre le groupe " + groupSelected.getNom())
-                .addAction(R.drawable. ic_launcher_foreground , "Accepter" , acceptPendingIntent)
-                .addAction(R.drawable. ic_launcher_foreground , "Refuser" , declinePendingIntent)
-                .setAutoCancel(true);
-
-        //Faire apparaître la notif
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this.getContext());
-        notificationManager.notify(1, builder.build());
-    }
 
     @Override
     public void onClick(View v){
@@ -112,18 +84,22 @@ public class FragmentGroupProfile extends Fragment implements View.OnClickListen
             case R.id.groupProfile_inviteButton:
                 String phoneStr = "+33" + phoneNumber.getText().toString();
 
+                //Récupération de l'USER correspondant à ce numéro de téléphone
                 UserHelper.getUserByPhone(phoneStr).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         List<User> listTest = queryDocumentSnapshots.toObjects(User.class);
                         if (listTest.size() > 0){
-                            Toast.makeText(getContext(),listTest.get(0).getPseudo(),Toast.LENGTH_SHORT).show();
-                            //User usr = listTest.get(0);
-                            //TODO ajouter un invit a firebase
+                            User user = listTest.get(0);
 
+                            //Ajouter une invitation à la liste d'invitations de l'USER
+                            UserHelper.addInviteToUser(user,groupSelected.getId());
+                            Toast.makeText(getContext(),"Invitation envoyée à " + user.getPseudo(),Toast.LENGTH_SHORT).show();
                         }
                     }
                 }) ;
+
+
             default:
                 break;
         }
