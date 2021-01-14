@@ -17,20 +17,29 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.thanoseventmanager.R;
+import com.example.thanoseventmanager.firebase.GroupeHelper;
 import com.example.thanoseventmanager.modeles.Event;
+import com.example.thanoseventmanager.modeles.Groupe;
 import com.example.thanoseventmanager.viewmodels.ViewModel_MainActivity;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Locale;
 
 public class FragmentEventView extends Fragment implements View.OnClickListener {
 
+    private static final String TAG = "EventView";
     ViewModel_MainActivity viewModel;
     Button participateButton;
-    private static final String TAG = "EventView";
-
     boolean isParticipant = false;
+    String myUserId;
+    Groupe myGroupe;
+    Event eventToView;
 
     public FragmentEventView() {
         // Required empty public constructor
@@ -43,7 +52,7 @@ public class FragmentEventView extends Fragment implements View.OnClickListener 
 
         //Récupération de l'evet selectionné via le ViewModel
         viewModel = new ViewModelProvider(this.requireActivity()).get(ViewModel_MainActivity.class);
-        Event dataEvent = viewModel.getEventToView().getValue();
+        eventToView = viewModel.getEventToView().getValue();
 
         //Récupération du fragment
         View view = inflater.inflate(R.layout.fragment_event_view, container, false);
@@ -57,28 +66,28 @@ public class FragmentEventView extends Fragment implements View.OnClickListener 
         participateButton.setOnClickListener(this);
 
         //Traitement des données à afficher
-        if (dataEvent != null) {
+        if (eventToView != null) {
 
             //Affichage du titre
-            nomEvent.setText(dataEvent.getNom());
+            nomEvent.setText(eventToView.getNom());
 
             //Affichage de la date
             DateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE);
             DateFormat formatHeure = new SimpleDateFormat("HH:mm", Locale.FRANCE);
-            String date = formatDate.format(dataEvent.getDate());
-            String heure = formatHeure.format(dataEvent.getDate());
+            String date = formatDate.format(eventToView.getDate());
+            String heure = formatHeure.format(eventToView.getDate());
             String stringDate = "Date : " + date + "   Heure : " + heure;
             dateEvent.setText(stringDate);
 
             //Affichage du lieu
-            String adresse = dataEvent.getLieu().getAdresse();
-            String cp = dataEvent.getLieu().getCp();
-            String ville = dataEvent.getLieu().getVille();
+            String adresse = eventToView.getLieu().getAdresse();
+            String cp = eventToView.getLieu().getCp();
+            String ville = eventToView.getLieu().getVille();
             String stringLieu = "Lieu : " + adresse + ", " + cp + " " + ville;
             lieuEvent.setText(stringLieu);
 
             //Récupération de l'id de l'image de l'event
-            int eventIcon = this.getMipmapResIdByName(dataEvent.getImage());
+            int eventIcon = this.getMipmapResIdByName(eventToView.getImage());
             //Affichage des images
             if (eventIcon != 0) {
                 eventIcon1.setImageResource(eventIcon);
@@ -94,7 +103,8 @@ public class FragmentEventView extends Fragment implements View.OnClickListener 
     @Override
     public void onStart() {
         super.onStart();
-        Log.i(TAG, "on start " + getClass().getSimpleName());
+
+        this.getFirebaseData();
     }
 
     @Override
@@ -147,13 +157,9 @@ public class FragmentEventView extends Fragment implements View.OnClickListener 
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.participateButton:
-                isParticipant = !isParticipant;
-                this.updateButton(participateButton);
-                break;
-            default:
-                break;
+        if (v.getId() == R.id.participateButton) {
+            isParticipant = !isParticipant;
+            this.updateButton(participateButton);
         }
     }
 
@@ -168,10 +174,30 @@ public class FragmentEventView extends Fragment implements View.OnClickListener 
         }
     }
 
-    // Retrouver l'ID d'une image à l'aide du nom du fichier image dans /mipmap
+    //M'ajouter dans la liste des participants de l'event
+    private void addParticipant() {
+        List<String> participantList = eventToView.getParticipantList();
+        participantList.add(myUserId);
+
+        //MAJ de l'event dans Firebase
+        GroupeHelper.updateEvent(myGroupe, eventToView);
+    }
+
+    //Retrouver l'ID d'une image à l'aide du nom du fichier image dans /mipmap
     private int getMipmapResIdByName(String resName)  {
         String pkgName = this.requireActivity().getPackageName();
         // Return 0 if not found.
         return this.requireActivity().getResources().getIdentifier(resName , "mipmap", pkgName);
+    }
+
+    //Récupération de mon id User
+    private void getFirebaseData() {
+        myUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        GroupeHelper.getGroupeById(eventToView.getGrpId()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                myGroupe = documentSnapshot.toObject(Groupe.class);
+            }
+        });
     }
 }

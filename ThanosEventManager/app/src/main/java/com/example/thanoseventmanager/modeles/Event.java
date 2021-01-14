@@ -1,9 +1,15 @@
 package com.example.thanoseventmanager.modeles;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 public class Event implements Serializable {
 
@@ -16,6 +22,7 @@ public class Event implements Serializable {
     boolean isInProgress;
     String grpId;
     String grpName;
+    List<String> participantList;
 
     public Event(){
         this.id = new String();
@@ -23,6 +30,7 @@ public class Event implements Serializable {
         this.date = new Date();
         this.lieu = new Lieu();
         this.isInProgress = true;
+        this.participantList = new ArrayList<>();
     }
 
     public Event(String id, String nom, Date date, Lieu lieu){
@@ -31,6 +39,7 @@ public class Event implements Serializable {
         this.date = date;
         this.lieu = lieu;
         this.isInProgress = true;
+        this.participantList = new ArrayList<>();
     }
 
     public Event(String id, String nom, Date date, Groupe grp, Lieu lieu){
@@ -41,6 +50,7 @@ public class Event implements Serializable {
         this.isInProgress = true;
         this.grpId = grp.getId();
         this.grpName = grp.getNom();
+        this.participantList = new ArrayList<>();
     }
 
     public String getImage() {
@@ -86,4 +96,8 @@ public class Event implements Serializable {
     public String getGrpName() { return this.grpName; }
 
     public String getGrpId() { return this.grpId; }
+
+    public List<String> getParticipantList(){ return this.participantList; }
+
+    public void setParticipantList(List<String> list) { this.participantList = list; }
 }
