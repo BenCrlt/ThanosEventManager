@@ -17,7 +17,14 @@ import com.example.thanoseventmanager.activities.login_activity.LoginActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class GroupsActivity extends AppCompatActivity {
-
+    /*
+     *******************************************************
+     * Cette activité contient l'hote de navigation de fragments
+     * permettant de consulter ses groupes, créer un groupe
+     * mais également d'inviter un autre utilisateur à un
+     * groupe
+     *******************************************************
+     */
     NavController navController;
 
     @Override

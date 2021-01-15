@@ -28,6 +28,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.QuerySnapshot;
 
 public class FragmentGroupList extends Fragment implements View.OnClickListener {
+    /*
+     *******************************************************
+     * Ce fragment est une vue liste des groupes de
+     * l'utilisateur qui peuple la liste en se basant sur
+     * l'adapter GroupListAdapter
+     *******************************************************
+     */
     private static final String TAG = "Hello";
 
     NavController navController;

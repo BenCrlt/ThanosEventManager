@@ -14,7 +14,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 public class ActionReceiver extends BroadcastReceiver {
-
+    /*
+     *******************************************************
+        * Cette classe est éxécuté lorsque l'utilisateur a
+        * cliqué sur "Accepter" ou "Refuser" lors de la
+        * réception d'une notification d'invitation à un
+        * groupe
+     *******************************************************
+     */
     String action,groupId,groupName;
 
     @Override
@@ -32,7 +39,7 @@ public class ActionReceiver extends BroadcastReceiver {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     GroupeHelper.addUser(documentSnapshot.toObject(Groupe.class), FirebaseAuth.getInstance().getCurrentUser().getUid());
-                    //TODO : une fois accepté ou refusé, supprimer l'invitation
+                    //TODO : une fois acceptée ou refusée, supprimer l'invitation
                 }
             });
 
