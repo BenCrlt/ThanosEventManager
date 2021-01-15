@@ -196,7 +196,7 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
                 ville_event = ((EditText)findViewById(R.id.editText_ville_event)).getText().toString() ;
                 new_event.getLieu().setVille(ville_event) ;
 
-                GroupeHelper.addEvent(groupeSelected, "TESTID", new_event.getNom(), new_event.getDate(), new_event.getLieu());
+                GroupeHelper.addEvent(groupeSelected, new_event.getNom(), new_event.getDate(), new_event.getLieu());
                 goToMainActivity();
             } else {
                 showErrorMessage("Veuillez sélectionner une date pour votre événement !");

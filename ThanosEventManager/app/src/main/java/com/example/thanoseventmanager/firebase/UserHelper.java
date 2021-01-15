@@ -13,6 +13,10 @@ import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
 
+/**
+ * FIREBASE
+ *  Singleton pour pouvoir gérer la collection des utilisateurs sur la base de données Firestore
+ */
 public class UserHelper {
 
     private static final String TAG = "CONNECTION";
