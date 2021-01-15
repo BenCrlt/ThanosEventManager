@@ -30,18 +30,18 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".activities.main_activity.MainActivity" />
-        <activity android:name=".activities.login_activity.LoginActivity">
+        <activity android:name=".activities.main_activity.MainActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activities.login_activity.LoginActivity" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.groups_activity.GroupsActivity" />
-        <activity android:name=".activities.createevent_activity.CreateEventActivity" />
-        <activity android:name=".activities.profile_activity.ProfileActivity" />
-        <receiver android:name=".actionreceiver.ActionReceiver" />
+        <activity android:name=".activities.groups_activity.GroupsActivity" android:screenOrientation="portrait" />
+        <activity android:name=".activities.createevent_activity.CreateEventActivity" android:screenOrientation="portrait" />
+        <activity android:name=".activities.profile_activity.ProfileActivity" android:screenOrientation="portrait"/>
+        <receiver android:name=".actionreceiver.ActionReceiver"/>
     </application>
 
 </manifest>

@@ -48,12 +48,6 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
     }
 
-    public void onClickMap(View v) {
-        //Launch the map view activity
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-    }
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -100,10 +94,7 @@ public class LoginActivity extends AppCompatActivity {
 
     // Bouton Se connecter
     public void onClick_Login(View v) {
-
-        //Shunt pcq Benoit a tout pété
-        //goToMapView();
-
+        //si l'utilisateur na pas encore envoyé une demande de connexion on lance la fonction se connecter
         if (!isCodeSend) {
             SeConnecter();
         } else {
@@ -131,6 +122,9 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Récupère le code rentré par l'utilisateur puis lance la procédure d'authentification
+     */
     private void ValidationCode() {
         Log.i(TAG, "click on Validation Code " + getLocalClassName()) ;
         String SMSCode = ((EditText)findViewById(R.id.editText_LoginActivity)).getText().toString();
@@ -138,11 +132,16 @@ public class LoginActivity extends AppCompatActivity {
         signInWithPhoneAuthCredential(credential);
     }
 
+    /**
+     * Créé une demande d'authentification en envoyant un code sur le téléphone de l'utilisateur pour vérfier si il s'agit bien de son nuémro
+     * @param phoneNumber numéro de l'utilisateur
+     */
     private void ManagePhoneAuthentification(String phoneNumber) {
         mAuth = FirebaseAuth.getInstance();
         mAuth.setLanguageCode("fr");
         Log.d(TAG, "Manage Authentification");
 
+        // Objet fourni par firebase qui permet d'envoyer le code sms
         PhoneAuthOptions options =
                 PhoneAuthOptions.newBuilder(mAuth)
                         .setPhoneNumber(phoneNumber)
@@ -188,6 +187,11 @@ public class LoginActivity extends AppCompatActivity {
         PhoneAuthProvider.verifyPhoneNumber(options);
     }
 
+    /**
+     * Permet de vérifier si l'utilisateur a rentré le bon code. Si c'est bon un nouvel utilisateur est créé dans la base si il n'existe pas
+     * puis l'utilisateur peut ensuite accéder à la main activity. Ce processus d'authentification n'est pas à faire tout le temps, une fois connecté à l'appli
+     * l'utilisateur n'aura plus à s'authentifier sauf si il se déconnecte
+     */
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
         Context context = this;
         mAuth.signInWithCredential(credential)
@@ -230,6 +234,9 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * Modifie l'interface si le code de vérification est envoyé
+     */
     private void updateUI() {
         if (!isCodeSend) {
             // Modifier texte du bouton "button_seConnecter" en valider
