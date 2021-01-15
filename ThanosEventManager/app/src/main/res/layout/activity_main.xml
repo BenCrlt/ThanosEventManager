@@ -35,6 +35,7 @@
             android:layout_width="53dp"
             android:layout_height="match_parent"
             android:layout_marginRight="60dp"
+            android:backgroundTint="#3F51B5"
             android:onClick="onClickFragmentMapView"
             app:icon="@drawable/ic_baseline_map_24" />
 
@@ -42,8 +43,9 @@
             android:id="@+id/btn_addEvent"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:background="@drawable/baseline_add_box_24"
+            android:backgroundTint="#3F51B5"
             android:onClick="onClickCreateEvent"
+            app:icon="@drawable/baseline_add_box_24"
             app:iconPadding="8dp" />
 
         <Button
@@ -51,6 +53,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginLeft="60dp"
+            android:backgroundTint="#3F51B5"
             android:onClick="onClickFragmentEventList"
             app:icon="@drawable/ic_baseline_view_list_24" />
 
