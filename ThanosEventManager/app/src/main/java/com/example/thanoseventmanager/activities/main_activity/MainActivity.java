@@ -14,7 +14,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
@@ -28,11 +27,10 @@ import com.example.thanoseventmanager.R;
 import com.example.thanoseventmanager.actionreceiver.ActionReceiver;
 import com.example.thanoseventmanager.activities.createevent_activity.CreateEventActivity;
 import com.example.thanoseventmanager.activities.groups_activity.GroupsActivity;
-import com.example.thanoseventmanager.activities.profile_activity.ProfileActivity;
-import com.example.thanoseventmanager.R;
 import com.example.thanoseventmanager.activities.login_activity.LoginActivity;
 import com.example.thanoseventmanager.activities.profile_activity.ProfileActivity;
 import com.example.thanoseventmanager.firebase.GroupeHelper;
+import com.example.thanoseventmanager.firebase.UserHelper;
 import com.example.thanoseventmanager.modeles.Event;
 import com.example.thanoseventmanager.modeles.Groupe;
 import com.example.thanoseventmanager.modeles.User;
@@ -167,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
                 for (int i=0; i<usr.getInvitList().size();i++) {
                     sendNotification(usr.getInvitList().get(i).getGroupToJoin());
                 }
-
+                UserHelper.clearListInvit(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
             }
         });
@@ -181,34 +179,37 @@ public class MainActivity extends AppCompatActivity {
 
                 Groupe groupSelected = documentSnapshot.toObject(Groupe.class);
 
-                //Création d'une intent correspondant au choix d'utilisateur sur la notification
-                Intent acceptIntent = new Intent(getApplicationContext(), ActionReceiver. class ) ;
-                Intent declineIntent = new Intent(getApplicationContext(), ActionReceiver. class ) ;
+                if (groupSelected != null){
+                    //Création d'une intent correspondant au choix d'utilisateur sur la notification
+                    Intent acceptIntent = new Intent(getApplicationContext(), ActionReceiver. class ) ;
+                    Intent declineIntent = new Intent(getApplicationContext(), ActionReceiver. class ) ;
 
-                declineIntent.putExtra("ACTION","DECLINED");
-                acceptIntent.putExtra( "ACTION" , "ACCEPTED" ) ;
+                    declineIntent.putExtra("ACTION","DECLINED");
+                    acceptIntent.putExtra( "ACTION" , "ACCEPTED" ) ;
 
-                declineIntent.putExtra("GROUP_ID",groupSelected.getId());
-                acceptIntent.putExtra( "GROUP_ID" , groupSelected.getId()) ;
+                    declineIntent.putExtra("GROUP_ID",groupSelected.getId());
+                    acceptIntent.putExtra( "GROUP_ID" , groupSelected.getId()) ;
 
-                declineIntent.putExtra("GROUP_NAME",groupSelected.getNom());
-                acceptIntent.putExtra( "GROUP_NAME" , groupSelected.getNom()) ;
+                    declineIntent.putExtra("GROUP_NAME",groupSelected.getNom());
+                    acceptIntent.putExtra( "GROUP_NAME" , groupSelected.getNom()) ;
 
-                PendingIntent acceptPendingIntent = PendingIntent.getBroadcast(getApplicationContext(),1,acceptIntent,PendingIntent.FLAG_UPDATE_CURRENT);
-                PendingIntent declinePendingIntent = PendingIntent.getBroadcast(getApplicationContext(),2,declineIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+                    PendingIntent acceptPendingIntent = PendingIntent.getBroadcast(getApplicationContext(),1,acceptIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+                    PendingIntent declinePendingIntent = PendingIntent.getBroadcast(getApplicationContext(),2,declineIntent,PendingIntent.FLAG_UPDATE_CURRENT);
 
-                //Création d'une notification
-                NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), "thanosNotificationsChannel")
-                        .setSmallIcon(R.mipmap.ic_launcher_foreground)
-                        .setContentTitle("Invitation à un groupe")
-                        .setContentText("Vous avez été invité(e) à rejoindre le groupe " + groupSelected.getNom())
-                        .addAction(R.drawable. ic_launcher_foreground , "Accepter" , acceptPendingIntent)
-                        .addAction(R.drawable. ic_launcher_foreground , "Refuser" , declinePendingIntent)
-                        .setAutoCancel(true);
+                    //Création d'une notification
+                    NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), "thanosNotificationsChannel")
+                            .setSmallIcon(R.mipmap.ic_launcher_foreground)
+                            .setContentTitle("Invitation à un groupe")
+                            .setContentText("Vous avez été invité(e) à rejoindre le groupe " + groupSelected.getNom())
+                            .addAction(R.drawable. ic_launcher_foreground , "Accepter" , acceptPendingIntent)
+                            .addAction(R.drawable. ic_launcher_foreground , "Refuser" , declinePendingIntent)
+                            .setAutoCancel(true);
 
-                //Faire apparaître la notif
-                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
-                notificationManager.notify(1, builder.build());
+                    //Faire apparaître la notif
+                    NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
+                    notificationManager.notify(1, builder.build());
+
+                }
             }
         });
 

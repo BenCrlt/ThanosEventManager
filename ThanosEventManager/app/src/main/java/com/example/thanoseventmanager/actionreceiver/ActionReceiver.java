@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.widget.Toast;
 
 import com.example.thanoseventmanager.firebase.GroupeHelper;
-import com.example.thanoseventmanager.firebase.UserHelper;
 import com.example.thanoseventmanager.modeles.Groupe;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -22,7 +21,7 @@ public class ActionReceiver extends BroadcastReceiver {
         * groupe
      *******************************************************
      */
-    String action,groupId,groupName;
+    String action,groupId,groupName, userId;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -32,22 +31,33 @@ public class ActionReceiver extends BroadcastReceiver {
         action=intent.getStringExtra("ACTION");
         groupId = intent.getStringExtra("GROUP_ID");
         groupName = intent.getStringExtra("GROUP_NAME");
+        userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         if(action.equals("ACCEPTED")){
 
             GroupeHelper.getGroupeById(groupId).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    GroupeHelper.addUser(documentSnapshot.toObject(Groupe.class), FirebaseAuth.getInstance().getCurrentUser().getUid());
-                    //TODO : une fois acceptée ou refusée, supprimer l'invitation
+                    Groupe targetGroup = documentSnapshot.toObject(Groupe.class);
+                    Boolean alreadyMember = false;
+                    for (int i =0; i<targetGroup.getListeIdUsers().size();i++){
+                        if (targetGroup.getListeIdUsers().get(i).equals(userId)){
+                            alreadyMember = true;
+                        }
+                    }
+
+                    if (!alreadyMember){
+                        GroupeHelper.addUser(targetGroup, FirebaseAuth.getInstance().getCurrentUser().getUid());
+                        Toast.makeText(context,"Vous avez rejoint " + groupName,Toast.LENGTH_SHORT).show();
+                    }else {
+                        Toast.makeText(context,"Vous êtes déjà membre de  " + groupName,Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
 
-            Toast.makeText(context,"Vous avez rejoint " + groupName,Toast.LENGTH_SHORT).show();
+
         }
         else if(action.equals("DECLINED")){
-            UserHelper.clearListInvit(FirebaseAuth.getInstance().getCurrentUser().getUid());
-
             Toast.makeText(context,"Vous avez refusé l'invitation pour : " + groupName,Toast.LENGTH_SHORT).show();
         }
         //This is used to close the notification tray
