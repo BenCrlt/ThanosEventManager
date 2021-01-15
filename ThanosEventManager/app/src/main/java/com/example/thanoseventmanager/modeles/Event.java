@@ -99,5 +99,5 @@ public class Event implements Serializable {
 
     public List<String> getParticipantList(){ return this.participantList; }
 
-    public void setParticipantList(List<String> list) { this.participantList = list; }
+    public void setParticipantList(List<String> participantList) { this.participantList = participantList; }
 }

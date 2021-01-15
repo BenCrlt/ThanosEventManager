@@ -21,10 +21,10 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.thanoseventmanager.R;
-import com.example.thanoseventmanager.TestListeEvents;
-import com.example.thanoseventmanager.firebase.GroupeHelper;
 import com.example.thanoseventmanager.custom.CustomInfoWindowAdapter;
+import com.example.thanoseventmanager.firebase.GroupeHelper;
 import com.example.thanoseventmanager.modeles.Event;
+import com.example.thanoseventmanager.modeles.Groupe;
 import com.example.thanoseventmanager.viewmodels.ViewModel_MainActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -41,7 +41,11 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -56,7 +60,6 @@ public class FragmentMapView extends Fragment implements
 
     //Initialisation variables locales
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
-    private List<Event> eventList;
     private MapView mapView;
     private GoogleMap gm;
     private FusedLocationProviderClient fusedLocationClient;
@@ -78,9 +81,6 @@ public class FragmentMapView extends Fragment implements
         locationRequest = this.setLocationRequest();
         //Utilisation de la classe Location Callback pour récupérer les localisations
         locationCallback = this.setLocationCallback();
-
-        //Générer la liste des events de l'utilisateur
-        //eventList = ((MainActivity)getActivity()).getEventList();
 
         viewModel = new ViewModelProvider(this.requireActivity()).get(ViewModel_MainActivity.class);
     }
@@ -139,9 +139,7 @@ public class FragmentMapView extends Fragment implements
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
+    public void onActivityCreated(Bundle savedInstanceState) { super.onActivityCreated(savedInstanceState); }
 
     @Override
     public void onDestroyView() {
@@ -179,7 +177,7 @@ public class FragmentMapView extends Fragment implements
         if (viewModel.getListAllEvent().getValue() != null) {
             setEventMarkers(viewModel.getListAllEvent().getValue());
         } else {
-            viewModel.getListAllEvent().observe(this, listeEvents -> setEventMarkers(listeEvents));
+            viewModel.getListAllEvent().observe(this, this::setEventMarkers);
         }
 
         //Activation de la localisation avec permission requise
@@ -311,13 +309,10 @@ public class FragmentMapView extends Fragment implements
     }
 
     //Placement des marqueurs des différents events sur la carte
-    private void setEventMarkers(List<Event> listeEvents){
-
-        //Récupération de la liste des events
-        //List<Event> listeEvents = new TestListeEvents().getListData();
+    private void setEventMarkers(List<Event> eventList){
 
         //Boucle pour chaque event de la liste
-        for( Event event : listeEvents) {
+        for( Event event : eventList) {
 
             //Par défaut, on considère que l'event n'est pas affiché sur la map
             event.setFlagMarker(false);
@@ -362,12 +357,19 @@ public class FragmentMapView extends Fragment implements
 
                 //Le marqueur est placé, on met un drapeau
                 event.setFlagMarker(true);
-
-                //MAJ de l'event dans Firebase
-                //Groupe groupe = event.getGroupe();
-                //GroupeHelper.updateEvent(groupe, event);
-
             }
+
+            //MAJ de l'event dans Firebase
+            /*
+            GroupeHelper.getGroupeById(event.getGrpId()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    Groupe groupe = documentSnapshot.toObject(Groupe.class);
+                    GroupeHelper.updateEvent(groupe, event);
+                }
+            });
+
+             */
         }
     }
 

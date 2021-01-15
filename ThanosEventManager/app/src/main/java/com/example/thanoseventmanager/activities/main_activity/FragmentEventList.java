@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
@@ -39,6 +40,20 @@ public class FragmentEventList extends Fragment {
 
         listView = v.findViewById(R.id.listGroups);
         listView.setAdapter(new EventListAdapter(getContext(), viewModel.getListAllEvent().getValue()));
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //Récupération de l'objet event
+                Event eventSelected = viewModel.getListAllEvent().getValue().get(position);
+
+                //Création du ViewModel de cet event
+                viewModel = new ViewModelProvider(requireActivity()).get(ViewModel_MainActivity.class);
+                viewModel.setEventToView(eventSelected);
+
+                //Affichage du fragment Event View
+                ((MainActivity)requireActivity()).onClickFragmentEventView();
+            }
+        });
         // Inflate the layout for this fragment
         viewModel.getListAllEvent().observe(getActivity(), new Observer<List<Event>>() {
             @Override

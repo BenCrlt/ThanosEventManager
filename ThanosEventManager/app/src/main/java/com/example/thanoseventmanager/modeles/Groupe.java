@@ -7,14 +7,15 @@ import java.util.Date;
 
 public class Groupe {
 
+    private final static String TAG = "Group";
     String id;
     String nom;
     ArrayList<String> listeIdUsers;
     ArrayList<Event> listeEvents;
 
     public Groupe(){
-        this.id = new String();
-        this.nom = new String();
+        this.id = "";
+        this.nom = "";
         this.listeIdUsers = new ArrayList<String>();
         this.listeEvents = new ArrayList<Event>();
     }
@@ -69,7 +70,7 @@ public class Groupe {
 
     public void deleteEvent(Event eventToDeleted) {
         for (int i = 0; i < this.listeEvents.size(); i++) {
-            if (this.listeEvents.get(i).getId() == eventToDeleted.getId()) {
+            if (this.listeEvents.get(i).getId().equals(eventToDeleted.getId())) {
                 this.listeEvents.remove(i);
             }
         }
@@ -77,7 +78,11 @@ public class Groupe {
 
     public void updateEvent(Event eventToUpdate) {
         for (int i = 0; i < this.listeEvents.size(); i++) {
-            if (this.listeEvents.get(i).getId() == eventToUpdate.getId()) {
+            String eventId1 = this.listeEvents.get(i).getId();
+            String eventId2 = eventToUpdate.getId();
+            if (eventId1.equals(eventId2)) {
+                Log.d(TAG,"eventId1 : " + eventId1);
+                Log.d(TAG,"eventId2 : " + eventId2);
                 this.listeEvents.set(i, eventToUpdate);
             }
         }
