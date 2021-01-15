@@ -123,35 +123,23 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
 
     private void setSpinnerGroupList(List<Groupe> liste_grp)
     {
-        /*Le Spinner a besoin d'un adapter pour sa presentation alors on lui passe le context(this) et
-                un fichier de presentation par défaut( android.R.layout.simple_spinner_item)
-        Avec la liste des elements (exemple) */
-        ArrayAdapter adapter = new ArrayAdapter(
-                this,
-                android.R.layout.simple_spinner_item,
-                liste_grp
-        );
+        //Création d'un adapter pour la présentation du spinner
+        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, liste_grp);
 
-        /* On definit une présentation du spinner quand il est déroulé         (android.R.layout.simple_spinner_dropdown_item) */
+        // On definit une présentation du spinner quand il est déroulé
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //Enfin on passe l'adapter au Spinner et c'est tout
+
         spinner_grp.setAdapter(adapter);
     }
 
     private void setSpinnerIconList(List<String> liste_icone)
     {
-        /*Le Spinner a besoin d'un adapter pour sa presentation alors on lui passe le context(this) et
-                un fichier de presentation par défaut( android.R.layout.simple_spinner_item)
-        Avec la liste des elements (exemple) */
-        ArrayAdapter adapter = new ArrayAdapter(
-                this,
-                android.R.layout.simple_spinner_item,
-                liste_icone
-        );
+        //Création d'un adapter pour la présentation du spinner
+        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, liste_icone);
 
-        /* On definit une présentation du spinner quand il est déroulé         (android.R.layout.simple_spinner_dropdown_item) */
+        // On definit une présentation du spinner quand il est déroulé
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //Enfin on passe l'adapter au Spinner et c'est tout
+
         spinner_icon.setAdapter(adapter);
     }
 
@@ -194,14 +182,22 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         Groupe groupeSelected;
         String iconSelected;
         String nom_event, address_event, cp_event, ville_event ;
-        // Récupérer Nom Event
+
+        // Récupération du Nom Event
         nom_event = ((EditText)findViewById(R.id.editText_Name_event)).getText().toString() ;
+
+        //Nom event requis
         if (!nom_event.isEmpty()) {
             new_event.setNom(nom_event);
+
+            //Date requis
             if (dateEvent != null) {
                 new_event.setDate(dateEvent);
 
+                //Récupération du groupe sélectionné
                 groupeSelected = (Groupe) spinner_grp.getSelectedItem();
+
+                //Récupération de l'icone sélectionné
                 iconSelected = (String) spinner_icon.getSelectedItem();
                 new_event.setImage(iconSelected);
 
