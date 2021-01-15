@@ -29,6 +29,14 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.List;
 
 public class FragmentGroupProfile extends Fragment implements View.OnClickListener{
+    /*
+     *******************************************************
+     * Ce fragment est appelé lorsque l'utilisateur clique
+     * sur un groupe de la vue liste. Au sein de ce fragment
+     * l'utilisateur peut inviter un membre via son numéro
+     * de téléphone
+     *******************************************************
+     */
 
     ViewModel_GroupsActivity viewModel;
     ListView listView;

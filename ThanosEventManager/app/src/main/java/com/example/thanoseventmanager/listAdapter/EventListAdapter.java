@@ -17,6 +17,13 @@ import java.util.Locale;
 
 public class EventListAdapter extends BaseAdapter {
 
+    /*
+     *******************************************************
+     * Cette classe un adapter permettant de peupler une
+     * listView avec les éléments d'une java bean
+     *******************************************************
+     */
+
     private List<Event> listeEvent;
     private Context context;
     private LayoutInflater layoutInflater;

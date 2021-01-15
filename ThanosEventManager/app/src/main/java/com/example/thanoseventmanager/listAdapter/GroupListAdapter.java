@@ -15,6 +15,13 @@ import java.util.List;
 
 public class GroupListAdapter extends BaseAdapter {
 
+    /*
+     *******************************************************
+     * Cette classe un adapter permettant de peupler une
+     * listView avec les éléments d'une java bean
+     *******************************************************
+     */
+
     private List<Groupe> listeGroupe;
     private Context context;
     private LayoutInflater layoutInflater;

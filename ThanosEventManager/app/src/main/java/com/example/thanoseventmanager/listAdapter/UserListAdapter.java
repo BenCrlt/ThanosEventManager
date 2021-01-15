@@ -14,6 +14,14 @@ import com.example.thanoseventmanager.modeles.User;
 import java.util.List;
 
 public class UserListAdapter extends BaseAdapter {
+
+    /*
+     *******************************************************
+     * Cette classe un adapter permettant de peupler une
+     * listView avec les éléments d'une java bean
+     *******************************************************
+     */
+
     private List<User> listeUser;
     private Context context;
     private LayoutInflater layoutInflater;
