@@ -15,7 +15,7 @@ public class Event implements Serializable {
 
     String id;
     String nom;
-    String image = "event";
+    String image;
     Date date;
     Lieu lieu;
     boolean isShowedOnMap;
@@ -30,6 +30,7 @@ public class Event implements Serializable {
         this.date = new Date();
         this.lieu = new Lieu();
         this.isInProgress = true;
+        this.image = "event";
         this.participantList = new ArrayList<>();
     }
 
@@ -39,10 +40,11 @@ public class Event implements Serializable {
         this.date = date;
         this.lieu = lieu;
         this.isInProgress = true;
+        this.image = "event";
         this.participantList = new ArrayList<>();
     }
 
-    public Event(String id, String nom, Date date, Groupe grp, Lieu lieu){
+    public Event(String id, String nom, Date date, Groupe grp, Lieu lieu, String image){
         this.id = id;
         this.nom = nom;
         this.date = date;
@@ -50,6 +52,7 @@ public class Event implements Serializable {
         this.isInProgress = true;
         this.grpId = grp.getId();
         this.grpName = grp.getNom();
+        this.image = image;
         this.participantList = new ArrayList<>();
     }
 

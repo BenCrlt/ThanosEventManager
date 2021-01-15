@@ -117,9 +117,9 @@ public class GroupeHelper {
      * @param date la date de l'évenement
      * @param lieu le lieu de l'événement
      */
-    public static Task<Void> addEvent(Groupe grp, String nom, Date date, Lieu lieu) {
+    public static Task<Void> addEvent(Groupe grp, String nom, Date date, Lieu lieu, String image) {
         String id = nom + date.toString();
-        grp.addEvent(new Event(id, nom, date, grp, lieu));
+        grp.addEvent(new Event(id, nom, date, grp, lieu,image));
         return GroupeHelper.getGroupesCollection().document(grp.getId()).update("listeEvents", grp.getListeEvents());
     }
 

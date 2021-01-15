@@ -31,6 +31,7 @@ import com.example.thanoseventmanager.modeles.Groupe;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -38,7 +39,7 @@ import java.util.Locale;
 
 public class CreateEventActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
-    Spinner spinner_grp;
+    Spinner spinner_grp, spinner_icon;
     TextView infoDateText,nameEvent_TextView, adresse_TextView, cp_TextView, ville_TextView;
     Date dateEvent;
     int year, month, day, hour, minute;
@@ -51,6 +52,7 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         ///********* Spinner Groupe **********/
         //Récupération du Spinner déclaré dans le fichier main.xml de res/layout
         spinner_grp = findViewById(R.id.spinner_group);
+        spinner_icon = findViewById(R.id.spinner_icon);
         infoDateText = findViewById(R.id.text_infodate_createEvent_activity);
         nameEvent_TextView = findViewById(R.id.editText_Name_event);
         adresse_TextView = findViewById(R.id.editText_address_event);
@@ -95,9 +97,17 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         // Requête pour mettre à jour la liste
         GroupeHelper.getAllGroupesOfUser(FirebaseAuth.getInstance().getUid()).get().addOnSuccessListener(queryDocumentSnapshots -> {
             List<Groupe> liste_groupe = queryDocumentSnapshots.toObjects(Groupe.class) ;
-            setSpinnerList(liste_groupe) ;
+            setSpinnerGroupList(liste_groupe) ;
         }) ;
 
+        //Création liste spinner pour choisir l'icone de l'evenement
+        List<String> liste_icone = new ArrayList<>();
+        liste_icone.add("event");
+        liste_icone.add("beer");
+        liste_icone.add("coding");
+        liste_icone.add("fireworks");
+        liste_icone.add("gamepad");
+        this.setSpinnerIconList(liste_icone);
 
     }
 
@@ -111,7 +121,7 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         datePickerDialog.show();
     }
 
-    private void setSpinnerList(List<Groupe> liste_grp)
+    private void setSpinnerGroupList(List<Groupe> liste_grp)
     {
         /*Le Spinner a besoin d'un adapter pour sa presentation alors on lui passe le context(this) et
                 un fichier de presentation par défaut( android.R.layout.simple_spinner_item)
@@ -126,6 +136,23 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //Enfin on passe l'adapter au Spinner et c'est tout
         spinner_grp.setAdapter(adapter);
+    }
+
+    private void setSpinnerIconList(List<String> liste_icone)
+    {
+        /*Le Spinner a besoin d'un adapter pour sa presentation alors on lui passe le context(this) et
+                un fichier de presentation par défaut( android.R.layout.simple_spinner_item)
+        Avec la liste des elements (exemple) */
+        ArrayAdapter adapter = new ArrayAdapter(
+                this,
+                android.R.layout.simple_spinner_item,
+                liste_icone
+        );
+
+        /* On definit une présentation du spinner quand il est déroulé         (android.R.layout.simple_spinner_dropdown_item) */
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //Enfin on passe l'adapter au Spinner et c'est tout
+        spinner_icon.setAdapter(adapter);
     }
 
     @Override
@@ -164,7 +191,8 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
     public void onClickCreateEvent(View v)
     {
         Event new_event = new Event() ;
-        Groupe groupeSelected = new Groupe();
+        Groupe groupeSelected;
+        String iconSelected;
         String nom_event, address_event, cp_event, ville_event ;
         // Récupérer Nom Event
         nom_event = ((EditText)findViewById(R.id.editText_Name_event)).getText().toString() ;
@@ -174,7 +202,8 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
                 new_event.setDate(dateEvent);
 
                 groupeSelected = (Groupe) spinner_grp.getSelectedItem();
-
+                iconSelected = (String) spinner_icon.getSelectedItem();
+                new_event.setImage(iconSelected);
 
                 ///******* Récupérer localisation event *******/
                 // Récupérer Addresse
@@ -189,7 +218,8 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
                 ville_event = ((EditText)findViewById(R.id.editText_ville_event)).getText().toString() ;
                 new_event.getLieu().setVille(ville_event) ;
 
-                GroupeHelper.addEvent(groupeSelected, new_event.getNom(), new_event.getDate(), new_event.getLieu());
+                GroupeHelper.addEvent(groupeSelected, new_event.getNom(), new_event.getDate(), new_event.getLieu(),new_event.getImage());
+
                 goToMainActivity();
             } else {
                 showErrorMessage("Veuillez sélectionner une date pour votre événement !");
