@@ -107,6 +107,7 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
 
     }
 
+    // Calendrier et horloge afin de sélectionner la date et l'heure
     public void onClickSelectDate(View v) {
         Calendar calendar = Calendar.getInstance();
         year = calendar.get(Calendar.YEAR);
