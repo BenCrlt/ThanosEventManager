@@ -5,20 +5,17 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.DateFormat;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,28 +26,21 @@ import com.example.thanoseventmanager.activities.login_activity.LoginActivity;
 import com.example.thanoseventmanager.activities.main_activity.MainActivity;
 import com.example.thanoseventmanager.activities.profile_activity.ProfileActivity;
 import com.example.thanoseventmanager.firebase.GroupeHelper;
-import com.example.thanoseventmanager.firebase.GroupeHelper;
 import com.example.thanoseventmanager.modeles.Event;
 import com.example.thanoseventmanager.modeles.Groupe;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.Arrays;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import static com.example.thanoseventmanager.firebase.GroupeHelper.updateEvent;
+import java.util.Locale;
 
 public class CreateEventActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
-    private final static String TAG = "hello";
-    Spinner spinner_grp, spinner_evt ;
-    TextView infoDateText, nameEvent_TextView, adresse_TextView, cp_TextView, ville_TextView;
+    Spinner spinner_grp;
+    TextView infoDateText,nameEvent_TextView, adresse_TextView, cp_TextView, ville_TextView;
     Date dateEvent;
-    Groupe groupeEvent;
     int year, month, day, hour, minute;
 
     @Override
@@ -58,14 +48,14 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_event);
 
-        /********* Spinner Groupe **********/
+        ///********* Spinner Groupe **********/
         //Récupération du Spinner déclaré dans le fichier main.xml de res/layout
-        spinner_grp = (Spinner) findViewById(R.id.spinner_group);
-        infoDateText = (TextView) findViewById(R.id.text_infodate_createEvent_activity);
-        nameEvent_TextView = (TextView) findViewById(R.id.editText_Name_event);
-        adresse_TextView = (TextView) findViewById(R.id.editText_address_event);
-        cp_TextView = (TextView) findViewById(R.id.editText_cp_event);
-        ville_TextView =  (TextView) findViewById(R.id.editText_ville_event);
+        spinner_grp = findViewById(R.id.spinner_group);
+        infoDateText = findViewById(R.id.text_infodate_createEvent_activity);
+        nameEvent_TextView = findViewById(R.id.editText_Name_event);
+        adresse_TextView = findViewById(R.id.editText_address_event);
+        cp_TextView = findViewById(R.id.editText_cp_event);
+        ville_TextView = findViewById(R.id.editText_ville_event);
 
     }
 
@@ -87,8 +77,15 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         minute = minuteSet;
         Calendar selectedDate = Calendar.getInstance();
         selectedDate.set(year, month, day, hour, minute);
-        infoDateText.setText(selectedDate.getTime().toString());
         dateEvent = selectedDate.getTime();
+
+        //Affichage de la date
+        java.text.DateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE);
+        java.text.DateFormat formatHeure = new SimpleDateFormat("HH:mm", Locale.FRANCE);
+        String date = formatDate.format(dateEvent);
+        String heure = formatHeure.format(dateEvent);
+        String stringDate = "Date : " + date + "   Heure : " + heure;
+        infoDateText.setText(stringDate);
     }
 
     @Override
@@ -96,12 +93,9 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         super.onStart();
 
         // Requête pour mettre à jour la liste
-        GroupeHelper.getAllGroupesOfUser(FirebaseAuth.getInstance().getUid()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                List<Groupe> liste_groupe = queryDocumentSnapshots.toObjects(Groupe.class) ;
-                setSpinnerList(liste_groupe) ;
-            }
+        GroupeHelper.getAllGroupesOfUser(FirebaseAuth.getInstance().getUid()).get().addOnSuccessListener(queryDocumentSnapshots -> {
+            List<Groupe> liste_groupe = queryDocumentSnapshots.toObjects(Groupe.class) ;
+            setSpinnerList(liste_groupe) ;
         }) ;
 
 
@@ -172,7 +166,6 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         Event new_event = new Event() ;
         Groupe groupeSelected = new Groupe();
         String nom_event, address_event, cp_event, ville_event ;
-        Date date_event ;
         // Récupérer Nom Event
         nom_event = ((EditText)findViewById(R.id.editText_Name_event)).getText().toString() ;
         if (!nom_event.isEmpty()) {
@@ -183,7 +176,7 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
                 groupeSelected = (Groupe) spinner_grp.getSelectedItem();
 
 
-                /******* Récupérer localisation event *******/
+                ///******* Récupérer localisation event *******/
                 // Récupérer Addresse
                 address_event = ((EditText)findViewById(R.id.editText_address_event)).getText().toString() ;
                 new_event.getLieu().setAdresse(address_event);

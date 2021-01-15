@@ -10,7 +10,7 @@
         android:id="@+id/textView_create_event"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="10dp"
         android:text="Création d'un évènement"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,15 +21,13 @@
         android:id="@+id/editText_Name_event"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:ems="10"
         android:hint="Nom événement"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/spinner_group"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_create_event"
-        app:layout_constraintVertical_bias="0.288" />
+        app:layout_constraintTop_toBottomOf="@+id/textView_create_event" />
 
     <Button
         android:id="@+id/button_create_event"
@@ -41,55 +39,50 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText_cp_event"
-        app:layout_constraintVertical_bias="0.564" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Spinner
         android:id="@+id/spinner_group"
-        android:layout_width="245dp"
-        android:layout_height="36dp"
-        android:layout_marginTop="224dp"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="5dp"
         android:background="@android:drawable/btn_dropdown"
         android:spinnerMode="dropdown"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/textView_choice_group" />
 
     <TextView
         android:id="@+id/textView_choice_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="192dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="20dp"
         android:text="Choisir le groupe"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.272"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/editText_Name_event" />
 
     <EditText
         android:id="@+id/editText_address_event"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="112dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="20dp"
         android:ems="10"
         android:hint="Adresse"
         android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner_group" />
+        app:layout_constraintTop_toBottomOf="@+id/text_infodate_createEvent_activity" />
 
     <EditText
         android:id="@+id/editText_ville_event"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="10dp"
         android:ems="10"
         android:hint="Ville"
         android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText_address_event" />
 
@@ -97,12 +90,11 @@
         android:id="@+id/editText_cp_event"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="10dp"
         android:ems="10"
         android:hint="Code postal"
         android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText_ville_event" />
 
@@ -110,24 +102,22 @@
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="25dp"
         android:onClick="onClickSelectDate"
-        android:text="Sélectionner date"
+        android:text="Date"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner_group" />
+        app:layout_constraintTop_toBottomOf="@+id/textView_choice_group" />
 
     <TextView
         android:id="@+id/text_infodate_createEvent_activity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="20dp"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/editText_address_event"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button"
-        app:layout_constraintVertical_bias="0.194" />
+        app:layout_constraintTop_toBottomOf="@+id/button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

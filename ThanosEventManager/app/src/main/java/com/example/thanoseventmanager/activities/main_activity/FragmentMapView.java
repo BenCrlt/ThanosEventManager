@@ -359,17 +359,17 @@ public class FragmentMapView extends Fragment implements
                 event.setFlagMarker(true);
             }
 
-            //MAJ de l'event dans Firebase
-            /*
+            //MAJ du flagMarker dans Firebase
             GroupeHelper.getGroupeById(event.getGrpId()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     Groupe groupe = documentSnapshot.toObject(Groupe.class);
-                    GroupeHelper.updateEvent(groupe, event);
+
+                    if (groupe!=null) {
+                        GroupeHelper.updateEvent(groupe, event);
+                    }
                 }
             });
-
-             */
         }
     }
 

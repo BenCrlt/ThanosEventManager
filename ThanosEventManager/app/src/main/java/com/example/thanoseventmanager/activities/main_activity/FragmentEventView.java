@@ -85,7 +85,10 @@ public class FragmentEventView extends Fragment implements View.OnClickListener 
             String adresse = eventToView.getLieu().getAdresse();
             String cp = eventToView.getLieu().getCp();
             String ville = eventToView.getLieu().getVille();
-            String stringLieu = "Lieu : " + adresse + ", " + cp + " " + ville;
+            String stringLieu = "Lieu : ";
+            if (adresse!=null){ stringLieu = stringLieu + adresse; }
+            if (cp!=null){ stringLieu = stringLieu + " " + cp; }
+            if (ville!=null){ stringLieu = stringLieu + " " + ville; }
             lieuEvent.setText(stringLieu);
 
             //Récupération de l'id de l'image de l'event
