@@ -24,6 +24,7 @@ import com.example.thanoseventmanager.modeles.Event;
 import com.example.thanoseventmanager.modeles.Groupe;
 import com.example.thanoseventmanager.modeles.User;
 import com.example.thanoseventmanager.viewmodels.ViewModel_MainActivity;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.DateFormat;
@@ -83,7 +84,10 @@ public class FragmentEventView extends Fragment implements View.OnClickListener 
             String adresse = eventToView.getLieu().getAdresse();
             String cp = eventToView.getLieu().getCp();
             String ville = eventToView.getLieu().getVille();
-            String stringLieu = "Lieu : " + adresse + ", " + cp + " " + ville;
+            String stringLieu = "Lieu : ";
+            if (adresse!=null){ stringLieu = stringLieu + adresse; }
+            if (cp!=null){ stringLieu = stringLieu + " " + cp; }
+            if (ville!=null){ stringLieu = stringLieu + " " + ville; }
             lieuEvent.setText(stringLieu);
 
             //Récupération de l'id de l'image de l'event
@@ -180,7 +184,12 @@ public class FragmentEventView extends Fragment implements View.OnClickListener 
         this.updateParticipateButton();
 
         //MAJ de l'event dans Firebase
-        GroupeHelper.updateEvent(myGroup, eventToView);
+        GroupeHelper.updateEvent(myGroup, eventToView).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                ((UserListAdapter)listView.getAdapter()).notifyDataSetChanged();
+            }
+        });
     }
 
     //Méthode pour savoir si je suis participant ou non
