@@ -11,7 +11,9 @@ import android.widget.TextView;
 import com.example.thanoseventmanager.R;
 import com.example.thanoseventmanager.modeles.Event;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class EventListAdapter extends BaseAdapter {
 
@@ -64,8 +66,15 @@ public class EventListAdapter extends BaseAdapter {
         Event event = this.listeEvent.get(position);
 
         holder.nomEventView.setText(event.getNom());
-        holder.dateEventView.setText(event.getDate().toString());
         holder.nomGroupeView.setText("Groupe: " + event.getGrpName());
+
+        //Affichage de la date
+        java.text.DateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE);
+        java.text.DateFormat formatHeure = new SimpleDateFormat("HH:mm", Locale.FRANCE);
+        String date = formatDate.format(event.getDate());
+        String heure = formatHeure.format(event.getDate());
+        String stringDate = "Date : " + date + "   Heure : " + heure;
+        holder.dateEventView.setText(stringDate);
 
         //Pour le logo de l'event
         int imageId = this.getMipmapResIdByName(event.getImage());
