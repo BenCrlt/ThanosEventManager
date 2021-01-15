@@ -8,7 +8,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,10 +24,7 @@ import com.example.thanoseventmanager.modeles.Event;
 import com.example.thanoseventmanager.modeles.Groupe;
 import com.example.thanoseventmanager.modeles.User;
 import com.example.thanoseventmanager.viewmodels.ViewModel_MainActivity;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -38,7 +34,6 @@ import java.util.Locale;
 
 public class FragmentEventView extends Fragment implements View.OnClickListener {
 
-    private final static String TAG = "EventView";
     ViewModel_MainActivity viewModel;
     Button participateButton;
     ListView listView;
@@ -46,7 +41,7 @@ public class FragmentEventView extends Fragment implements View.OnClickListener 
     Groupe myGroup;
     List<User> myGroupUsers;
     Event eventToView;
-    boolean isParticipant = false;
+    boolean isParticipant;
 
 
     public FragmentEventView() {
@@ -99,10 +94,9 @@ public class FragmentEventView extends Fragment implements View.OnClickListener 
                 eventIcon2.setImageResource(eventIcon);
             }
 
+            //Associe la méthode onClick au bouton Participer
             participateButton.setOnClickListener(this);
         }
-
-        this.updateParticipateButton();
 
         return view;
     }
@@ -111,6 +105,7 @@ public class FragmentEventView extends Fragment implements View.OnClickListener 
     public void onStart() {
         super.onStart();
 
+        //Récupération d'informations de Firebase
         this.getFirebaseData();
     }
 
@@ -138,17 +133,11 @@ public class FragmentEventView extends Fragment implements View.OnClickListener 
     @Override
     public void onDetach() { super.onDetach(); }
 
+    //Méthode qui s'exécute à l'appui du bouton Participer
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.participateButton) {
-            if (!isParticipant) {
-                isParticipant = true;
-                this.updateParticipateButton();
-                this.addParticipant();
-            } else {
-                isParticipant = false;
-                this.updateParticipateButton();
-            }
+            this.updateParticipants();
         }
     }
 
@@ -165,17 +154,65 @@ public class FragmentEventView extends Fragment implements View.OnClickListener 
         }
     }
 
-    //Récupérer tous les participants d'un évènement
+    //M'ajouter ou m'enlever de la liste des participants
+    private void updateParticipants() {
+
+        //Récupération de la liste des id des participants
+        List<String> participants = eventToView.getParticipantList();
+
+        //Je ne participe pas, je m'ajoute
+        if(!isParticipant){
+            participants.add(myUserId);
+            eventToView.setParticipantList(participants);
+            isParticipant = this.getMyParticipation();
+        }
+        //Je participe, je me retire
+        else {
+            for(int i=0; i<participants.size(); i++) {
+                if (participants.get(i).equals(myUserId)){
+                    participants.remove(i);
+                    eventToView.setParticipantList(participants);
+                    isParticipant = this.getMyParticipation();
+                }
+            }
+        }
+
+        this.updateParticipateButton();
+
+        //MAJ de l'event dans Firebase
+        GroupeHelper.updateEvent(myGroup, eventToView);
+    }
+
+    //Méthode pour savoir si je suis participant ou non
+    private boolean getMyParticipation (){
+
+        //Récupération de la liste des id des participants
+        List<String> participants = eventToView.getParticipantList();
+        boolean idFinded = false;
+
+        //Comparaison de tous les id des participants avec mon id
+        for(int i=0; i<participants.size(); i++) {
+            if ((participants.get(i)).equals(myUserId)){
+                idFinded =  true;
+            }
+        }
+
+        return idFinded;
+    }
+
+    //Récupérer tous les objets User qui participent à l' évènement
     private List<User> getAllParticipants(){
 
+        //Récupération de la liste des id des participants
         List<String> participants = eventToView.getParticipantList();
         List<User> usersToShow = new ArrayList<>();
 
+        //Balayage de la liste de tous les users du groupe concerné
         for(User user : myGroupUsers) {
 
             String userId = user.getId();
-            Log.d(TAG, "Nom User : " + userId);
 
+            //Comparaison avec la liste des participants
             for(String participantId : participants){
                 if(participantId.equals(userId)){
                     usersToShow.add(user);
@@ -184,24 +221,6 @@ public class FragmentEventView extends Fragment implements View.OnClickListener 
         }
 
         return usersToShow;
-    }
-
-    //M'ajouter dans la liste des participants de l'event
-    private void addParticipant() {
-        List<String> participantList = eventToView.getParticipantList();
-        participantList.add(myUserId);
-        eventToView.setParticipantList(participantList);
-
-        Log.d(TAG,"Groupe : " + myGroup);
-        Log.d(TAG,"Event : " + eventToView.getNom());
-
-        //MAJ de l'event dans Firebase
-        GroupeHelper.updateEvent(myGroup, eventToView);
-    }
-
-    //M'enlever de la liste des participants de l'event
-    private void removeParticipant() {
-        List<String> participantList = eventToView.getParticipantList();
     }
 
     //Retrouver l'ID d'une image à l'aide du nom du fichier image dans /mipmap
@@ -217,19 +236,21 @@ public class FragmentEventView extends Fragment implements View.OnClickListener 
         //Récupération de l'id de l'utilisateur courant
         myUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        //Récupération du Groupe concerné par l'event à visualiser
-        GroupeHelper.getGroupeById(eventToView.getGrpId()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                myGroup = documentSnapshot.toObject(Groupe.class);
+        //Pour savoir si je participe ou non à l'event affiché
+        isParticipant = this.getMyParticipation();
+        this.updateParticipateButton();
 
-                //Récupération de tous les Users du Groupe obtenu
-                UserHelper.getAllUsersFromGroupe(myGroup).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        myGroupUsers = queryDocumentSnapshots.toObjects(User.class);
-                        listView.setAdapter( new UserListAdapter(getContext(),getAllParticipants()) );
-                    }
+        //Récupération du Groupe concerné par l'event à visualiser
+        GroupeHelper.getGroupeById(eventToView.getGrpId()).addOnSuccessListener(documentSnapshot -> {
+            myGroup = documentSnapshot.toObject(Groupe.class);
+
+            //Récupération de tous les Users du Groupe obtenu
+            if (myGroup!=null) {
+                UserHelper.getAllUsersFromGroupe(myGroup).get().addOnSuccessListener(queryDocumentSnapshots -> {
+                    myGroupUsers = queryDocumentSnapshots.toObjects(User.class);
+
+                    //Affichage des utilisateurs qui participent à l'event
+                    listView.setAdapter(new UserListAdapter(getContext(), getAllParticipants()));
                 });
             }
         });
