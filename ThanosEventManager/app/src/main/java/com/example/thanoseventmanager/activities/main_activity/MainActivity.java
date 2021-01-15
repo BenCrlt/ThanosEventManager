@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Color of the button of the menu
         ((Button)findViewById(R.id.buttonMap)).setBackgroundColor(Color.GRAY);
-        ((Button)findViewById(R.id.buttonList)).setBackgroundColor(Color.BLUE);
+        ((Button)findViewById(R.id.buttonList)).setBackgroundColor(0x3F51B5);
     }
 
     @Override
@@ -246,7 +246,7 @@ public class MainActivity extends AppCompatActivity {
         navController.popBackStack(navController.getGraph().getStartDestination(), false);
         // Modification des couleurs des boutons des menus pour que celui qui est appuyé soit gris et l'autre non appuyé soit bleu
         ((Button)findViewById(R.id.buttonMap)).setBackgroundColor(Color.GRAY);
-        ((Button)findViewById(R.id.buttonList)).setBackgroundColor(Color.BLUE);
+        ((Button)findViewById(R.id.buttonList)).setBackgroundColor(0x3F51B5);
     }
 
     @SuppressLint("ResourceType")
@@ -255,7 +255,7 @@ public class MainActivity extends AppCompatActivity {
         navController.navigate(R.id.fragmentEventList);
         // Modification des couleurs des boutons des menus pour que celui qui est appuyé soit gris et l'autre non appuyé soit bleu
         ((Button)findViewById(R.id.buttonList)).setBackgroundColor(Color.GRAY);
-        ((Button)findViewById(R.id.buttonMap)).setBackgroundColor(Color.BLUE);
+        ((Button)findViewById(R.id.buttonMap)).setBackgroundColor(0x3F51B5);
 
     }
 
