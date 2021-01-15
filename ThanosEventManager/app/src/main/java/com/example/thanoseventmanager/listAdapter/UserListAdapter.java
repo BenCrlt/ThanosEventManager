@@ -84,4 +84,8 @@ public class UserListAdapter extends BaseAdapter {
         TextView pseudoUserView;
         TextView numberUserView;
     }
+
+    public void setListeUser(List<User> newListeUser) {
+        this.listeUser = newListeUser;
+    }
 }

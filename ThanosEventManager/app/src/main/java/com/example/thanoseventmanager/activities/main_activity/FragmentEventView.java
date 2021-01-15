@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
@@ -24,6 +25,7 @@ import com.example.thanoseventmanager.modeles.Event;
 import com.example.thanoseventmanager.modeles.Groupe;
 import com.example.thanoseventmanager.modeles.User;
 import com.example.thanoseventmanager.viewmodels.ViewModel_MainActivity;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.DateFormat;
@@ -180,7 +182,13 @@ public class FragmentEventView extends Fragment implements View.OnClickListener 
         this.updateParticipateButton();
 
         //MAJ de l'event dans Firebase
-        GroupeHelper.updateEvent(myGroup, eventToView);
+        GroupeHelper.updateEvent(myGroup, eventToView).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                ((UserListAdapter)listView.getAdapter()).setListeUser(getAllParticipants());
+                ((UserListAdapter)listView.getAdapter()).notifyDataSetChanged();
+            }
+        });
     }
 
     //Méthode pour savoir si je suis participant ou non

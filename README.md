@@ -1,11 +1,10 @@
 # ThanosEventManager
 
-Idée : Avoir des évènements privés et d'autres public
-		- trier en fonction de la ville, du rayon en km ?
-
 Application de gestion d'événement
 Auteurs : 
 Benoit COURNAULT
 Pierre LEGROS
 Antoine BERTEAU
 Jimmy NAROND
+
+L'objectif principal de l'application est de pouvoir créer des évenements et pouvoir les envoyer à un groupe d'amis afin de savoir qui participe ou pas. 
