@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -36,6 +37,8 @@ import com.example.thanoseventmanager.modeles.Groupe;
 import com.example.thanoseventmanager.modeles.User;
 import com.example.thanoseventmanager.viewmodels.ViewModel_MainActivity;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.annotations.Nullable;
 import com.google.firebase.firestore.DocumentReference;
@@ -57,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
     FragmentManager fm = getSupportFragmentManager();
     NavController navController;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
-
+    BottomNavigationView mBottomNavigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,9 +79,24 @@ public class MainActivity extends AppCompatActivity {
         this.viewModel = new ViewModelProvider(this).get(ViewModel_MainActivity.class);
         updateListeEvents();
 
-        // Color of the button of the menu
-        ((Button)findViewById(R.id.buttonMap)).setBackgroundColor(Color.GRAY);
-        ((Button)findViewById(R.id.buttonList)).setBackgroundColor(0x3F51B5);
+        mBottomNavigationView = findViewById(R.id.bottomMenu);
+        mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.bottomMenu_addEvent:
+                        onClickCreateEvent();
+                        return false;
+                    case R.id.bottomMenu_listEvents:
+                        onClickFragmentEventList();
+                        return true;
+                    case R.id.bottomMenu_map:
+                        onClickFragmentMapView();
+                        return true;
+                }
+                return false;
+            }
+        });
     }
 
     @Override
@@ -243,21 +261,14 @@ public class MainActivity extends AppCompatActivity {
         Log.i(TAG, "on resume " + getLocalClassName()) ;
     }
 
-    public void onClickFragmentMapView(View v) {
+    public void onClickFragmentMapView() {
         navController.popBackStack(navController.getGraph().getStartDestination(), false);
-        // Modification des couleurs des boutons des menus pour que celui qui est appuyé soit gris et l'autre non appuyé soit bleu
-        ((Button)findViewById(R.id.buttonMap)).setBackgroundColor(Color.GRAY);
-        ((Button)findViewById(R.id.buttonList)).setBackgroundColor(0x3F51B5);
     }
 
     @SuppressLint("ResourceType")
-    public void onClickFragmentEventList(View v) {
+    public void onClickFragmentEventList() {
         navController.popBackStack(navController.getGraph().getStartDestination(), false);
         navController.navigate(R.id.fragmentEventList);
-        // Modification des couleurs des boutons des menus pour que celui qui est appuyé soit gris et l'autre non appuyé soit bleu
-        ((Button)findViewById(R.id.buttonList)).setBackgroundColor(Color.GRAY);
-        ((Button)findViewById(R.id.buttonMap)).setBackgroundColor(0x3F51B5);
-
     }
 
     public void onClickFragmentEventView() {
@@ -265,7 +276,7 @@ public class MainActivity extends AppCompatActivity {
         navController.navigate(R.id.fragmentEventView);
     }
 
-    public void onClickCreateEvent(View v) {
+    public void onClickCreateEvent() {
         Intent intent = new Intent(this, CreateEventActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         startActivity(intent);
