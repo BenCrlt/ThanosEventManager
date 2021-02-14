@@ -9,9 +9,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -41,6 +43,7 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
 
     Spinner spinner_grp, spinner_icon;
     TextView infoDateText,nameEvent_TextView, adresse_TextView, cp_TextView, ville_TextView;
+    ImageView iconView;
     Date dateEvent;
     int year, month, day, hour, minute;
 
@@ -49,15 +52,15 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_event);
 
-        ///********* Spinner Groupe **********/
-        //Récupération du Spinner déclaré dans le fichier main.xml de res/layout
-        spinner_grp = findViewById(R.id.spinner_group);
-        spinner_icon = findViewById(R.id.spinner_icon);
-        infoDateText = findViewById(R.id.text_infodate_createEvent_activity);
-        nameEvent_TextView = findViewById(R.id.editText_Name_event);
-        adresse_TextView = findViewById(R.id.editText_address_event);
-        cp_TextView = findViewById(R.id.editText_cp_event);
-        ville_TextView = findViewById(R.id.editText_ville_event);
+        //Récupération des composants du layout
+        spinner_grp         = findViewById(R.id.spinner_group);
+        spinner_icon        = findViewById(R.id.spinner_icon);
+        infoDateText        = findViewById(R.id.text_infodate_createEvent_activity);
+        nameEvent_TextView  = findViewById(R.id.editText_Name_event);
+        adresse_TextView    = findViewById(R.id.editText_address_event);
+        cp_TextView         = findViewById(R.id.editText_cp_event);
+        ville_TextView      = findViewById(R.id.editText_ville_event);
+        iconView            = findViewById(R.id.iconView);
 
     }
 
@@ -108,7 +111,6 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         liste_icone.add("fireworks");
         liste_icone.add("gamepad");
         this.setSpinnerIconList(liste_icone);
-
     }
 
     // Calendrier et horloge afin de sélectionner la date et l'heure
@@ -121,8 +123,7 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         datePickerDialog.show();
     }
 
-    private void setSpinnerGroupList(List<Groupe> liste_grp)
-    {
+    private void setSpinnerGroupList(List<Groupe> liste_grp) {
         //Création d'un adapter pour la présentation du spinner
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, liste_grp);
 
@@ -132,8 +133,7 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         spinner_grp.setAdapter(adapter);
     }
 
-    private void setSpinnerIconList(List<String> liste_icone)
-    {
+    private void setSpinnerIconList(List<String> liste_icone) {
         //Création d'un adapter pour la présentation du spinner
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, liste_icone);
 
@@ -141,6 +141,21 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spinner_icon.setAdapter(adapter);
+
+        spinner_icon.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //Récupération et affichage de l'item sélectionné
+                String itemSelected = (String) spinner_icon.getSelectedItem();
+                int iconSelected = getMipmapResIdByName(itemSelected);
+                if (itemSelected != null) {
+                    iconView.setImageResource(iconSelected);
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
     }
 
     @Override
@@ -240,4 +255,10 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         startActivity(intent);
     }
 
+    //Retrouver l'ID d'une image à l'aide du nom du fichier image dans /mipmap
+    private int getMipmapResIdByName(String resName)  {
+        String pkgName = getApplicationContext().getPackageName();
+        // Return 0 if not found.
+        return getApplicationContext().getResources().getIdentifier(resName , "mipmap", pkgName);
+    }
 }

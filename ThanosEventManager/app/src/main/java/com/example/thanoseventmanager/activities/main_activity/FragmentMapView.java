@@ -41,11 +41,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -360,14 +356,11 @@ public class FragmentMapView extends Fragment implements
             }
 
             //MAJ du flagMarker dans Firebase
-            GroupeHelper.getGroupeById(event.getGrpId()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                @Override
-                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    Groupe groupe = documentSnapshot.toObject(Groupe.class);
+            GroupeHelper.getGroupeById(event.getGrpId()).addOnSuccessListener(documentSnapshot -> {
+                Groupe groupe = documentSnapshot.toObject(Groupe.class);
 
-                    if (groupe!=null) {
-                        GroupeHelper.updateEvent(groupe, event);
-                    }
+                if (groupe!=null) {
+                    GroupeHelper.updateEvent(groupe, event);
                 }
             });
         }
